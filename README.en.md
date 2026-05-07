@@ -140,6 +140,47 @@ Just as Bitcoin issues BTC through PoW, CCMine nodes mint CCM-NFTs through verif
 4. 50% marketplace fee discount
 5. DeFi liquidity primitive
 
+### TGE Round Structure
+
+| Round | Price | Tokens | Raise | Cliff | Vesting |
+|-------|-------|--------|-------|-------|---------|
+| Seed | $0.15 | 100M | $15.0M | 6 months | 24 months linear |
+| Series A | $0.20 | 150M | $30.0M | 3 months | 18 months linear |
+| **Total** | — | **250M** | **$45.0M** | — | — |
+
+---
+
+## Price Model — Scenario Analysis (2026–2030)
+
+> ⚠️ **Disclaimer**: The figures below are forward-looking projections from the whitepaper / deck's internal model. **They do not constitute investment advice or any price guarantee.** Actual prices depend on adoption, regulation, DeFi TVL, macro conditions, and many other variables; loss is possible. See whitepaper Section 12 for risks.
+
+| Scenario | Year 1 | Year 2 | Year 3 | Year 5 | Y5 / TGE |
+|----------|--------|--------|--------|--------|----------|
+| **Bear** | $0.15 | $0.18 | $0.25 | $0.40 | 2× |
+| **Base** | $0.30 | $0.55 | $1.20 | $3.50 | 17.5× |
+| **Bull** | $0.50 | $1.20 | $4.00 | $15.00 | 75× |
+
+> TGE reference price $0.20 (Series A) · log scale
+
+### Scenario Assumptions
+
+| | VCM growth | Market share | DeFi TVL | Notes |
+|---|---|---|---|---|
+| **Bull** | 8× | 10% | $500M | Rapid standard adoption, friendly regulation |
+| **Base** | 6× | 5% | $200M | veCCM staking ratio 30% |
+| **Bear** | — | — | — | Slow adoption, regulatory friction, DeFi disconnect |
+
+### Staking Pool — Price-Elastic Yield
+
+```
+yield(t) = R₀ × (P_TGE / P_t) × (pool_left / pool_init)
+```
+
+- P_t = TGE price → **10% / month** (cap)
+- P_t = 2× TGE → 5% / month
+- P_t = 10× TGE → 1% / month
+- Auto-sunsets when 200M pool is exhausted (≈24–36 months)
+
 ---
 
 ## CCM × DeFi Synergies

@@ -10,6 +10,32 @@ PPM이 대기 중 CO₂ 농도의 표준 단위가 된 것처럼, CCM은 검증�
 
 ---
 
+## 시장 기회 — Voluntary Carbon Market 2030
+
+| 연도 | 시장 규모 (USD) |
+|------|-----------------|
+| 2024 | $2B |
+| 2026E | $8B |
+| 2028E | $25B |
+| **2030E** | **$50B** |
+| 2050E | $250B |
+
+> **2030년까지 25× 성장, 2050년까지 125× 성장이 예상되지만 시장은 망가져 있다.** (출처: McKinsey 2024)
+
+---
+
+## Trinity: Network · Unit · Token
+
+Bitcoin이 *Network + bitcoin + $BTC* 세 layer로 구성되듯, CCM도 세 층이 함께 작동합니다.
+
+| 층 | 이름 | 역할 |
+|---|------|------|
+| **N**etwork | **CCM Network** | 재단 · 표준 · 거버넌스. VVB·Oracle·Registry를 관장하는 글로벌 표준 네트워크 |
+| **U**nit | **CCM** | PPM처럼 누구나 사용 가능한 검증된 탄소 감축 단위 (1 ton CO₂e verified) |
+| **T**oken | **$CCM** | ERC-20 wrapper. AMM·lending·DeFi에서 자유롭게 합성되는 fungible 자산 |
+
+---
+
 ## 핵심 개념
 
 ### 1 CCM = 1 ton CO₂e (verified, onchain)
@@ -62,6 +88,8 @@ CCM은 **단위(unit)**입니다. 토큰이 아니라, 검증된 탄소 감축�
 | L2 Mining (CCMine) | Physical / Verification 노드 |
 | L1 Settlement | Base (Coinbase L2) |
 
+**핵심 책임 분리**: L5 NFT = **추적성** · L6 Token = **유동성** · L7 DeFi = **합성성**
+
 ---
 
 ## CCMine — Proof of Carbon Removal/Reduction (PoCR)
@@ -72,7 +100,17 @@ CCM은 **단위(unit)**입니다. 토큰이 아니라, 검증된 탄소 감축�
 - **Verification Miner**: oracle / attestation 노드 운영
 - **Storage Miner**: IPFS·Arweave 분산 저장
 
-발행 흐름: 감축 활동 → Oracle 데이터 수집 → VVB M-of-N 합의 → NFT mint → Hold 또는 Wrap → DeFi 활용.
+### 발행 흐름 (5단계)
+
+```
+1. 감축 활동           2. Oracle 측정         3. VVB 검증
+   DAC, 광물화,    →   위성·IoT·LiDAR    →   M-of-N 합의,
+   신규조림 운영        데이터 수집           등급 부여
+                                              ↓
+5. Wrap / Sell        4. NFT Mint
+   $CCM 전환,     ←    CCM-NFT (ERC-1155)
+   DeFi 활용           발행
+```
 
 ---
 
@@ -118,6 +156,21 @@ CCM은 **단위(unit)**입니다. 토큰이 아니라, 검증된 탄소 감축�
 | **Index Tokens** | $CCM-PRIME (A+B), $CCM-FOREST (NbS), $CCM-TECH (TbS) |
 
 표준 ERC-20 / ERC-1155 호환으로 Uniswap, Curve, Aave, Pendle, Yearn, OpenSea, Sudoswap 등 외부 DeFi와 자유롭게 합성됩니다.
+
+---
+
+## vs. 기존 onchain Carbon 프로젝트
+
+| 항목 | Toucan (BCT) | Moss (MCO2) | KlimaDAO | **CCM Network** |
+|------|--------------|-------------|----------|-----------------|
+| Originate vs Tokenize | Tokenize | Tokenize | Tokenize | ✅ **Originate** |
+| NFT × ERC-20 Dual | ❌ ERC-20 only | ❌ ERC-20 only | ❌ ERC-20 only | ✅ **Both, 1:1 wrap** |
+| 등급 차별화 | ❌ 단일 풀 | ❌ 단일 | ❌ | ✅ **A/B/C/D 등급** |
+| DeFi Native (Vault, Index) | Limited | ❌ | Partial | ✅ **8 primitives** |
+| 검증 거버넌스 | External (Verra) | External | External | ✅ **Multi-VVB DAO** |
+| Bridge 위험 | ⚠️ 동결 (Verra ban) | ⚠️ | ⚠️ | ✅ **Originate, no bridge** |
+
+**CCM = 첫 번째 Originate × NFT/Token Dual × DeFi-native 카본 인프라.**
 
 ---
 

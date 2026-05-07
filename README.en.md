@@ -10,6 +10,32 @@ Just as **PPM** became the de facto unit for atmospheric CO₂ concentration, **
 
 ---
 
+## Market Opportunity — Voluntary Carbon Market 2030
+
+| Year | Market Size (USD) |
+|------|-------------------|
+| 2024 | $2B |
+| 2026E | $8B |
+| 2028E | $25B |
+| **2030E** | **$50B** |
+| 2050E | $250B |
+
+> **25× growth by 2030, 125× by 2050 — but the market is broken.** (Source: McKinsey, 2024)
+
+---
+
+## Trinity: Network · Unit · Token
+
+Just as Bitcoin runs on three layers — *Network + bitcoin + $BTC* — CCM operates as three coordinated layers.
+
+| Layer | Name | Role |
+|-------|------|------|
+| **N**etwork | **CCM Network** | Foundation, standard, governance — the global standard network coordinating VVBs, Oracles, and Registry |
+| **U**nit | **CCM** | A universal unit for verified carbon reduction (1 ton CO₂e verified), usable by anyone — like PPM |
+| **T**oken | **$CCM** | ERC-20 wrapper — a fungible asset freely composable across AMMs, lending, and DeFi |
+
+---
+
 ## Core Concepts
 
 ### 1 CCM = 1 ton CO₂e (verified, onchain)
@@ -62,6 +88,8 @@ The two forms wrap/unwrap 1:1 through a vault. The result is the first onchain c
 | L2 Mining (CCMine) | Physical / Verification nodes |
 | L1 Settlement | Base (Coinbase L2) |
 
+**Core separation of concerns**: L5 NFT = **traceability** · L6 Token = **liquidity** · L7 DeFi = **composability**
+
 ---
 
 ## CCMine — Proof of Carbon Removal/Reduction (PoCR)
@@ -72,7 +100,17 @@ Just as Bitcoin issues BTC through PoW, CCMine nodes mint CCM-NFTs through verif
 - **Verification Miner**: runs oracle / attestation nodes
 - **Storage Miner**: provides distributed storage (IPFS / Arweave)
 
-Issuance flow: reduction activity → oracle data collection → VVB M-of-N consensus → NFT mint → hold or wrap → DeFi activation.
+### Issuance Flow (5 steps)
+
+```
+1. Reduction Activity   2. Oracle Capture      3. VVB Verification
+   DAC, mineralization, →  Satellite, IoT,   →  M-of-N consensus,
+   afforestation           LiDAR data            grade assignment
+                                                 ↓
+5. Wrap / Sell          4. NFT Mint
+   Convert to $CCM,  ←   CCM-NFT (ERC-1155)
+   activate DeFi         issued
+```
 
 ---
 
@@ -118,6 +156,21 @@ Issuance flow: reduction activity → oracle data collection → VVB M-of-N cons
 | **Index Tokens** | $CCM-PRIME (A+B), $CCM-FOREST (NbS), $CCM-TECH (TbS) |
 
 Standard ERC-20 / ERC-1155 compatibility means free composability with Uniswap, Curve, Aave, Pendle, Yearn, OpenSea, Sudoswap, and other external DeFi.
+
+---
+
+## vs. Existing Onchain Carbon Projects
+
+| Dimension | Toucan (BCT) | Moss (MCO2) | KlimaDAO | **CCM Network** |
+|-----------|--------------|-------------|----------|-----------------|
+| Originate vs Tokenize | Tokenize | Tokenize | Tokenize | ✅ **Originate** |
+| NFT × ERC-20 Dual | ❌ ERC-20 only | ❌ ERC-20 only | ❌ ERC-20 only | ✅ **Both, 1:1 wrap** |
+| Grade differentiation | ❌ Single pool | ❌ Single | ❌ | ✅ **A/B/C/D tiers** |
+| DeFi Native (Vault, Index) | Limited | ❌ | Partial | ✅ **8 primitives** |
+| Verification governance | External (Verra) | External | External | ✅ **Multi-VVB DAO** |
+| Bridge risk | ⚠️ Frozen (Verra ban) | ⚠️ | ⚠️ | ✅ **Originate, no bridge** |
+
+**CCM is the first Originate × NFT/Token Dual × DeFi-native carbon infrastructure.**
 
 ---
 

@@ -1,0 +1,368 @@
+// End-to-end smoke + interaction test for the Earth long-scroll page.
+// Covers: render of all 15 anchor sections, theme toggle persistence,
+// in-page nav scrolling, wrap slider, the five Mining sub-components
+// (animated hub, IssuanceFlow staggered reveal, RoleCards hover, fee
+// distribution hover sync, ticking LiveMetrics), dark-mode parity, and
+// reduced-motion respect. Exits non-zero on any failure.
+//
+// Prerequisites
+//   1. Vite dev server running on http://localhost:5173 (npm run dev)
+//   2. Chromium installed for Playwright (one-time):
+//        npx playwright install chromium
+//   3. Override the URL with E2E_URL when targeting a deployed preview:
+//        E2E_URL=https://preview.example node e2e/earth.mjs
+
+import { chromium } from "playwright";
+
+const URL = process.env.E2E_URL ?? "http://localhost:5173/";
+const SECTIONS = [
+  "vision", "market", "trinity", "problem", "wrap", "grades",
+  "arch", "mining", "tokenomics", "scenarios", "defi", "vs",
+  "roadmap", "risks", "manifesto",
+];
+
+const results = [];
+const log = (group, name, ok, detail = "") => {
+  results.push({ group, name, ok, detail });
+  const tag = ok ? "PASS" : "FAIL";
+  process.stdout.write(`  [${tag}] ${name}${detail ? `  — ${detail}` : ""}\n`);
+};
+
+async function inGroup(name, fn) {
+  process.stdout.write(`\n■ ${name}\n`);
+  try {
+    await fn();
+  } catch (e) {
+    log(name, "uncaught", false, String(e.message ?? e));
+  }
+}
+
+const browser = await chromium.launch();
+
+async function newCtx(theme) {
+  const ctx = await browser.newContext({
+    viewport: { width: 1440, height: 1100 },
+    colorScheme: theme,
+  });
+  await ctx.addInitScript((t) => localStorage.setItem("ccm-theme", t), theme);
+  const page = await ctx.newPage();
+  return { ctx, page };
+}
+
+// ─────── 1. PAGE LOAD ───────
+await inGroup("Page load", async () => {
+  const { ctx, page } = await newCtx("light");
+  const resp = await page.goto(URL, { waitUntil: "networkidle" });
+  log("Page load", "HTTP 200", resp?.status() === 200, `status ${resp?.status()}`);
+
+  const title = await page.title();
+  log("Page load", "title contains CCM", /CCM/.test(title), title);
+
+  const lang = await page.getAttribute("html", "lang");
+  log("Page load", "html lang=en", lang === "en", `lang=${lang}`);
+
+  const theme = await page.getAttribute("html", "data-theme");
+  log("Page load", "data-theme set", theme === "light" || theme === "dark", `theme=${theme}`);
+
+  // Wordmark renders (custom SVG, not text)
+  const wordmark = await page.locator("svg[aria-label='ccm']").first();
+  log("Page load", "Wordmark SVG present", await wordmark.count() > 0);
+
+  // Nav links
+  const navLinks = await page.locator("header nav a").count();
+  log("Page load", "SiteNav has 6 links", navLinks === 6, `count=${navLinks}`);
+
+  // Anchor nav has 6 chapters
+  const anchorLinks = await page.locator("nav[aria-label='In-page navigation'] a").count();
+  log("Page load", "AnchorNav has 6 chapters", anchorLinks === 6, `count=${anchorLinks}`);
+
+  await ctx.close();
+});
+
+// ─────── 2. ALL SECTIONS PRESENT ───────
+await inGroup("All sections present", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  for (const id of SECTIONS) {
+    const el = await page.locator(`#${id}`).count();
+    log("All sections", `#${id}`, el >= 1, `count=${el}`);
+  }
+  await ctx.close();
+});
+
+// ─────── 3. THEME TOGGLE ───────
+await inGroup("Theme toggle", async () => {
+  // Do NOT seed localStorage via init script — would overwrite on reload.
+  const ctx = await browser.newContext({
+    viewport: { width: 1440, height: 1100 },
+    colorScheme: "light",
+  });
+  const page = await ctx.newPage();
+  await page.goto(URL, { waitUntil: "networkidle" });
+
+  const before = await page.getAttribute("html", "data-theme");
+  await page.click("button[aria-label='Toggle theme']");
+  await page.waitForTimeout(150);
+  const after = await page.getAttribute("html", "data-theme");
+  log("Theme toggle", "theme flips", before !== after, `${before} → ${after}`);
+
+  const stored = await page.evaluate(() => localStorage.getItem("ccm-theme"));
+  log("Theme toggle", "localStorage persists", stored === after, `localStorage=${stored}`);
+
+  await page.reload({ waitUntil: "networkidle" });
+  const persisted = await page.getAttribute("html", "data-theme");
+  log("Theme toggle", "theme survives reload", persisted === after, `after reload=${persisted}`);
+  await ctx.close();
+});
+
+// ─────── 4. ANCHOR NAV ───────
+await inGroup("Anchor nav scrolls", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.waitForTimeout(300);
+
+  for (const id of ["market", "tokenomics", "defi", "roadmap"]) {
+    await page.click(`nav[aria-label='In-page navigation'] a[href='#${id}']`);
+    await page.waitForTimeout(400);
+    const sectionTop = await page.evaluate((s) => {
+      const el = document.getElementById(s);
+      return el ? el.getBoundingClientRect().top : null;
+    }, id);
+    // Section should be within ~120px of viewport top after scroll
+    log("Anchor nav", `scroll to #${id}`, sectionTop !== null && Math.abs(sectionTop) < 200, `top offset=${Math.round(sectionTop ?? -9999)}`);
+  }
+  await ctx.close();
+});
+
+// ─────── 5. WRAP SLIDER ───────
+await inGroup("Wrap slider", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("wrap")?.scrollIntoView());
+  await page.waitForTimeout(400);
+
+  const slider = page.locator("input[type='range']").first();
+  const initialValue = await slider.inputValue();
+  log("Wrap slider", "initial value present", !!initialValue, `value=${initialValue}`);
+
+  await slider.fill("5000");
+  await page.waitForTimeout(200);
+  const newValue = await slider.inputValue();
+  log("Wrap slider", "value updates", newValue === "5000");
+
+  // The two displayed counts should reflect the new value
+  const displayed = await page.evaluate(() => {
+    const els = document.querySelectorAll("#wrap div");
+    const text = Array.from(els).map((e) => e.textContent ?? "").join(" ");
+    return /5,000/.test(text);
+  });
+  log("Wrap slider", "display reflects 5,000", displayed);
+  await ctx.close();
+});
+
+// ─────── 6. MINING — animated network ───────
+await inGroup("Mining · MiningNetwork", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("mining")?.scrollIntoView());
+  await page.waitForTimeout(400);
+
+  const hub = page.locator("#mining svg circle[fill='var(--ink)'][stroke='var(--moss)']").first();
+  log("MiningNetwork", "hub SVG present", await hub.count() > 0);
+
+  const counterEl = page.locator("#mining text").filter({ hasText: /\d{1,3}(,\d{3})+/ }).first();
+  const v1 = await counterEl.textContent();
+  log("MiningNetwork", "live counter renders", !!v1 && /^\d/.test(v1), `value=${v1}`);
+
+  await page.waitForTimeout(5000); // 4.2s tick
+  const v2 = await counterEl.textContent();
+  log("MiningNetwork", "counter ticks (≠ initial)", v1 !== v2, `${v1} → ${v2}`);
+
+  // Spinning ring class present
+  const spinClass = await page.locator("#mining .mn-spin-slow").count();
+  log("MiningNetwork", "outer ring rotation class present", spinClass > 0);
+
+  // Pulse animation classes
+  const pulseClass = await page.locator("#mining .mn-pulse").count();
+  log("MiningNetwork", "satellite pulse classes (=count)", pulseClass === 7, `count=${pulseClass}`);
+
+  await ctx.close();
+});
+
+// ─────── 7. MINING — IssuanceFlow ───────
+await inGroup("Mining · IssuanceFlow", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("mining")?.scrollIntoView());
+  await page.waitForTimeout(2000); // let stagger reveal finish (5 × 140ms)
+
+  const steps = await page.locator("#mining ol li").count();
+  log("IssuanceFlow", "5 steps rendered", steps === 5, `count=${steps}`);
+
+  // After reveal, all steps should have full opacity (1)
+  const opacities = await page.locator("#mining ol li").evaluateAll((els) =>
+    els.map((e) => parseFloat(getComputedStyle(e).opacity)),
+  );
+  log("IssuanceFlow", "all steps revealed (opacity=1)", opacities.every((o) => o > 0.95), `opacities=[${opacities.map((o) => o.toFixed(2)).join(",")}]`);
+
+  // Step labels in expected order
+  const labels = await page.locator("#mining ol li").evaluateAll((els) =>
+    els.map((e) => e.querySelector(".font-display")?.textContent?.trim()),
+  );
+  const expected = ["Activity", "Oracle", "VVB", "Mint", "Activate"];
+  log("IssuanceFlow", "step labels match expected order", JSON.stringify(labels) === JSON.stringify(expected), `labels=${JSON.stringify(labels)}`);
+
+  await ctx.close();
+});
+
+// ─────── 8. MINING — RoleCards hover ───────
+await inGroup("Mining · RoleCards hover", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("mining")?.scrollIntoView());
+  await page.waitForTimeout(400);
+
+  // Locate the actual role card container — the .grid.grid-cols-3 wraps 3
+  // direct-child cards; pick first one (Physical).
+  const card = page.locator("#mining .grid.grid-cols-3 > div").first();
+  const cardCount = await page.locator("#mining .grid.grid-cols-3 > div").count();
+  log("RoleCards", "3 role cards present", cardCount === 3, `count=${cardCount}`);
+
+  const containsStake = await card.locator("text=STAKE 5,000 $CCM").count();
+  log("RoleCards", "first card is Physical (stake 5,000)", containsStake > 0);
+
+  const beforeBorder = await card.evaluate((e) => getComputedStyle(e).borderColor);
+  await card.hover();
+  await page.waitForTimeout(250);
+  const afterBorder = await card.evaluate((e) => getComputedStyle(e).borderColor);
+  log("RoleCards", "border-color changes on hover", beforeBorder !== afterBorder, `${beforeBorder} → ${afterBorder}`);
+
+  const transform = await card.evaluate((e) => getComputedStyle(e).transform);
+  log("RoleCards", "card lifts on hover (translateY)", /matrix|translate/.test(transform) && transform !== "none", `transform=${transform}`);
+
+  await ctx.close();
+});
+
+// ─────── 9. MINING — Economics ───────
+await inGroup("Mining · Economics", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("mining")?.scrollIntoView());
+  await page.waitForTimeout(400);
+
+  const formula = await page.locator("#mining pre").textContent();
+  log("Economics", "revenue formula present", formula?.includes("market_price"), `formula starts: ${formula?.slice(0, 60)}…`);
+
+  const slices = await page.locator("#mining button[aria-label*='%']").count();
+  log("Economics", "4 fee slices rendered", slices === 4, `count=${slices}`);
+
+  // Slice percentages
+  const labels = await page.locator("#mining button[aria-label*='%']").evaluateAll((els) =>
+    els.map((e) => e.getAttribute("aria-label")),
+  );
+  const pcts = labels.map((l) => l?.match(/(\d+)%/)?.[1]).join(",");
+  log("Economics", "slice percentages = 60,25,10,5", pcts === "60,25,10,5", `pcts=${pcts}`);
+
+  // Hover changes opacity of others
+  const slice0 = page.locator("#mining button[aria-label*='%']").nth(0);
+  const slice2 = page.locator("#mining button[aria-label*='%']").nth(2);
+  const before = await slice2.evaluate((e) => parseFloat(getComputedStyle(e).opacity));
+  await slice0.hover();
+  await page.waitForTimeout(200);
+  const after = await slice2.evaluate((e) => parseFloat(getComputedStyle(e).opacity));
+  log("Economics", "non-active slice dims on hover sync", after < before, `opacity ${before.toFixed(2)} → ${after.toFixed(2)}`);
+
+  await ctx.close();
+});
+
+// ─────── 10. MINING — LiveMetrics ───────
+await inGroup("Mining · LiveMetrics", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("mining")?.scrollIntoView({ block: "end" }));
+  await page.waitForTimeout(400);
+
+  // 4 readouts
+  const readouts = await page.locator("#mining .lm-pulse").count();
+  log("LiveMetrics", "LIVE pulse indicator present", readouts === 1);
+
+  // Use a DOM-walk evaluation to find the value that sits as a sibling of
+  // the "CCM MINTED (24H)" label, instead of a fragile selector chain.
+  const getMinted = () =>
+    page.evaluate(() => {
+      const labels = document.querySelectorAll("#mining .font-mono");
+      const label = Array.from(labels).find((el) =>
+        /CCM MINTED \(24H\)/i.test(el.textContent ?? ""),
+      );
+      const parent = label?.parentElement;
+      const value = parent?.querySelector(".font-display");
+      return value?.textContent?.trim() ?? null;
+    });
+
+  const m1 = await getMinted();
+  log("LiveMetrics", "ccm minted readout present", !!m1 && /\d/.test(m1 ?? ""), `value=${m1}`);
+
+  // Wait long enough for ≥1 tick (random 4.5–8s)
+  await page.waitForTimeout(9000);
+  const m2 = await getMinted();
+  log("LiveMetrics", "ccm minted ticks within 9s", m1 !== m2, `${m1} → ${m2}`);
+
+  await ctx.close();
+});
+
+// ─────── 11. DARK MODE — same checks (lightweight) ───────
+await inGroup("Dark mode parity", async () => {
+  const { ctx, page } = await newCtx("dark");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  const dataTheme = await page.getAttribute("html", "data-theme");
+  log("Dark mode", "data-theme=dark", dataTheme === "dark", `data-theme=${dataTheme}`);
+
+  const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+  // Dark paper = #0a0e0c → rgb(10, 14, 12)
+  log("Dark mode", "dark paper background applied", /rgb\(10,\s*14,\s*12\)/.test(bg), `bg=${bg}`);
+
+  // All sections still render
+  for (const id of SECTIONS) {
+    const exists = await page.locator(`#${id}`).count();
+    log("Dark mode", `#${id} renders`, exists >= 1);
+  }
+  await ctx.close();
+});
+
+// ─────── 12. REDUCED MOTION — counters frozen ───────
+await inGroup("Reduced motion", async () => {
+  const { ctx, page } = await newCtx("light");
+  // Override motion preference
+  await ctx.close();
+  const ctx2 = await browser.newContext({
+    viewport: { width: 1440, height: 1100 },
+    reducedMotion: "reduce",
+  });
+  const p2 = await ctx2.newPage();
+  await p2.goto(URL, { waitUntil: "networkidle" });
+  await p2.evaluate(() => document.getElementById("mining")?.scrollIntoView());
+  await p2.waitForTimeout(500);
+
+  const counterEl = p2.locator("#mining text").filter({ hasText: /\d{1,3}(,\d{3})+/ }).first();
+  const v1 = await counterEl.textContent();
+  await p2.waitForTimeout(5000);
+  const v2 = await counterEl.textContent();
+  log("Reduced motion", "minted counter frozen (v1==v2)", v1 === v2, `${v1} == ${v2}`);
+
+  await ctx2.close();
+});
+
+await browser.close();
+
+// ─────── REPORT ───────
+const passed = results.filter((r) => r.ok).length;
+const failed = results.filter((r) => !r.ok).length;
+console.log(`\n────────────────────────────────────────`);
+console.log(`Total: ${results.length}  ·  PASS: ${passed}  ·  FAIL: ${failed}`);
+if (failed > 0) {
+  console.log("\nFailures:");
+  for (const r of results.filter((r) => !r.ok)) {
+    console.log(`  · [${r.group}] ${r.name} — ${r.detail}`);
+  }
+}
+process.exit(failed > 0 ? 1 : 0);

@@ -1,0 +1,75 @@
+{
+  "common": {
+    "appName": "CCM Network",
+    "tagline": "검증된 탄소 크레딧 표준. 온체인. DeFi 네이티브.",
+    "openApp": "앱 열기 ↗",
+    "readWhitepaper": "백서 보기",
+    "loading": "불러오는 중…"
+  },
+  "nav": {
+    "standard": "Standard",
+    "ccmine": "CCMine",
+    "tokenomics": "Tokenomics",
+    "roadmap": "Roadmap",
+    "whitepaper": "Whitepaper",
+    "app": "앱 열기 ↗"
+  },
+  "footer": {
+    "network": "Network",
+    "build": "Build",
+    "foundation": "Foundation"
+  },
+  "earth": {
+    "h1Pre": "단위에는",
+    "h1Em": "고유한 목소리가 있다.",
+    "lead": "CCM은 검증된 1톤 CO₂ 감축을 표현하는 표준 단위. 온체인. DeFi 네이티브. PPM이 농도를 측정하듯, CCM은 감축을 측정한다.",
+    "ctaApp": "앱 열기",
+    "ctaPaper": "백서",
+    "pillars": {
+      "measure": {
+        "label": "측정",
+        "title": "서류가 아닌 물리.",
+        "body": "위성, IoT, LiDAR. 모든 감축은 타임스탬프와 서명을 동반해 처음부터 끝까지 검증 가능합니다."
+      },
+      "verify": {
+        "label": "검증",
+        "title": "M-of-N VVB 합의.",
+        "body": "스테이킹 기반 검증 네트워크. 잘못된 검증은 슬래시. 민감 데이터는 ZK-proof 옵션."
+      },
+      "retire": {
+        "label": "소각",
+        "title": "한 토큰, 한 톤, 한 번 소각.",
+        "body": "전역 유일 CCM-NFT. 한 번 burn되면 transfer 불가능한 인증서로 ESG 감사에 사용."
+      }
+    }
+  },
+  "ccmine": {
+    "h1Pre": "노드를 운영하고,",
+    "h1Em": "$CCM을 채굴하라.",
+    "lead": "Proof of Carbon Removal/Reduction (PoCR). 장비를 운영하거나, 데이터를 검증하거나, 레지스트리 샤드를 저장 — 검증된 1톤마다 보상."
+  },
+  "tokenomics": {
+    "h1Pre": "§ 8 ·",
+    "h1Em": "토큰은 측정값이다.",
+    "lead": "총 50억 hard cap, ERC20Capped 강제. 채굴 40%, 유동성 9%, 재단 18%. veCCM은 프로토콜 수익을 누적."
+  },
+  "roadmap": {
+    "h1Pre": "여섯 단계,",
+    "h1Em": "하나의 측정 도구.",
+    "lead": "Standard v1.0 → UNFCCC Article 6 정렬까지. Phase 0 완료. 메인넷 2026 Q3. DeFi 본격 가동 2027 H1."
+  },
+  "whitepaper": {
+    "h1Pre": "탄소 크레딧을,",
+    "h1Em": "물리로 측정한다.",
+    "lead": "v1.0 · 2026년 5월 · CCM Foundation."
+  },
+  "defi": {
+    "h1Pre": "8개의 프리미티브,",
+    "h1Em": "하나의 탄소 단위.",
+    "lead": "Wrap, vault, lend, fractionalize, retire, insure, index. CCM × DeFi 합성성 — Uniswap, Curve, Aave, Pendle, OpenSea, Sudoswap."
+  },
+  "markets": {
+    "h1": "Markets",
+    "lead": "CCM 시리즈 가격, 내 보유 잔고, 최근 활동."
+  }
+}

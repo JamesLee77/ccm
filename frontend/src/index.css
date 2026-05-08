@@ -1,0 +1,106 @@
+@import "tailwindcss";
+@import "@rainbow-me/rainbowkit/styles.css";
+@import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/source-serif-4";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+/* Design tokens — exposed as CSS variables, switched via [data-theme]. */
+:root,
+[data-theme="light"] {
+  --paper: #f5f3ec;
+  --paper-deep: #ebe8de;
+  --ink: #0c0f10;
+  --ink-soft: #3a3f3c;
+  --moss: #2dbf63;
+  --moss2: #5fe089;
+  --clay: #c8602e;
+  --sky: #4a7d8c;
+  --rule: #c9c5b8;
+  --nav-bg: rgba(245, 243, 236, 0.92);
+}
+
+[data-theme="dark"] {
+  --paper: #0a0e0c;
+  --paper-deep: #060908;
+  --ink: #eef1ea;
+  --ink-soft: #7a8278;
+  --moss: #2dbf63;
+  --moss2: #5fe089;
+  --clay: #e88a4e;
+  --sky: #7ba9c4;
+  --rule: #1a221e;
+  --nav-bg: rgba(10, 14, 12, 0.92);
+}
+
+@theme {
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-moss: var(--moss);
+  --color-moss-2: var(--moss2);
+  --color-clay: var(--clay);
+  --color-sky: var(--sky);
+  --color-rule: var(--rule);
+
+  --font-display: "Fraunces Variable", serif;
+  --font-body: "Source Serif 4 Variable", serif;
+  --font-ui: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --radius-none: 0;
+}
+
+html,
+body,
+#root {
+  min-height: 100vh;
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-feature-settings: "ss01" on, "cv11" on;
+  text-wrap: pretty;
+}
+
+/* Display headings: balance line breaks for nicer ragged margins. */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+/* Italic-moss accent: moss color + italic for display word emphasis. */
+em.italic-moss,
+.italic-moss {
+  font-style: italic;
+  color: var(--moss);
+  font-weight: 400;
+}
+
+/* Reset: every interactive surface uses sharp edges (radius 0). */
+button,
+input,
+select,
+textarea {
+  border-radius: 0;
+}
+
+/* Selection accent. */
+::selection {
+  background: var(--moss);
+  color: var(--paper);
+}

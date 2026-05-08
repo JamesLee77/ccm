@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>CCM Network — BI & Site</title>
+<meta name="viewport" content="width=1480" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; background: #0a0d0a;
+    font-family: 'JetBrains Mono', ui-monospace, monospace; }
+  * { box-sizing: border-box; }
+
+  /* ─── Web3 / digital reskin ────────────────────────────────────
+     Map every existing font reference to the new pairing:
+     - Fraunces (display serif)  →  Space Grotesk (geometric sans)
+     - Source Serif 4 (body)     →  JetBrains Mono (terminal mono)
+     - Inter (UI sans)           →  Space Grotesk
+     - IBM Plex Mono (chrome)    →  JetBrains Mono
+     SVG <text> elements use the same fontFamily attribute, so the swap
+     covers wordmarks, dial labels, footer chrome — everything. */
+  [style*="Fraunces"],  text[font-family*="Fraunces"]  { font-family: 'Space Grotesk', sans-serif !important;
+    font-feature-settings: 'ss01' on; letter-spacing: -0.025em; font-style: normal !important; }
+  [style*="Source Serif"], text[font-family*="Source Serif"] { font-family: 'JetBrains Mono', monospace !important;
+    font-style: normal !important; }
+  [style*="Source Sans"], text[font-family*="Source Sans"] { font-family: 'Space Grotesk', sans-serif !important; }
+  [style*="Inter"], text[font-family*="Inter"] { font-family: 'Space Grotesk', sans-serif !important; }
+  [style*="IBM Plex Mono"], text[font-family*="IBM Plex Mono"],
+  [style*="IBM Plex"], text[font-family*="IBM Plex"] {
+    font-family: 'JetBrains Mono', monospace !important; }
+  /* Italic display words (e.g. <em>) — drop italic in favour of weight,
+     since Space Grotesk italic doesn't fit the digital register. */
+  em { font-style: normal !important; font-weight: 600 !important; }
+</style>
+<script>
+  // ─── Tweakable BI defaults (palette + font pairing) ───
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "palette": "lime",
+    "fonts":   "grotesk-mono"
+  }/*EDITMODE-END*/;
+
+  // 4 palette variants. Each maps to the canonical biTokens shape so every
+  // downstream page (landing, whitepaper, ccmine, …) inherits without edits.
+  window.__BI_PALETTES = {
+    "lime":   {
+      label: 'Carbon · Forest · Bright',
+      paper: '#f5f3ec', paperDeep: '#ebe8de',
+      ink:   '#0c0f10', inkSoft:   '#3a3f3c',
+      moss:  '#2dbf63', moss2:     '#5fe089',
+      clay:  '#c8602e', sky:       '#4a7d8c',
+      rule:  '#c9c5b8',
+    },
+    "forest-dark": {
+      label: 'Carbon · Forest · Dark',
+      paper: '#0a0e0c', paperDeep: '#060908',
+      ink:   '#eef1ea', inkSoft:   '#7a8278',
+      moss:  '#2dbf63', moss2:     '#5fe089',
+      clay:  '#e88a4e', sky:       '#7ba9c4',
+      rule:  '#1a221e',
+    },
+  };
+
+  // 3 font pairings. Each pairing maps the legacy font names → replacements.
+  window.__BI_FONTS = {
+    "grotesk-mono": {
+      label: 'Grotesk + Mono',
+      display: "'Space Grotesk', sans-serif",
+      body:    "'JetBrains Mono', monospace",
+      mono:    "'JetBrains Mono', monospace",
+      ui:      "'Space Grotesk', sans-serif",
+      displayLetterSpacing: '-0.025em',
+      dropItalic: true,
+    },
+    "serif-classic": {
+      label: 'Serif · classic',
+      display: "'Fraunces', serif",
+      body:    "'Source Serif 4', serif",
+      mono:    "'IBM Plex Mono', monospace",
+      ui:      "'Inter', sans-serif",
+      displayLetterSpacing: 'normal',
+      dropItalic: false,
+    },
+    "mono-only": {
+      label: 'Mono only',
+      display: "'JetBrains Mono', monospace",
+      body:    "'JetBrains Mono', monospace",
+      mono:    "'JetBrains Mono', monospace",
+      ui:      "'JetBrains Mono', monospace",
+      displayLetterSpacing: '-0.04em',
+      dropItalic: true,
+    },
+  };
+
+  // Apply palette → biTokens (intercept setter so bi-system.jsx's later
+  // assignment is overwritten with the chosen palette).
+  function __applyPalette(name) {
+    const p = window.__BI_PALETTES[name] || window.__BI_PALETTES.lime;
+    let _stored = p;
+    try {
+      Object.defineProperty(window, 'biTokens', {
+        configurable: true,
+        get() { return _stored; },
+        set(v) { _stored = Object.assign({}, v, p); },
+      });
+    } catch (e) { window.biTokens = p; }
+    document.documentElement.style.setProperty('--bi-bg', p.paper);
+    document.body && (document.body.style.background = p.paper);
+  }
+
+  // Apply fonts via a single <style id="bi-font-overrides"> block. Maps
+  // font references inside [style] and SVG text[font-family] alike.
+  function __applyFonts(name) {
+    const f = window.__BI_FONTS[name] || window.__BI_FONTS['grotesk-mono'];
+    const id = 'bi-font-overrides';
+    let s = document.getElementById(id);
+    if (!s) { s = document.createElement('style'); s.id = id; document.head.appendChild(s); }
+    const italicRule = f.dropItalic ? 'em{font-style:normal !important;font-weight:600 !important;}' : '';
+    s.textContent = `
+      /* Display family — was Fraunces */
+      [style*="Fraunces"], text[font-family*="Fraunces"] {
+        font-family: ${f.display} !important;
+        font-style: ${f.dropItalic ? 'normal' : 'inherit'} !important;
+        letter-spacing: ${f.displayLetterSpacing};
+      }
+      /* Body family — was Source Serif */
+      [style*="Source Serif"], text[font-family*="Source Serif"] {
+        font-family: ${f.body} !important;
+        font-style: ${f.dropItalic ? 'normal' : 'inherit'} !important;
+      }
+      /* UI family — was Inter / Source Sans */
+      [style*="Inter"], text[font-family*="Inter"],
+      [style*="Source Sans"], text[font-family*="Source Sans"] {
+        font-family: ${f.ui} !important;
+      }
+      /* Mono family — was IBM Plex Mono */
+      [style*="IBM Plex Mono"], text[font-family*="IBM Plex Mono"],
+      [style*="IBM Plex"], text[font-family*="IBM Plex"] {
+        font-family: ${f.mono} !important;
+      }
+      ${italicRule}
+    `;
+  }
+
+  __applyPalette(TWEAK_DEFAULTS.palette);
+  __applyFonts(TWEAK_DEFAULTS.fonts);
+  window.__applyPalette = __applyPalette;
+  window.__applyFonts = __applyFonts;
+</script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="brand/tweaks-panel.jsx"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="brand/bi-system.jsx"></script>
+<script type="text/babel" src="brand/guideline.jsx"></script>
+<script type="text/babel" src="brand/landing-earth.jsx"></script>
+<script type="text/babel" src="brand/landing-sci.jsx"></script>
+<script type="text/babel" src="brand/landing-defi.jsx"></script>
+<script type="text/babel" src="brand/site-shared.jsx"></script>
+<script type="text/babel" src="brand/page-ccmine.jsx"></script>
+<script type="text/babel" src="brand/page-tokenomics.jsx"></script>
+<script type="text/babel" src="brand/page-roadmap.jsx"></script>
+<script type="text/babel" src="brand/page-whitepaper.jsx"></script>
+<script type="text/babel" src="brand/page-markets.jsx"></script>
+
+<script type="text/babel">
+const { DesignCanvas, DCSection, DCArtboard, DCPostIt,
+  useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakColor } = window;
+
+// Per-artboard BI variant — applies its OWN palette + fonts via a scoped
+// wrapper, so 4 artboards on the same canvas can each look different.
+// Rendered as a function (not a component) so palette swap + render are
+// fully sequential before the next variant runs.
+const renderBIVariant = (palette, fonts) => {
+  const p = window.__BI_PALETTES[palette];
+  const f = window.__BI_FONTS[fonts];
+  const id = `bi-v-${palette}-${fonts}`;
+
+  // Inject scoped style for this variant once.
+  if (typeof document !== 'undefined') {
+    const sel = `[data-bi-variant="${id}"]`;
+    let s = document.getElementById(`style-${id}`);
+    if (!s) { s = document.createElement('style'); s.id = `style-${id}`; document.head.appendChild(s); }
+    const italic = f.dropItalic ? `${sel} em{font-style:normal !important;font-weight:600 !important;}` : '';
+    s.textContent = `
+      ${sel}{background:${p.paper} !important;color:${p.ink} !important;}
+      ${sel} [style*="Fraunces"]{font-family:${f.display} !important;letter-spacing:${f.displayLetterSpacing} !important;font-style:${f.dropItalic?'normal':'inherit'} !important;}
+      ${sel} text[font-family*="Fraunces"]{font-family:${f.display} !important;}
+      ${sel} [style*="Source Serif"]{font-family:${f.body} !important;font-style:${f.dropItalic?'normal':'inherit'} !important;}
+      ${sel} text[font-family*="Source Serif"]{font-family:${f.body} !important;}
+      ${sel} [style*="Inter"]{font-family:${f.ui} !important;}
+      ${sel} [style*="Source Sans"]{font-family:${f.ui} !important;}
+      ${sel} [style*="IBM Plex"]{font-family:${f.mono} !important;}
+      ${sel} text[font-family*="IBM Plex"]{font-family:${f.mono} !important;}
+      ${italic}
+    `;
+  }
+
+  // Swap biTokens, render synchronously, then schedule a restore.
+  const prev = window.biTokens;
+  try {
+    Object.defineProperty(window, 'biTokens', { configurable: true, writable: true, value: p });
+  } catch { window.biTokens = p; }
+  const tree = <div data-bi-variant={id} style={{ background: p.paper, color: p.ink }}><BISystemPage /></div>;
+  // Restore happens via React's commit — but since BISystemPage reads
+  // biTokens during its own render (which is invoked inside this <BISystemPage/> instantiation),
+  // and React renders depth-first top-to-bottom synchronously, the read
+  // happens BEFORE we restore. Restore on next microtask so the global ends
+  // up at whatever the global tweaks panel last set.
+  Promise.resolve().then(() => {
+    if (window.__applyPalette && window.TWEAK_DEFAULTS) {
+      // Restore to the globally-selected palette.
+      window.biTokens = window.__BI_PALETTES[window.__currentPalette || 'lime'];
+    } else {
+      window.biTokens = prev;
+    }
+  });
+  return tree;
+};
+
+// Per-artboard variant for ANY child page — applies palette/fonts in scope
+// without affecting other artboards. Generalized version of BIVariant.
+const PageVariant = ({ palette, fonts, children }) => {
+  const p = window.__BI_PALETTES[palette];
+  const f = window.__BI_FONTS[fonts];
+  const id = `pv-${palette}-${fonts}`;
+  if (typeof document !== 'undefined') {
+    const sel = `[data-page-variant="${id}"]`;
+    let s = document.getElementById(`style-${id}`);
+    if (!s) { s = document.createElement('style'); s.id = `style-${id}`; document.head.appendChild(s); }
+    const italic = f.dropItalic ? `${sel} em{font-style:normal !important;font-weight:600 !important;}` : '';
+    s.textContent = `
+      ${sel}{background:${p.paper} !important;color:${p.ink} !important;}
+      ${sel} [style*="Fraunces"]{font-family:${f.display} !important;letter-spacing:${f.displayLetterSpacing} !important;font-style:${f.dropItalic?'normal':'inherit'} !important;}
+      ${sel} text[font-family*="Fraunces"]{font-family:${f.display} !important;}
+      ${sel} [style*="Source Serif"]{font-family:${f.body} !important;font-style:${f.dropItalic?'normal':'inherit'} !important;}
+      ${sel} text[font-family*="Source Serif"]{font-family:${f.body} !important;}
+      ${sel} [style*="Inter"]{font-family:${f.ui} !important;}
+      ${sel} [style*="Source Sans"]{font-family:${f.ui} !important;}
+      ${sel} [style*="IBM Plex"]{font-family:${f.mono} !important;}
+      ${sel} text[font-family*="IBM Plex"]{font-family:${f.mono} !important;}
+      ${italic}
+    `;
+  }
+  const prev = window.biTokens;
+  try { Object.defineProperty(window, 'biTokens', { configurable: true, writable: true, value: p }); }
+  catch { window.biTokens = p; }
+  const tree = <div data-page-variant={id} style={{ background: p.paper, color: p.ink }}>{children}</div>;
+  Promise.resolve().then(() => { window.biTokens = prev; });
+  return tree;
+};
+
+const BIVariant = ({ palette, fonts }) => renderBIVariant(palette, fonts);
+
+const PALETTE_OPTIONS = Object.entries(window.__BI_PALETTES).map(([k, p]) => ({
+  value: k, label: p.label, swatch: [p.paper, p.moss, p.ink],
+}));
+
+const App = () => {
+  const [t, setTweak] = useTweaks(window.TWEAK_DEFAULTS || { palette: 'lime', fonts: 'grotesk-mono' });
+
+  // Re-apply on tweak change. Force re-render of canvas by remounting key.
+  React.useEffect(() => {
+    window.__applyPalette(t.palette);
+    window.__applyFonts(t.fonts);
+  }, [t.palette, t.fonts]);
+
+  return (
+    <React.Fragment>
+      <DesignCanvas key={t.palette + ':' + t.fonts}>
+    <DCSection
+      id="overview"
+      title="CCM Network — BI & Site"
+      subtitle="Earth-forward identity system + three landing site directions for the Foundation's mainnet launch."
+    >
+      <DCPostIt>
+        Read the BI System artboard first — it sets the tokens, type, and voice
+        used in the lead Earth landing. The Scientific and DeFi artboards explore
+        alternate personalities for the same content. Click any artboard's expand
+        icon for fullscreen.
+      </DCPostIt>
+    </DCSection>
+
+    <DCSection
+      id="bi"
+      title="01 · Brand Identity System"
+      subtitle="Carbon · Forest — Bright + Dark. The single canonical system. cc = carbon black, m = forest green."
+    >
+      <DCArtboard id="bi-lime"  label="V1 · Carbon · Forest · Bright (cc=black, m=forest)" width={1280} height={8900}>
+        <BIVariant palette="lime"  fonts="grotesk-mono" />
+      </DCArtboard>
+      <DCArtboard id="bi-forest-dark" label="V1 · Carbon · Forest · Dark (cc=ivory, m=forest glow)" width={1280} height={8900}>
+        <BIVariant palette="forest-dark" fonts="grotesk-mono" />
+      </DCArtboard>
+      <DCArtboard id="guideline" label="Brand guideline · 1-page" width={1280} height={1100}>
+        <BrandGuideline />
+      </DCArtboard>
+    </DCSection>
+
+    <DCSection
+      id="landing"
+      title="02 · Sites — Earth (front) + DeFi (app)"
+      subtitle="Decision: Earth is the public front (ccmnetwork.net) and DeFi-native is the app surface (app.ccmnetwork.net). Both inherit the BI system above; only the DeFi page applies the dark counterpart of the same tokens. Scrollable & interactive — drag the wrap slider on Earth, hover the primitive grid on DeFi."
+    >
+      <DCArtboard id="earth" label="Front · Earth · ccmnetwork.net (V1 Forest Bright)" width={1280} height={6100}>
+        <PageVariant palette="lime" fonts="grotesk-mono"><LandingEarth /></PageVariant>
+      </DCArtboard>
+      <DCArtboard id="defi" label="App · DeFi-native · app.ccmnetwork.net (V1 Forest Dark)" width={1280} height={2700}>
+        <PageVariant palette="forest-dark" fonts="grotesk-mono"><LandingDefi /></PageVariant>
+      </DCArtboard>
+    </DCSection>
+
+    <DCSection
+      id="pages"
+      title="03 · Full site — five additional pages"
+      subtitle="The Earth front and DeFi app above are the entry points. Five working pages flesh out the rest of the site IA — CCMine onboarding, Tokenomics deep-dive, Roadmap, Whitepaper, and the connected-wallet App. All inherit the BI tokens and toggle light/dark via the nav."
+    >
+      <DCArtboard id="ccmine" label="CCMine · /ccmine — node onboarding (V1 Bright)" width={1280} height={4500}>
+        <PageVariant palette="lime" fonts="grotesk-mono"><window.PageCCMine /></PageVariant>
+      </DCArtboard>
+      <DCArtboard id="tokenomics" label="Tokenomics · /tokenomics — supply, allocation, TGE (V1 Bright)" width={1280} height={6200}>
+        <PageVariant palette="lime" fonts="grotesk-mono"><window.PageTokenomics /></PageVariant>
+      </DCArtboard>
+      <DCArtboard id="roadmap" label="Roadmap · /roadmap — Phase 0 → 5 (V1 Bright)" width={1280} height={3500}>
+        <PageVariant palette="lime" fonts="grotesk-mono"><window.PageRoadmap /></PageVariant>
+      </DCArtboard>
+      <DCArtboard id="whitepaper" label="Whitepaper · /whitepaper — long-form reader (V1 Bright)" width={1280} height={6300}>
+        <PageVariant palette="lime" fonts="grotesk-mono"><window.PageWhitepaper /></PageVariant>
+      </DCArtboard>
+      <DCArtboard id="markets" label="App · app.ccm.network — connected dashboard (V1 Dark)" width={1280} height={3900}>
+        <PageVariant palette="forest-dark" fonts="grotesk-mono"><window.PageMarkets /></PageVariant>
+      </DCArtboard>
+    </DCSection>
+
+    <DCSection
+      id="notes"
+      title="04 · Direction & next steps"
+      subtitle=""
+    >
+      <DCPostIt>
+        <strong>One identity, two surfaces.</strong> The Earth BI system above
+        is canonical. Front-of-house (Earth) speaks to ESG buyers, regulators,
+        and crypto-curious; the app (DeFi) is the working surface for
+        wallet-connected users — same wordmark, same Fraunces / Plex Mono,
+        dark inversion of the paper/ink/moss palette.
+      </DCPostIt>
+      <DCPostIt>
+        <strong>Next deliverables to scope:</strong> (1) Whitepaper / Docs site
+        IA, (2) App dashboard wireframes — wallet, mint, wrap, vault, retire,
+        (3) Pitch deck refresh in Earth tokens, (4) Logo file pack (SVG, PNG,
+        favicon, app icon, social).
+      </DCPostIt>
+    </DCSection>
+  </DesignCanvas>
+  <TweaksPanel>
+    <TweakSection label="Palette" />
+    <TweakColor label="BI palette" value={window.__BI_PALETTES[t.palette].paper}
+      options={Object.values(window.__BI_PALETTES).map(p => [p.paper, p.moss, p.ink])}
+      onChange={(v) => {
+        const idx = Object.values(window.__BI_PALETTES).findIndex(p => p.paper === v[0]);
+        const key = Object.keys(window.__BI_PALETTES)[idx] || 'lime';
+        setTweak('palette', key);
+      }} />
+    <TweakRadio label="" value={t.palette}
+      options={Object.keys(window.__BI_PALETTES)}
+      onChange={(v) => setTweak('palette', v)} />
+    <TweakSection label="Fonts" />
+    <TweakRadio label="Pairing" value={t.fonts}
+      options={Object.keys(window.__BI_FONTS)}
+      onChange={(v) => setTweak('fonts', v)} />
+  </TweaksPanel>
+  </React.Fragment>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

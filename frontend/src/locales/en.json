@@ -1,0 +1,75 @@
+{
+  "common": {
+    "appName": "CCM Network",
+    "tagline": "The Carbon Credit Standard. Verified. Onchain. DeFi-native.",
+    "openApp": "Open App ↗",
+    "readWhitepaper": "Read Whitepaper",
+    "loading": "Loading…"
+  },
+  "nav": {
+    "standard": "Standard",
+    "ccmine": "CCMine",
+    "tokenomics": "Tokenomics",
+    "roadmap": "Roadmap",
+    "whitepaper": "Whitepaper",
+    "app": "Open App ↗"
+  },
+  "footer": {
+    "network": "Network",
+    "build": "Build",
+    "foundation": "Foundation"
+  },
+  "earth": {
+    "h1Pre": "A unit deserves",
+    "h1Em": "its own voice.",
+    "lead": "CCM is the standard unit for one verifiably reduced ton of CO₂. Onchain. DeFi-native. PPM measures concentration; CCM measures avoidance.",
+    "ctaApp": "Open App",
+    "ctaPaper": "Whitepaper",
+    "pillars": {
+      "measure": {
+        "label": "Measure",
+        "title": "Physics over paperwork.",
+        "body": "Satellites, IoT sensors, LiDAR. Every reduction is timestamped, signed, and verifiable end-to-end."
+      },
+      "verify": {
+        "label": "Verify",
+        "title": "M-of-N validator consensus.",
+        "body": "Stake-bonded VVB network. Wrong attestations are slashed. ZK-proofs for sensitive data."
+      },
+      "retire": {
+        "label": "Retire",
+        "title": "One token, one ton, retired once.",
+        "body": "Globally unique CCM-NFTs. Once burned, the certificate is non-transferable and audit-ready."
+      }
+    }
+  },
+  "ccmine": {
+    "h1Pre": "Run a node,",
+    "h1Em": "mint $CCM.",
+    "lead": "Proof of Carbon Removal/Reduction (PoCR). Operate hardware, attest data, or store registry shards — earn from every verified ton."
+  },
+  "tokenomics": {
+    "h1Pre": "§ 8 ·",
+    "h1Em": "The token is a measurement.",
+    "lead": "5,000,000,000 hard cap. ERC20Capped enforced. 40% to mining, 9% liquidity, 18% foundation. veCCM accrues protocol revenue."
+  },
+  "roadmap": {
+    "h1Pre": "Six phases,",
+    "h1Em": "one instrument.",
+    "lead": "From Standard v1.0 to UNFCCC Article 6 alignment. Phase 0 done. Mainnet 2026 Q3. DeFi at scale 2027 H1."
+  },
+  "whitepaper": {
+    "h1Pre": "Carbon credits,",
+    "h1Em": "measured by physics.",
+    "lead": "v1.0 · May 2026 · CCM Foundation."
+  },
+  "defi": {
+    "h1Pre": "Eight primitives,",
+    "h1Em": "one carbon unit.",
+    "lead": "Wrap, vault, lend, fractionalize, retire, insure, index. CCM × DeFi composability — Uniswap, Curve, Aave, Pendle, OpenSea, Sudoswap."
+  },
+  "markets": {
+    "h1": "Markets",
+    "lead": "CCM series price discovery, your holdings, recent activity."
+  }
+}

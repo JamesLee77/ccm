@@ -3,6 +3,10 @@ import { useTranslation } from "react-i18next";
 import Section from "../../components/site/Section";
 import SectionLabel from "../../components/site/SectionLabel";
 import Heading from "../../components/site/Heading";
+import VaultLedger from "./wrap/VaultLedger";
+import WrapModes from "./wrap/WrapModes";
+import GradeFlow from "./wrap/GradeFlow";
+import InvariantTicker from "./wrap/InvariantTicker";
 
 export default function WrapSim() {
   const { t } = useTranslation("earth");
@@ -17,12 +21,16 @@ export default function WrapSim() {
         className="mt-8 mb-6"
       />
       <p
-        className="font-body text-ink-soft mb-16"
+        className="font-body text-ink-soft mb-12"
         style={{ fontSize: 19, lineHeight: 1.5, maxWidth: 720 }}
       >
         {t("wrap.lead")}
       </p>
 
+      {/* Wrap Studio — interactive demo */}
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5">
+        {t("wrap.studioLabel")}
+      </div>
       <div
         className="border border-rule"
         style={{ background: "var(--paper-deep)", padding: 48 }}
@@ -111,6 +119,30 @@ export default function WrapSim() {
           />
         </div>
       </div>
+
+      {/* Vault state */}
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("wrap.vaultLabel")}
+      </div>
+      <VaultLedger />
+
+      {/* Unwrap modes */}
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("wrap.modesLabel")}
+      </div>
+      <WrapModes />
+
+      {/* FIFR */}
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("wrap.fifrLabel")}
+      </div>
+      <GradeFlow />
+
+      {/* Invariant ticker */}
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("wrap.invariantLabel")}
+      </div>
+      <InvariantTicker />
     </Section>
   );
 }

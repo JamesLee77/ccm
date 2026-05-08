@@ -625,6 +625,163 @@ await inGroup("Architecture · SecurityCards", async () => {
   await ctx.close();
 });
 
+// ─────── 12f. WRAP — VaultLedger ───────
+await inGroup("Wrap · VaultLedger", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("wrap")?.scrollIntoView());
+  await page.waitForTimeout(500);
+
+  const livePulse = await page.locator("#wrap .vl-pulse").count();
+  log("VaultLedger", "LIVE pulse indicator present", livePulse === 1);
+
+  for (const l of [
+    "NFTs locked in vault",
+    "$CCM circulating",
+    "Lockup ratio (vault / minted)",
+    "Wrap volume (24h)",
+  ]) {
+    const found = await page
+      .locator("#wrap")
+      .locator(`text=${l}`)
+      .count();
+    log("VaultLedger", `readout "${l}" present`, found > 0);
+  }
+
+  // Locked + circulating tick together (preserves invariant)
+  const getReadout = (label) =>
+    page.evaluate((target) => {
+      const labels = document.querySelectorAll("#wrap .font-mono");
+      const labelEl = Array.from(labels).find((el) =>
+        new RegExp(target, "i").test(el.textContent ?? ""),
+      );
+      const value = labelEl?.parentElement?.querySelector(".font-display");
+      return value?.textContent?.trim() ?? null;
+    }, label);
+
+  const lockedBefore = await getReadout("NFTs locked in vault");
+  const circBefore = await getReadout("\\$CCM circulating");
+  await page.waitForTimeout(9000);
+  const lockedAfter = await getReadout("NFTs locked in vault");
+  const circAfter = await getReadout("\\$CCM circulating");
+
+  log(
+    "VaultLedger",
+    "locked tick within 9s",
+    lockedBefore !== lockedAfter,
+    `${lockedBefore} → ${lockedAfter}`,
+  );
+  log(
+    "VaultLedger",
+    "locked + circulating delta matched (invariant)",
+    lockedBefore !== lockedAfter
+      ? Number(lockedAfter?.replace(/,/g, "")) - Number(lockedBefore?.replace(/,/g, "")) ===
+          Number(circAfter?.replace(/,/g, "")) - Number(circBefore?.replace(/,/g, ""))
+      : true,
+  );
+
+  await ctx.close();
+});
+
+// ─────── 12g. WRAP — WrapModes ───────
+await inGroup("Wrap · WrapModes", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("wrap")?.scrollIntoView());
+  await page.waitForTimeout(500);
+
+  const cards = await page
+    .locator("#wrap .grid.grid-cols-3 > div")
+    .count();
+  log("WrapModes", "3 mode cards present", cards === 3, `count=${cards}`);
+
+  const titles = ["Standard · FIFR", "Premium", "Specific tokenId"];
+  for (const t of titles) {
+    const found = await page
+      .locator("#wrap")
+      .locator(`text=${t}`)
+      .count();
+    log("WrapModes", `card "${t}" present`, found > 0);
+  }
+
+  const first = page.locator("#wrap .grid.grid-cols-3 > div").first();
+  const before = await first.evaluate((e) => getComputedStyle(e).borderColor);
+  await first.hover();
+  await page.waitForTimeout(220);
+  const after = await first.evaluate((e) => getComputedStyle(e).borderColor);
+  log("WrapModes", "border swaps to moss on hover", before !== after, `${before} → ${after}`);
+
+  const transform = await first.evaluate((e) => getComputedStyle(e).transform);
+  log("WrapModes", "card lifts on hover", transform !== "none" && /matrix|translate/.test(transform));
+
+  await ctx.close();
+});
+
+// ─────── 12h. WRAP — GradeFlow ───────
+await inGroup("Wrap · GradeFlow", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("wrap")?.scrollIntoView());
+  await page.waitForTimeout(2000);
+
+  const svg = page.locator("#wrap svg[aria-label*='grade composition']");
+  log("GradeFlow", "labelled svg present", await svg.count() === 1);
+
+  // Year ticks Y0..Y10
+  const yearTicks = await svg
+    .locator("text")
+    .filter({ hasText: /^Y\d+$/ })
+    .count();
+  log("GradeFlow", "11 year ticks (Y0..Y10)", yearTicks === 11, `count=${yearTicks}`);
+
+  // Endpoint summary cards (4)
+  const summaryCards = await page
+    .locator("#wrap")
+    .locator("text=/over 10y/")
+    .count();
+  log("GradeFlow", "4 endpoint summaries rendered", summaryCards === 4, `count=${summaryCards}`);
+
+  await ctx.close();
+});
+
+// ─────── 12i. WRAP — InvariantTicker ───────
+await inGroup("Wrap · InvariantTicker", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("wrap")?.scrollIntoView({ block: "end" }));
+  await page.waitForTimeout(400);
+
+  const livePulse = await page.locator("#wrap .it-pulse").count();
+  log("InvariantTicker", "LIVE pulse indicator present", livePulse === 1);
+
+  // Equation pre-block
+  const formula = await page.locator("#wrap pre").textContent();
+  log(
+    "InvariantTicker",
+    "invariant equation present",
+    /total_supply\(\$CCM\)/.test(formula ?? ""),
+    `formula starts: ${formula?.slice(0, 40)}…`,
+  );
+
+  // Both sides display same number — extract and compare
+  const sides = await page.evaluate(() => {
+    const labels = document.querySelectorAll("#wrap .font-mono");
+    const left = Array.from(labels).find((el) => /NFT vault/i.test(el.textContent ?? ""));
+    const right = Array.from(labels).find((el) => /\$CCM circulating/i.test(el.textContent ?? ""));
+    const lv = left?.parentElement?.querySelector(".font-display")?.textContent?.trim();
+    const rv = right?.parentElement?.querySelector(".font-display")?.textContent?.trim();
+    return { lv, rv };
+  });
+  log(
+    "InvariantTicker",
+    "NFT vault == $CCM circulating",
+    sides.lv === sides.rv,
+    `left=${sides.lv} right=${sides.rv}`,
+  );
+
+  await ctx.close();
+});
+
 // ─────── 13a. ROADMAP — PhaseTrack + PhaseDetail ───────
 await inGroup("Roadmap · PhaseTrack", async () => {
   const { ctx, page } = await newCtx("light");

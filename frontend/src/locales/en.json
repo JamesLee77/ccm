@@ -295,12 +295,7 @@
       "matrixLabel": "risk matrix",
       "defenseLabel": "defense in depth",
       "disputeLabel": "dispute resolution",
-      "insuranceLabel": "insurance vault"
-    },
-    "risks": {
-      "label": "§ 12 · risks",
-      "h1Pre": "Transparency starts",
-      "h1Em": "with disclosing risk.",
+      "insuranceLabel": "insurance vault",
       "rows": [
         ["Regulatory", "Tokens may be classified as securities in some jurisdictions", "ADGM/BVI entity, per-round KYC, external legal counsel"],
         ["Verification", "Faulty/dishonest VVB attestations could mint invalid NFTs", "Stake-slash, M-of-N consensus, ZK-proof, dispute, Insurance Vault"],

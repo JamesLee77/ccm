@@ -34,8 +34,9 @@ export default function Vs() {
       >
         {t("vs.lead")}
       </p>
+      {/* ≥ md (768): full comparison table with horizontal scroll fallback */}
       <div
-        className="border border-rule overflow-x-auto"
+        className="hidden md:block border border-rule overflow-x-auto"
         style={{ background: "var(--paper-deep)" }}
       >
         <div
@@ -72,6 +73,50 @@ export default function Vs() {
                 {ci === 0 ? cell : renderCell(cell)}
               </div>
             ))}
+          </div>
+        ))}
+      </div>
+
+      {/* < md (mobile): stacked card per dimension */}
+      <div className="md:hidden grid gap-3">
+        {rows.map((row, ri) => (
+          <div
+            key={ri}
+            className="border border-rule"
+            style={{ background: "var(--paper-deep)", padding: "18px 20px" }}
+          >
+            <div
+              className="font-display text-ink mb-3"
+              style={{ fontSize: 16, fontWeight: 500, letterSpacing: "-0.01em" }}
+            >
+              {row[0]}
+            </div>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+              {row.slice(1).map((cell, ci) => (
+                <li
+                  key={ci}
+                  className="grid items-baseline border-t border-rule"
+                  style={{
+                    gridTemplateColumns: "1fr auto",
+                    gap: 12,
+                    padding: "10px 0",
+                  }}
+                >
+                  <span
+                    className="font-mono text-ink-soft"
+                    style={{ fontSize: 11, letterSpacing: 1 }}
+                  >
+                    {cols[ci + 1]}
+                  </span>
+                  <span
+                    className="font-mono text-ink"
+                    style={{ fontSize: 12, textAlign: "right" }}
+                  >
+                    {renderCell(cell)}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
         ))}
       </div>

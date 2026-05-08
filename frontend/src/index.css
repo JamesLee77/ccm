@@ -229,3 +229,92 @@ textarea {
     gap: 32px !important;
   }
 }
+
+/* ────── Targeted mobile patches for known wide layouts ────── */
+
+@media (max-width: 640px) {
+  /* Grades section: 4-column data table needs to scroll instead of squish.
+     Wrap parent gets overflow-x already; just ensure the rows keep their
+     min-content width so the 4 columns don't collapse and overlap. */
+  #grades > div.border > div[style*="grid-template-columns: 120px 2fr 1fr 1fr"] {
+    grid-template-columns: 80px 1fr !important;
+    grid-auto-flow: row !important;
+    row-gap: 4px !important;
+    padding: 16px 18px !important;
+  }
+  /* Hide the header row on phone — the swatch+label inside each row is enough */
+  #grades > div.border > div[style*="grid-template-columns: 120px 2fr 1fr 1fr"]:first-child {
+    display: none !important;
+  }
+
+  /* Architecture StackDiagram layer buttons — the inner flex row needs
+     to wrap so labels and meta don't overlap on phones. */
+  #arch button[aria-label^="L"] > div {
+    flex-wrap: wrap !important;
+    gap: 8px 12px !important;
+  }
+  #arch button[aria-label^="L"] > div > span:last-child {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Roadmap PhaseTrack — 6 horizontal phase buttons overlap badly on
+     phones. Switch to a vertical stacked layout. */
+  #roadmap > div.grid > div:first-child > div.relative {
+    height: auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    padding-top: 8px !important;
+  }
+  /* Hide the horizontal track + progress bar — the dots stack vertically */
+  #roadmap > div.grid > div:first-child > div.relative > div.absolute {
+    display: none !important;
+  }
+  #roadmap > div.grid > div:first-child > div.relative > button {
+    position: static !important;
+    transform: none !important;
+    width: 100% !important;
+    text-align: left !important;
+    display: grid !important;
+    grid-template-columns: 28px 1fr auto !important;
+    gap: 12px !important;
+    align-items: center !important;
+    padding: 12px 0 !important;
+    border-bottom: 1px solid var(--rule);
+  }
+  #roadmap > div.grid > div:first-child > div.relative > button > span {
+    margin: 0 !important;
+    white-space: normal !important;
+  }
+  /* Roadmap detail panel — sticky positioning is fine, just ensure it stacks below */
+  #roadmap > div.grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Hero readout panel grid (1fr auto 1fr) is already handled, but the
+     wrap simulator NFT/Token boxes also collapse vertically — leave as-is. */
+
+  /* Architecture detail panel — sticky on desktop, but should flow with
+     content on phones so it doesn't cover the layer stack. */
+  #arch .border.border-rule.sticky {
+    position: static !important;
+    top: auto !important;
+  }
+
+  /* Architecture layer buttons — bypass the scroll-driven reveal
+     animation on phones so the stack is always visible immediately. */
+  #arch button[aria-label^="L"] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Tablet patches (641-1023): keep full width tables but allow the Vs
+   row min-width override for proper alignment */
+@media (min-width: 641px) and (max-width: 767px) {
+  #grades > div.border > div[style*="grid-template-columns: 120px 2fr 1fr 1fr"] {
+    grid-template-columns: 100px 1.6fr 1fr 1fr !important;
+    padding: 16px 20px !important;
+  }
+}

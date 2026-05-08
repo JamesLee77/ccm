@@ -105,7 +105,7 @@ export default function StackDiagram() {
           }
         }
       },
-      { threshold: 0.2 },
+      { threshold: 0.05 },
     );
     observer.observe(root);
     return () => observer.disconnect();

@@ -290,7 +290,11 @@
     "manifesto": {
       "h1": "The day CCM becomes an everyday unit — that is the infrastructure we are building toward.",
       "ctaPaper": "Read the 39-page whitepaper",
-      "ctaGithub": "GitHub repository"
+      "ctaGithub": "GitHub repository",
+      "pathwaysLabel": "next steps · by audience",
+      "documentsLabel": "documents",
+      "communityLabel": "community pulse",
+      "contactLabel": "talk to us"
     }
   },
   "ccmine": {

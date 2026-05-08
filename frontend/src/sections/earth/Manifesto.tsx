@@ -1,10 +1,15 @@
 import { useTranslation } from "react-i18next";
 import Section from "../../components/site/Section";
+import PathwayCards from "./manifesto/PathwayCards";
+import DocumentsLibrary from "./manifesto/DocumentsLibrary";
+import CommunityLive from "./manifesto/CommunityLive";
+import ContactPanel from "./manifesto/ContactPanel";
 
 export default function Manifesto() {
   const { t } = useTranslation("earth");
   return (
     <Section id="manifesto" style={{ padding: "120px 56px 96px" }}>
+      {/* Big closing quote — the rhetorical centerpiece */}
       <div
         className="font-display text-ink"
         style={{
@@ -35,6 +40,30 @@ export default function Manifesto() {
           {t("manifesto.ctaGithub")} ↗
         </a>
       </div>
+
+      {/* Pathways — what to do next, by audience */}
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-20">
+        {t("manifesto.pathwaysLabel")}
+      </div>
+      <PathwayCards />
+
+      {/* Documents library */}
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("manifesto.documentsLabel")}
+      </div>
+      <DocumentsLibrary />
+
+      {/* Community pulse */}
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("manifesto.communityLabel")}
+      </div>
+      <CommunityLive />
+
+      {/* Contact + newsletter */}
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("manifesto.contactLabel")}
+      </div>
+      <ContactPanel />
     </Section>
   );
 }

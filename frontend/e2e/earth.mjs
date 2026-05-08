@@ -1010,6 +1010,167 @@ await inGroup("Risks · InsuranceLedger", async () => {
   await ctx.close();
 });
 
+// ─────── 15a. MANIFESTO — PathwayCards ───────
+await inGroup("Manifesto · PathwayCards", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("manifesto")?.scrollIntoView());
+  await page.waitForTimeout(500);
+
+  const cards = await page
+    .locator("#manifesto .grid.grid-cols-4 > div")
+    .count();
+  log("PathwayCards", "4 audience cards present", cards === 4, `count=${cards}`);
+
+  const audiences = ["Investors", "Node operators", "ESG buyers", "Researchers"];
+  for (const a of audiences) {
+    const found = await page
+      .locator("#manifesto")
+      .locator(`text=${a}`)
+      .count();
+    log("PathwayCards", `audience "${a}" present`, found > 0);
+  }
+
+  // Hover lift on first card
+  const first = page
+    .locator("#manifesto .grid.grid-cols-4 > div")
+    .first();
+  const before = await first.evaluate((e) => getComputedStyle(e).borderColor);
+  await first.hover();
+  await page.waitForTimeout(220);
+  const after = await first.evaluate((e) => getComputedStyle(e).borderColor);
+  log("PathwayCards", "border swaps to moss on hover", before !== after);
+
+  await ctx.close();
+});
+
+// ─────── 15b. MANIFESTO — DocumentsLibrary ───────
+await inGroup("Manifesto · DocumentsLibrary", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("manifesto")?.scrollIntoView());
+  await page.waitForTimeout(800);
+
+  // Header row + 6 docs = 7 li
+  const rows = await page
+    .locator("#manifesto ol > li")
+    .count();
+  log("DocumentsLibrary", "header + 6 doc rows", rows === 7, `count=${rows}`);
+
+  const titles = [
+    "Whitepaper · v1.0",
+    "Investor deck · v1.0",
+    "Tokenomics paper",
+    "CCM Standard · spec",
+    "External audit reports",
+    "Press kit",
+  ];
+  for (const tt of titles) {
+    const found = await page
+      .locator("#manifesto")
+      .locator(`text=${tt}`)
+      .count();
+    log("DocumentsLibrary", `doc "${tt}" present`, found > 0);
+  }
+
+  // State pips for ready / draft / post-tge
+  for (const state of ["ready", "draft", "post-tge"]) {
+    const found = await page
+      .locator("#manifesto span")
+      .filter({ hasText: new RegExp(`^${state}$`, "i") })
+      .count();
+    log("DocumentsLibrary", `state pip "${state}" present`, found > 0);
+  }
+
+  await ctx.close();
+});
+
+// ─────── 15c. MANIFESTO — CommunityLive ───────
+await inGroup("Manifesto · CommunityLive", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("manifesto")?.scrollIntoView({ block: "end" }));
+  await page.waitForTimeout(400);
+
+  const livePulse = await page.locator("#manifesto .cl-pulse").count();
+  log("CommunityLive", "LIVE pulse indicator present", livePulse === 1);
+
+  const labels = [
+    "GitHub stars",
+    "Active contributors",
+    "Discord members",
+    "veCCM proposals (open)",
+  ];
+  for (const l of labels) {
+    const found = await page
+      .locator("#manifesto")
+      .locator(`text=${l}`)
+      .count();
+    log("CommunityLive", `readout "${l}" present`, found > 0);
+  }
+
+  // Discord ticks within 11s (step [1,6])
+  const getDiscord = () =>
+    page.evaluate(() => {
+      const labels = document.querySelectorAll("#manifesto .font-mono");
+      const target = Array.from(labels).find((el) =>
+        /discord members/i.test(el.textContent ?? ""),
+      );
+      const value = target?.parentElement?.querySelector(".font-display");
+      return value?.textContent?.trim() ?? null;
+    });
+  const d1 = await getDiscord();
+  await page.waitForTimeout(11000);
+  const d2 = await getDiscord();
+  log("CommunityLive", "Discord readout ticks within 11s", d1 !== d2, `${d1} → ${d2}`);
+
+  await ctx.close();
+});
+
+// ─────── 15d. MANIFESTO — ContactPanel ───────
+await inGroup("Manifesto · ContactPanel", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("manifesto")?.scrollIntoView({ block: "end" }));
+  await page.waitForTimeout(400);
+
+  const emails = [
+    "ir@ccmnetwork.net",
+    "press@ccmnetwork.net",
+    "foundation@ccmnetwork.net",
+  ];
+  for (const e of emails) {
+    const found = await page
+      .locator("#manifesto")
+      .locator(`text=${e}`)
+      .count();
+    log("ContactPanel", `${e} present`, found > 0);
+  }
+
+  // Newsletter signup form interaction
+  const input = page.locator("#manifesto input[type='email']");
+  await input.fill("test@example.com");
+  await page.waitForTimeout(120);
+
+  const button = page.locator("#manifesto button[type='submit']");
+  await button.click();
+  await page.waitForTimeout(220);
+
+  const submittedLabel = await page
+    .locator("#manifesto")
+    .locator("text=queued ✓")
+    .count();
+  log("ContactPanel", "newsletter signup transitions to queued", submittedLabel > 0);
+
+  const successCopy = await page
+    .locator("#manifesto")
+    .locator("text=added to list")
+    .count();
+  log("ContactPanel", "success label appears", successCopy > 0);
+
+  await ctx.close();
+});
+
 // ─────── 11. DARK MODE — same checks (lightweight) ───────
 await inGroup("Dark mode parity", async () => {
   const { ctx, page } = await newCtx("dark");

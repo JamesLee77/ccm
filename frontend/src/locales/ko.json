@@ -4,6 +4,7 @@
     "tagline": "검증된 탄소 크레딧 표준. 온체인. DeFi 네이티브.",
     "openApp": "앱 열기 ↗",
     "readWhitepaper": "백서 보기",
+    "viewGithub": "GitHub에서 보기",
     "loading": "불러오는 중…"
   },
   "nav": {
@@ -20,33 +21,271 @@
     "foundation": "Foundation"
   },
   "earth": {
-    "h1Pre": "단위에는",
-    "h1Em": "고유한 목소리가 있다.",
-    "lead": "CCM은 검증된 1톤 CO₂ 감축을 표현하는 표준 단위. 온체인. DeFi 네이티브. PPM이 농도를 측정하듯, CCM은 감축을 측정한다.",
-    "ctaApp": "앱 열기",
-    "ctaPaper": "백서",
-    "pillars": {
-      "measure": {
-        "label": "측정",
-        "title": "서류가 아닌 물리.",
-        "body": "위성, IoT, LiDAR. 모든 감축은 타임스탬프와 서명을 동반해 처음부터 끝까지 검증 가능합니다."
+    "anchor": {
+      "vision": "Vision",
+      "market": "Market",
+      "trinity": "Trinity",
+      "problem": "Problem",
+      "wrap": "Dual",
+      "grades": "Grades",
+      "arch": "Architecture",
+      "mining": "CCMine",
+      "tokenomics": "Tokenomics",
+      "scenarios": "Scenarios",
+      "defi": "DeFi",
+      "vs": "vs",
+      "roadmap": "Roadmap",
+      "risks": "Risks",
+      "manifesto": "Manifesto"
+    },
+    "hero": {
+      "meta": "CCM Foundation · Whitepaper v1.0 · 2026년 5월",
+      "h1Pre": "공기를",
+      "h1Em": "측정한다.",
+      "lead": "CCM은 단위입니다. 검증된 1톤 CO₂e — 한 번 검증, 한 번 소각, 그 사이엔 자유롭게 흐르는. CCM Network는 그것을 가능하게 하는 온체인 인프라입니다.",
+      "ctaPaper": "백서 읽기 →",
+      "ctaGithub": "GitHub에서 보기",
+      "readout": {
+        "label": "atmosphere · live readout",
+        "ppm": "422.8",
+        "ppmCaption": "2026년 5월 대기 중 CO₂ · NOAA Mauna Loa",
+        "cumulative": "ccm network · cumulative",
+        "minted": "1,284,003",
+        "mintedLabel": "ccm minted",
+        "retired": "327,489",
+        "retiredLabel": "ccm retired"
       },
-      "verify": {
-        "label": "검증",
-        "title": "M-of-N VVB 합의.",
-        "body": "스테이킹 기반 검증 네트워크. 잘못된 검증은 슬래시. 민감 데이터는 ZK-proof 옵션."
-      },
-      "retire": {
-        "label": "소각",
-        "title": "한 토큰, 한 톤, 한 번 소각.",
-        "body": "전역 유일 CCM-NFT. 한 번 burn되면 transfer 불가능한 인증서로 ESG 감사에 사용."
+      "scrollHint": "↓ scroll",
+      "nextChapter": "§ 1 · the unit"
+    },
+    "market": {
+      "label": "market opportunity",
+      "h1Pre": "$2B에서 $250B까지.",
+      "h1Em": "그러나 시장은 망가져 있다.",
+      "lead": "자발적 탄소 시장은 2030년까지 25배, 2050년까지 125배 성장할 것으로 전망됩니다. McKinsey, World Bank, IPCC 모두 동의합니다 — 단, 시장이 작동할 때만.",
+      "milestones": [
+        { "year": "2024", "value": "$2B", "note": "현재" },
+        { "year": "2026", "value": "$8B", "note": "추정" },
+        { "year": "2028", "value": "$25B", "note": "추정" },
+        { "year": "2030", "value": "$50B", "note": "McKinsey 2030E", "highlight": true },
+        { "year": "2050", "value": "$250B", "note": "장기 전망" }
+      ]
+    },
+    "trinity": {
+      "label": "§ 1 · trinity",
+      "h1Pre": "세 가지, 하나의 논리:",
+      "h1EmA": "네트워크",
+      "h1EmB": "단위",
+      "h1EmC": "토큰",
+      "items": [
+        {
+          "n": "01",
+          "h": "CCM Network",
+          "s": "8층 프로토콜",
+          "b": "IPCC 정렬 표준에서 MRV·oracle·VVB 합의·온체인 레지스트리까지 — 1톤 CO₂e가 검증 가능해지는 8개 층을 정의."
+        },
+        {
+          "n": "02",
+          "h": "CCM",
+          "s": "검증된 1톤",
+          "b": "단일 측정값: 1 ccm = 1 tCO₂e. ERC-1155 NFT로 발행되며 vintage·등급·출처가 메타데이터에 기록됩니다."
+        },
+        {
+          "n": "03",
+          "h": "$CCM",
+          "s": "fungible wrapper",
+          "b": "ERC-20 토큰. vault에 1:1로 락된 NFT가 백킹. 유동성 위해 wrap-in, retire 위해 unwrap-out. vault만이 유일한 진실."
+        }
+      ]
+    },
+    "problem": {
+      "label": "§ 2 · what broke",
+      "h1Pre": "자발적 탄소 시장은",
+      "h1Em": "네 가지가 망가져 있다.",
+      "items": [
+        ["불투명성", "PDF 레지스트리에서 출처가 사라지고, 스프레드시트가 전화로 거래됨."],
+        ["이중계상", "같은 1톤이 여러 레지스트리에 동시 등록 — 공유 원장 부재."],
+        ["유동성 부족", "긴 결제 주기, 분절된 브로커, 네이티브 가격 발견 부재."],
+        ["등급 미분", "DAC 1톤과 자연 기반 크레딧이 동일 가격으로 거래됨."]
+      ]
+    },
+    "wrap": {
+      "label": "§ 3 · dual representation",
+      "h1Pre": "출처와 유동성,",
+      "h1Em": "타협 없이.",
+      "lead": "모든 CCM은 두 형태 중 하나로 존재합니다 — ERC-1155 NFT(source-of-truth) 또는 ERC-20 $CCM(AMM-ready). wrap은 1:1, 무신탁, 가역.",
+      "nft": "CCM-NFT · ERC-1155",
+      "nftMeta": "vintage 2026 · grade CCM-A · DAC · project 0x7f…3a · vvb 5/7 · tCO₂e per token: 1",
+      "token": "$CCM · ERC-20",
+      "tokenMeta": "fungible · AMM (Uniswap, Curve) · 담보 (vault lending) · composable (12 protocols)",
+      "wrapLabel": "wrap",
+      "ratio": "1 : 1",
+      "drag": "drag to wrap",
+      "amount": "{{amt}} ccm = {{amt}} $CCM"
+    },
+    "grades": {
+      "label": "§ 4 · grading",
+      "h1Pre": "모든 톤이 동일하지 않다.",
+      "h1Em": "표준이 그렇게 말한다.",
+      "rows": [
+        ["A", "Direct Air Capture · 광물화", "1,000년+", "5-of-7"],
+        ["B", "바이오차 · 강화 풍화", "100년+", "4-of-6"],
+        ["C", "신규조림 · 토양탄소", "40년+", "4-of-6"],
+        ["D", "REDD+ · 레거시 방법론", "10–40년", "3-of-5"]
+      ],
+      "cols": ["등급", "카테고리", "영속성", "VVB 합의"]
+    },
+    "arch": {
+      "label": "§ 5 · architecture",
+      "h1Pre": "8층 스택,",
+      "h1Em": "분리된 책임.",
+      "lead": "L5 NFT = 추적성 · L6 Token = 유동성 · L7 DeFi = 합성성. 한 layer를 교체해도 나머지가 무너지지 않는 구조.",
+      "layers": [
+        ["L8", "Application", "지갑 · 마켓플레이스 · ESG 대시보드"],
+        ["L7", "DeFi Primitives ★", "Wrap · AMM · Vault · Index · Insurance"],
+        ["L6", "Token Layer", "$CCM ERC-20 · veCCM"],
+        ["L5", "NFT Registry ★", "CCM-NFT ERC-1155 (source-of-truth)"],
+        ["L4", "Verification", "VVB 합의 · ZK proof"],
+        ["L3", "Oracle / MRV", "Sentinel-2 · IoT · LiDAR"],
+        ["L2", "Mining (CCMine)", "Physical / Verification 노드"],
+        ["L1", "Settlement", "Base (Coinbase L2)"]
+      ]
+    },
+    "mining": {
+      "label": "§ 6 · ccmine",
+      "h1Pre": "노드가 채굴한다.",
+      "h1Em": "검증된 감축 1톤마다.",
+      "lead": "Proof of Carbon Removal/Reduction (PoCR). 비트코인 PoW 해시 대신, 검증 가능한 감축 활동이 발행 단위입니다.",
+      "roles": [
+        ["Physical", "DAC · 광물화 · 바이오차 · 신규조림 직접 운영"],
+        ["Verification", "위성·IoT 데이터를 attest하는 oracle 노드"],
+        ["Storage", "registry 분산 저장 (IPFS / Arweave)"]
+      ]
+    },
+    "tokenomics": {
+      "label": "§ 7 · tokenomics",
+      "h1Pre": "5,000,000,000 hard cap.",
+      "h1Em": "추가 발행 영구 불가.",
+      "lead": "ERC20Capped 강제. 채굴 40%, 재단 18%, 전략 10%, 유동성 9%, treasury 8%, public 5%, staking 5%, team 5%.",
+      "rows": [
+        ["Mining Rewards", "40%", "2.0B", "10년 감속 emission"],
+        ["Foundation", "18%", "900M", "4Y vesting + 1Y cliff"],
+        ["Strategic / Partners", "10%", "500M", "4Y vesting + 1Y cliff"],
+        ["Liquidity / AMM", "9%", "450M", "TGE 즉시 unlock"],
+        ["Treasury", "8%", "400M", "DAO 거버넌스"],
+        ["Public Sale (TGE)", "5%", "250M", "Seed + Series A"],
+        ["Staking Pool", "5%", "250M", "가격 탄력적 yield"],
+        ["Team & Advisors", "5%", "250M", "4Y vesting + 1Y cliff"]
+      ],
+      "cols": ["Category", "%", "Tokens", "Notes"],
+      "utility": {
+        "label": "utility",
+        "items": [
+          "Settlement currency",
+          "VVB / CCMiner staking",
+          "Governance (veCCM lock-and-vote)",
+          "Marketplace fee 50% 할인",
+          "DeFi liquidity primitive"
+        ]
       }
+    },
+    "scenarios": {
+      "label": "§ 8 · TGE + scenarios",
+      "h1Pre": "Seed $0.15, Series A $0.20.",
+      "h1Em": "이후엔 시장이 결정한다.",
+      "tge": {
+        "label": "TGE round structure",
+        "rows": [
+          ["Seed", "$0.15", "100M", "$15.0M", "6mo cliff", "24mo linear"],
+          ["Series A", "$0.20", "150M", "$30.0M", "3mo cliff", "18mo linear"],
+          ["Total", "—", "250M", "$45.0M", "—", "—"]
+        ],
+        "cols": ["Round", "Price", "Tokens", "Raise", "Cliff", "Vesting"]
+      },
+      "price": {
+        "label": "price scenario (forward-looking)",
+        "rows": [
+          ["Bear", "$0.15", "$0.18", "$0.25", "$0.40", "2×"],
+          ["Base", "$0.30", "$0.55", "$1.20", "$3.50", "17.5×"],
+          ["Bull", "$0.50", "$1.20", "$4.00", "$15.00", "75×"]
+        ],
+        "cols": ["Scenario", "Y1", "Y2", "Y3", "Y5", "Y5/TGE"],
+        "assumptions": [
+          ["Bull", "VCM 8× · 시장 점유율 10% · DeFi TVL $500M · 빠른 표준 채택"],
+          ["Base", "VCM 6× · 시장 점유율 5% · DeFi TVL $200M · veCCM staking 30%"],
+          ["Bear", "느린 채택 · 규제 마찰 · DeFi 분리"]
+        ]
+      },
+      "disclaimer": "⚠ Disclaimer: 위 수치는 백서·덱의 자체 모델 기반 forward-looking projection입니다. 투자 권유나 가격 보장이 아닙니다. 실제 가격은 시장 채택, 규제, DeFi TVL, 매크로 등에 따라 크게 달라질 수 있으며 손실 가능성이 있습니다."
+    },
+    "defi": {
+      "label": "§ 9 · ccm × defi",
+      "h1Pre": "8개의 프리미티브.",
+      "h1Em": "처음부터 합성 가능.",
+      "lead": "Wrap, vault lending, fractionalization, NFT yield, retire-to-earn, insurance, index, grade wrappers — 모두 표준 ERC-20 / ERC-1155 호환. Uniswap·Curve·Aave·Pendle·OpenSea·Sudoswap에서 즉시 작동.",
+      "items": [
+        ["7.2", "Wrap / Unwrap", "NFT ⇆ $CCM 1:1, FIFR 자정작용"],
+        ["7.3", "Grade Wrappers", "$CCM-A/B/C/D 별도 — 등급별 가격 발견"],
+        ["7.4", "Vault Lending", "NFT 담보 USDC 차입, 등급별 LTV 30~70%"],
+        ["7.5", "Fractionalization", "10K 톤 NFT를 10K개 fractional로"],
+        ["7.6", "NFT Yield", "Hold-to-Earn, 등급·빈티지별 차등"],
+        ["7.7", "Retire-to-Earn", "ESG retire 시 $CCM rebate 0~10%"],
+        ["7.8", "Insurance Vault", "VVB 검증 실패 시 자동 보상"],
+        ["7.9", "Index Baskets", "$CCM-PRIME · $CCM-FOREST · $CCM-TECH"]
+      ]
+    },
+    "vs": {
+      "label": "§ 10 · differentiation",
+      "h1Pre": "tokenize가 아닌",
+      "h1Em": "originate.",
+      "lead": "기존 onchain carbon 프로젝트는 외부 레지스트리 크레딧을 단순 토큰화했습니다. CCM은 처음부터 onchain에서 발행·검증·등급화합니다.",
+      "rows": [
+        ["Originate vs Tokenize", "Tokenize", "Tokenize", "Tokenize", "✓ Originate"],
+        ["NFT × ERC-20 Dual", "ERC-20 only", "ERC-20 only", "ERC-20 only", "✓ Both, 1:1"],
+        ["등급 차별화", "단일 풀", "단일", "—", "✓ A/B/C/D"],
+        ["DeFi Native", "Limited", "—", "Partial", "✓ 8 primitives"],
+        ["검증 거버넌스", "External", "External", "External", "✓ Multi-VVB DAO"],
+        ["Bridge 위험", "동결 (Verra ban)", "Yes", "Yes", "✓ No bridge"]
+      ],
+      "cols": ["", "Toucan (BCT)", "Moss (MCO2)", "KlimaDAO", "CCM Network"]
+    },
+    "roadmap": {
+      "label": "§ 11 · roadmap",
+      "h1Pre": "여섯 단계.",
+      "h1Em": "한 도착지.",
+      "phases": [
+        { "n": "0", "title": "Foundation", "when": "완료", "body": "Standard, contracts, whitepaper", "state": "done" },
+        { "n": "1", "title": "Mainnet", "when": "26 Q3", "body": "Audit, TGE, AMM seed", "state": "current" },
+        { "n": "2", "title": "Mining + DeFi", "when": "26 Q4", "body": "5 pilot nodes, wrappers", "state": "planned" },
+        { "n": "3", "title": "DeFi full", "when": "27 H1", "body": "Vault, index, insurance, veCCM", "state": "planned" },
+        { "n": "4", "title": "Scale", "when": "27–28", "body": "100+ nodes, multi-chain", "state": "planned" },
+        { "n": "5", "title": "Standard", "when": "28+", "body": "UNFCCC Article 6 정렬", "state": "planned" }
+      ]
+    },
+    "risks": {
+      "label": "§ 12 · risks",
+      "h1Pre": "투명성은",
+      "h1Em": "리스크 공개에서 시작한다.",
+      "rows": [
+        ["규제", "일부 관할권에서 토큰이 증권으로 분류 가능", "ADGM/BVI 법인, 라운드별 KYC, 외부 법무 자문"],
+        ["검증", "VVB 부정·실수가 무효 NFT 발행 위험", "Stake-slash, M-of-N 합의, ZK-proof, dispute, Insurance Vault"],
+        ["시장", "토큰 가격 변동성, VCM 신뢰 위기", "등급 시스템, retire 모니터링, buy-back & burn"],
+        ["기술", "스마트 컨트랙트 버그, oracle manipulation", "다중 감사, Immunefi bounty, non-upgradeable, Chainlink TWAP"],
+        ["DeFi", "Vault cascade 청산, index oracle 조작", "보수적 LTV, Dutch auction, TWAP, basket timelock"],
+        ["채택", "기존 Verra/Gold Standard lock-in", "상호운용 매핑, ICVCM CCP 정합, pilot 인센티브"]
+      ],
+      "cols": ["Domain", "Risk", "Mitigation"]
+    },
+    "manifesto": {
+      "h1": "CCM이 일상의 단위가 되는 날 — 그것이 우리가 짓고 있는 인프라입니다.",
+      "ctaPaper": "백서 39페이지 보기",
+      "ctaGithub": "GitHub 저장소"
     }
   },
   "ccmine": {
     "h1Pre": "노드를 운영하고,",
     "h1Em": "$CCM을 채굴하라.",
-    "lead": "Proof of Carbon Removal/Reduction (PoCR). 장비를 운영하거나, 데이터를 검증하거나, 레지스트리 샤드를 저장 — 검증된 1톤마다 보상."
+    "lead": "Proof of Carbon Removal/Reduction. 장비를 운영하거나, 데이터를 검증하거나, 레지스트리 샤드를 저장 — 검증된 1톤마다 보상."
   },
   "tokenomics": {
     "h1Pre": "§ 8 ·",

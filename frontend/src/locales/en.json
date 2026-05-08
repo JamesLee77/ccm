@@ -4,6 +4,7 @@
     "tagline": "The Carbon Credit Standard. Verified. Onchain. DeFi-native.",
     "openApp": "Open App ↗",
     "readWhitepaper": "Read Whitepaper",
+    "viewGithub": "View on GitHub",
     "loading": "Loading…"
   },
   "nav": {
@@ -20,33 +21,271 @@
     "foundation": "Foundation"
   },
   "earth": {
-    "h1Pre": "A unit deserves",
-    "h1Em": "its own voice.",
-    "lead": "CCM is the standard unit for one verifiably reduced ton of CO₂. Onchain. DeFi-native. PPM measures concentration; CCM measures avoidance.",
-    "ctaApp": "Open App",
-    "ctaPaper": "Whitepaper",
-    "pillars": {
-      "measure": {
-        "label": "Measure",
-        "title": "Physics over paperwork.",
-        "body": "Satellites, IoT sensors, LiDAR. Every reduction is timestamped, signed, and verifiable end-to-end."
+    "anchor": {
+      "vision": "Vision",
+      "market": "Market",
+      "trinity": "Trinity",
+      "problem": "Problem",
+      "wrap": "Dual",
+      "grades": "Grades",
+      "arch": "Architecture",
+      "mining": "CCMine",
+      "tokenomics": "Tokenomics",
+      "scenarios": "Scenarios",
+      "defi": "DeFi",
+      "vs": "vs",
+      "roadmap": "Roadmap",
+      "risks": "Risks",
+      "manifesto": "Manifesto"
+    },
+    "hero": {
+      "meta": "CCM Foundation · Whitepaper v1.0 · May 2026",
+      "h1Pre": "measure",
+      "h1Em": "the air.",
+      "lead": "CCM is a unit. One tonne of CO₂e — verified once, retired once, fluid in between. The CCM Network is the onchain infrastructure that lets it travel.",
+      "ctaPaper": "Read the whitepaper →",
+      "ctaGithub": "View on GitHub",
+      "readout": {
+        "label": "atmosphere · live readout",
+        "ppm": "422.8",
+        "ppmCaption": "atmospheric CO₂, May 2026 · NOAA Mauna Loa",
+        "cumulative": "ccm network · cumulative",
+        "minted": "1,284,003",
+        "mintedLabel": "ccm minted",
+        "retired": "327,489",
+        "retiredLabel": "ccm retired"
       },
-      "verify": {
-        "label": "Verify",
-        "title": "M-of-N validator consensus.",
-        "body": "Stake-bonded VVB network. Wrong attestations are slashed. ZK-proofs for sensitive data."
-      },
-      "retire": {
-        "label": "Retire",
-        "title": "One token, one ton, retired once.",
-        "body": "Globally unique CCM-NFTs. Once burned, the certificate is non-transferable and audit-ready."
+      "scrollHint": "↓ scroll",
+      "nextChapter": "§ 1 · the unit"
+    },
+    "market": {
+      "label": "market opportunity",
+      "h1Pre": "$2B today, $250B by 2050.",
+      "h1Em": "But the market is broken.",
+      "lead": "The voluntary carbon market is forecast at 25× growth by 2030 and 125× by 2050. McKinsey, the World Bank, and IPCC all agree — provided the market actually works.",
+      "milestones": [
+        { "year": "2024", "value": "$2B", "note": "today" },
+        { "year": "2026", "value": "$8B", "note": "estimate" },
+        { "year": "2028", "value": "$25B", "note": "estimate" },
+        { "year": "2030", "value": "$50B", "note": "McKinsey 2030E", "highlight": true },
+        { "year": "2050", "value": "$250B", "note": "long-term" }
+      ]
+    },
+    "trinity": {
+      "label": "§ 1 · trinity",
+      "h1Pre": "Three things, one logic:",
+      "h1EmA": "network",
+      "h1EmB": "unit",
+      "h1EmC": "token",
+      "items": [
+        {
+          "n": "01",
+          "h": "CCM Network",
+          "s": "an 8-layer protocol",
+          "b": "From an IPCC-aligned standard down through MRV, oracles, VVB consensus, and an onchain registry — eight layers defining how a tonne of CO₂e becomes verifiable."
+        },
+        {
+          "n": "02",
+          "h": "CCM",
+          "s": "one verified tonne",
+          "b": "A single measurement: 1 ccm = 1 tCO₂e. Issued as an ERC-1155 NFT with vintage, grade, and provenance baked into its metadata."
+        },
+        {
+          "n": "03",
+          "h": "$CCM",
+          "s": "the fungible wrapper",
+          "b": "An ERC-20 token, 1:1 backed by NFTs in a non-custodial vault. Wrap in for liquidity, unwrap out for retirement. The vault is the only source of truth."
+        }
+      ]
+    },
+    "problem": {
+      "label": "§ 2 · what broke",
+      "h1Pre": "The voluntary carbon market",
+      "h1Em": "has four failures.",
+      "items": [
+        ["Opacity", "Provenance lost in PDF registries; spreadsheets traded by phone."],
+        ["Double-counting", "Same tonne sold across registries with no shared ledger."],
+        ["Illiquidity", "Long settlement, fragmented brokers, no native price discovery."],
+        ["No grading", "A nature-based credit prices identically to a DAC tonne."]
+      ]
+    },
+    "wrap": {
+      "label": "§ 3 · dual representation",
+      "h1Pre": "Provenance and liquidity,",
+      "h1Em": "without the tradeoff.",
+      "lead": "Every CCM exists in one of two forms — an ERC-1155 NFT (source-of-truth) or an ERC-20 $CCM (AMM-ready). The wrap is 1:1, non-custodial, reversible.",
+      "nft": "CCM-NFT · ERC-1155",
+      "nftMeta": "vintage 2026 · grade CCM-A · DAC · project 0x7f…3a · vvb 5/7 · tCO₂e per token: 1",
+      "token": "$CCM · ERC-20",
+      "tokenMeta": "fungible · AMM (Uniswap, Curve) · collateral (vault lending) · composable (12 protocols)",
+      "wrapLabel": "wrap",
+      "ratio": "1 : 1",
+      "drag": "drag to wrap",
+      "amount": "{{amt}} ccm = {{amt}} $CCM"
+    },
+    "grades": {
+      "label": "§ 4 · grading",
+      "h1Pre": "Not all tonnes are equal.",
+      "h1Em": "The standard says so.",
+      "rows": [
+        ["A", "Direct Air Capture · Mineralization", "1,000+ yr", "5-of-7"],
+        ["B", "Biochar · Enhanced Weathering", "100+ yr", "4-of-6"],
+        ["C", "Reforestation · Soil carbon", "40+ yr", "4-of-6"],
+        ["D", "REDD+ · Legacy methodologies", "10–40 yr", "3-of-5"]
+      ],
+      "cols": ["Grade", "Category", "Permanence", "VVB consensus"]
+    },
+    "arch": {
+      "label": "§ 5 · architecture",
+      "h1Pre": "Eight layers,",
+      "h1Em": "separated concerns.",
+      "lead": "L5 NFT = traceability · L6 Token = liquidity · L7 DeFi = composability. Swap one layer; the rest stand.",
+      "layers": [
+        ["L8", "Application", "Wallet · marketplace · ESG dashboard"],
+        ["L7", "DeFi Primitives ★", "Wrap · AMM · Vault · Index · Insurance"],
+        ["L6", "Token Layer", "$CCM ERC-20 · veCCM"],
+        ["L5", "NFT Registry ★", "CCM-NFT ERC-1155 (source-of-truth)"],
+        ["L4", "Verification", "VVB consensus · ZK proof"],
+        ["L3", "Oracle / MRV", "Sentinel-2 · IoT · LiDAR"],
+        ["L2", "Mining (CCMine)", "Physical / Verification nodes"],
+        ["L1", "Settlement", "Base (Coinbase L2)"]
+      ]
+    },
+    "mining": {
+      "label": "§ 6 · ccmine",
+      "h1Pre": "Nodes mine.",
+      "h1Em": "Per verified tonne reduced.",
+      "lead": "Proof of Carbon Removal/Reduction (PoCR). Bitcoin's PoW hash is replaced by verifiable reduction activity as the issuance unit.",
+      "roles": [
+        ["Physical", "Operate DAC · mineralization · biochar · afforestation directly"],
+        ["Verification", "Run oracle nodes attesting satellite/IoT data"],
+        ["Storage", "Distributed registry storage (IPFS / Arweave)"]
+      ]
+    },
+    "tokenomics": {
+      "label": "§ 7 · tokenomics",
+      "h1Pre": "5,000,000,000 hard cap.",
+      "h1Em": "No further mint, ever.",
+      "lead": "ERC20Capped enforced. Mining 40%, foundation 18%, strategic 10%, liquidity 9%, treasury 8%, public 5%, staking 5%, team 5%.",
+      "rows": [
+        ["Mining Rewards", "40%", "2.0B", "10-year decelerating emission"],
+        ["Foundation", "18%", "900M", "4Y vesting + 1Y cliff"],
+        ["Strategic / Partners", "10%", "500M", "4Y vesting + 1Y cliff"],
+        ["Liquidity / AMM", "9%", "450M", "Unlocked at TGE"],
+        ["Treasury", "8%", "400M", "DAO-controlled"],
+        ["Public Sale (TGE)", "5%", "250M", "Seed + Series A"],
+        ["Staking Pool", "5%", "250M", "Price-elastic yield"],
+        ["Team & Advisors", "5%", "250M", "4Y vesting + 1Y cliff"]
+      ],
+      "cols": ["Category", "%", "Tokens", "Notes"],
+      "utility": {
+        "label": "utility",
+        "items": [
+          "Settlement currency",
+          "VVB / CCMiner staking",
+          "Governance (veCCM lock-and-vote)",
+          "50% marketplace fee discount",
+          "DeFi liquidity primitive"
+        ]
       }
+    },
+    "scenarios": {
+      "label": "§ 8 · TGE + scenarios",
+      "h1Pre": "Seed $0.15, Series A $0.20.",
+      "h1Em": "Beyond — the market decides.",
+      "tge": {
+        "label": "TGE round structure",
+        "rows": [
+          ["Seed", "$0.15", "100M", "$15.0M", "6mo cliff", "24mo linear"],
+          ["Series A", "$0.20", "150M", "$30.0M", "3mo cliff", "18mo linear"],
+          ["Total", "—", "250M", "$45.0M", "—", "—"]
+        ],
+        "cols": ["Round", "Price", "Tokens", "Raise", "Cliff", "Vesting"]
+      },
+      "price": {
+        "label": "price scenario (forward-looking)",
+        "rows": [
+          ["Bear", "$0.15", "$0.18", "$0.25", "$0.40", "2×"],
+          ["Base", "$0.30", "$0.55", "$1.20", "$3.50", "17.5×"],
+          ["Bull", "$0.50", "$1.20", "$4.00", "$15.00", "75×"]
+        ],
+        "cols": ["Scenario", "Y1", "Y2", "Y3", "Y5", "Y5/TGE"],
+        "assumptions": [
+          ["Bull", "VCM 8× · 10% market share · DeFi TVL $500M · rapid standard adoption"],
+          ["Base", "VCM 6× · 5% market share · DeFi TVL $200M · veCCM staking 30%"],
+          ["Bear", "Slow adoption · regulatory friction · DeFi disconnect"]
+        ]
+      },
+      "disclaimer": "⚠ Disclaimer: figures are forward-looking projections from the whitepaper / deck's internal model. Not investment advice or any price guarantee. Actual prices depend on adoption, regulation, DeFi TVL, macro conditions; loss is possible."
+    },
+    "defi": {
+      "label": "§ 9 · ccm × defi",
+      "h1Pre": "Eight primitives.",
+      "h1Em": "Composable from day one.",
+      "lead": "Wrap, vault lending, fractionalization, NFT yield, retire-to-earn, insurance, index, grade wrappers — all standard ERC-20 / ERC-1155. Plug into Uniswap, Curve, Aave, Pendle, OpenSea, Sudoswap immediately.",
+      "items": [
+        ["7.2", "Wrap / Unwrap", "NFT ⇆ $CCM 1:1, FIFR self-correcting"],
+        ["7.3", "Grade Wrappers", "$CCM-A/B/C/D — grade-specific price discovery"],
+        ["7.4", "Vault Lending", "NFT collateral for USDC, grade-tiered LTV 30–70%"],
+        ["7.5", "Fractionalization", "Split a 10K-tonne NFT into 10K fractionals"],
+        ["7.6", "NFT Yield", "Hold-to-Earn, weighted by grade and vintage"],
+        ["7.7", "Retire-to-Earn", "0–10% $CCM rebate on ESG retire"],
+        ["7.8", "Insurance Vault", "Auto-payout on VVB validation failure"],
+        ["7.9", "Index Baskets", "$CCM-PRIME · $CCM-FOREST · $CCM-TECH"]
+      ]
+    },
+    "vs": {
+      "label": "§ 10 · differentiation",
+      "h1Pre": "Originate,",
+      "h1Em": "not tokenize.",
+      "lead": "Earlier onchain carbon projects merely tokenized credits from external registries. CCM mints, verifies, and grades onchain from issuance.",
+      "rows": [
+        ["Originate vs Tokenize", "Tokenize", "Tokenize", "Tokenize", "✓ Originate"],
+        ["NFT × ERC-20 Dual", "ERC-20 only", "ERC-20 only", "ERC-20 only", "✓ Both, 1:1"],
+        ["Grade differentiation", "Single pool", "Single", "—", "✓ A/B/C/D"],
+        ["DeFi Native", "Limited", "—", "Partial", "✓ 8 primitives"],
+        ["Verification governance", "External", "External", "External", "✓ Multi-VVB DAO"],
+        ["Bridge risk", "Frozen (Verra ban)", "Yes", "Yes", "✓ No bridge"]
+      ],
+      "cols": ["", "Toucan (BCT)", "Moss (MCO2)", "KlimaDAO", "CCM Network"]
+    },
+    "roadmap": {
+      "label": "§ 11 · roadmap",
+      "h1Pre": "Six phases.",
+      "h1Em": "One destination.",
+      "phases": [
+        { "n": "0", "title": "Foundation", "when": "done", "body": "Standard, contracts, whitepaper", "state": "done" },
+        { "n": "1", "title": "Mainnet", "when": "26 Q3", "body": "Audit, TGE, AMM seed", "state": "current" },
+        { "n": "2", "title": "Mining + DeFi", "when": "26 Q4", "body": "5 pilot nodes, wrappers", "state": "planned" },
+        { "n": "3", "title": "DeFi full", "when": "27 H1", "body": "Vault, index, insurance, veCCM", "state": "planned" },
+        { "n": "4", "title": "Scale", "when": "27–28", "body": "100+ nodes, multi-chain", "state": "planned" },
+        { "n": "5", "title": "Standard", "when": "28+", "body": "UNFCCC Article 6 alignment", "state": "planned" }
+      ]
+    },
+    "risks": {
+      "label": "§ 12 · risks",
+      "h1Pre": "Transparency starts",
+      "h1Em": "with disclosing risk.",
+      "rows": [
+        ["Regulatory", "Tokens may be classified as securities in some jurisdictions", "ADGM/BVI entity, per-round KYC, external legal counsel"],
+        ["Verification", "Faulty/dishonest VVB attestations could mint invalid NFTs", "Stake-slash, M-of-N consensus, ZK-proof, dispute, Insurance Vault"],
+        ["Market", "Token price volatility, VCM credibility crises", "Grading system, retire monitoring, buy-back & burn"],
+        ["Technical", "Smart-contract bugs, oracle manipulation", "Multi-audit, Immunefi bounty, non-upgradeable, Chainlink TWAP"],
+        ["DeFi", "Vault liquidation cascade, index oracle manipulation", "Conservative LTV, Dutch auction, TWAP, basket timelock"],
+        ["Adoption", "Verra/Gold Standard lock-in", "Interop mapping, ICVCM CCP alignment, pilot incentives"]
+      ],
+      "cols": ["Domain", "Risk", "Mitigation"]
+    },
+    "manifesto": {
+      "h1": "The day CCM becomes an everyday unit — that is the infrastructure we are building toward.",
+      "ctaPaper": "Read the 39-page whitepaper",
+      "ctaGithub": "GitHub repository"
     }
   },
   "ccmine": {
     "h1Pre": "Run a node,",
     "h1Em": "mint $CCM.",
-    "lead": "Proof of Carbon Removal/Reduction (PoCR). Operate hardware, attest data, or store registry shards — earn from every verified ton."
+    "lead": "Proof of Carbon Removal/Reduction. Operate hardware, attest data, or store registry shards — earn from every verified ton."
   },
   "tokenomics": {
     "h1Pre": "§ 8 ·",

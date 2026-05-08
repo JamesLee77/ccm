@@ -1,0 +1,72 @@
+import { useTranslation } from "react-i18next";
+import Section from "../../components/site/Section";
+import SectionLabel from "../../components/site/SectionLabel";
+import Heading from "../../components/site/Heading";
+
+type Milestone = {
+  year: string;
+  value: string;
+  note: string;
+  highlight?: boolean;
+};
+
+export default function Market() {
+  const { t } = useTranslation("earth");
+  const milestones = t("market.milestones", { returnObjects: true }) as Milestone[];
+  return (
+    <Section id="market">
+      <SectionLabel>{t("market.label")}</SectionLabel>
+      <Heading
+        pre={t("market.h1Pre")}
+        em={t("market.h1Em")}
+        maxWidth={900}
+        className="mt-8 mb-12"
+      />
+      <p
+        className="font-body text-ink-soft mb-16"
+        style={{ fontSize: 19, lineHeight: 1.5, maxWidth: 720 }}
+      >
+        {t("market.lead")}
+      </p>
+      <div
+        className="grid"
+        style={{
+          gridTemplateColumns: `repeat(${milestones.length}, 1fr)`,
+          background: "var(--rule)",
+          gap: 1,
+          border: "1px solid var(--rule)",
+        }}
+      >
+        {milestones.map((m) => (
+          <div
+            key={m.year}
+            style={{
+              background: m.highlight ? "var(--ink)" : "var(--paper)",
+              color: m.highlight ? "var(--paper)" : "var(--ink)",
+              padding: "32px 24px",
+            }}
+          >
+            <div
+              className="font-mono text-[11px] tracking-[0.14em] uppercase mb-3"
+              style={{ color: m.highlight ? "var(--moss-2)" : "var(--moss)" }}
+            >
+              {m.year}
+            </div>
+            <div
+              className="font-display"
+              style={{ fontSize: 48, fontWeight: 300, letterSpacing: "-0.025em", lineHeight: 1 }}
+            >
+              {m.value}
+            </div>
+            <div
+              className="font-mono text-[10px] tracking-[0.1em] uppercase mt-3"
+              style={{ color: m.highlight ? "var(--paper)" : "var(--ink-soft)", opacity: 0.85 }}
+            >
+              {m.note}
+            </div>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}

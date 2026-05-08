@@ -165,7 +165,12 @@
       "label": "§ 7 · tokenomics",
       "h1Pre": "5,000,000,000 hard cap.",
       "h1Em": "No further mint, ever.",
-      "lead": "ERC20Capped enforced. Mining 40%, foundation 18%, strategic 10%, liquidity 9%, treasury 8%, public 5%, staking 5%, team 5%.",
+      "lead": "ERC20Capped enforced at the contract level — no mint function survives deployment. Allocation runs 40% mining, 18% foundation, 10% strategic, 9% liquidity, 8% treasury, 5% each for public sale, staking, and team.",
+      "allocationLabel": "allocation · 8 categories",
+      "emissionLabel": "mining emission",
+      "vestingLabel": "vesting schedule",
+      "utilityLabel": "$CCM utility · five ways",
+      "accrualLabel": "value accrual + burn ledger",
       "rows": [
         ["Mining Rewards", "40%", "2.0B", "10-year decelerating emission"],
         ["Foundation", "18%", "900M", "4Y vesting + 1Y cliff"],

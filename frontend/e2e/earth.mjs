@@ -310,6 +310,163 @@ await inGroup("Mining · LiveMetrics", async () => {
   await ctx.close();
 });
 
+// ─────── 11a. TOKENOMICS — AllocationRing + table sync ───────
+await inGroup("Tokenomics · AllocationRing", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("tokenomics")?.scrollIntoView());
+  await page.waitForTimeout(1500); // let stroke-dasharray draw-in finish
+
+  // Donut renders 8 segments inside the rotated <g>
+  const segments = await page
+    .locator("#tokenomics svg circle[role='button']")
+    .count();
+  log("AllocationRing", "8 arcs rendered", segments === 8, `count=${segments}`);
+
+  // SVG arcs use fill=none so Playwright's hover at bounding-box center
+  // misses the stroke. Dispatching mouseenter directly is more reliable
+  // and verifies the React handler the same way a real cursor would.
+  const first = page.locator("#tokenomics svg circle[role='button']").first();
+  await first.dispatchEvent("mouseenter");
+  await page.waitForTimeout(300);
+
+  const centerText = await page
+    .locator("#tokenomics svg text")
+    .filter({ hasText: /^\d+%/ })
+    .first()
+    .textContent();
+  log("AllocationRing", "hover updates center label", /\d+%/.test(centerText ?? ""), `center=${centerText}`);
+
+  // Allocation table syncs: hovered row should have brighter background.
+  // Pick the matching row by its position (1st = mining).
+  const rows = page.locator("#tokenomics .grid[style*='1.6fr 0.5fr']");
+  const rowCount = await rows.count();
+  log("AllocationRing", "allocation table has 9 grid rows (header + 8)", rowCount === 9, `count=${rowCount}`);
+
+  await ctx.close();
+});
+
+// ─────── 11b. TOKENOMICS — EmissionCurve ───────
+await inGroup("Tokenomics · EmissionCurve", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("tokenomics")?.scrollIntoView());
+  await page.waitForTimeout(2000); // path draw-in
+
+  // Find the emission svg by its aria-label
+  const svg = page.locator("#tokenomics svg[aria-label*='Mining emission']");
+  log("EmissionCurve", "labelled svg present", await svg.count() === 1);
+
+  const yearTicks = await svg
+    .locator("text")
+    .filter({ hasText: /^Y\d+$/ })
+    .count();
+  log("EmissionCurve", "10 year ticks (Y1..Y10)", yearTicks === 10, `count=${yearTicks}`);
+
+  // 4 milestone summaries below the chart
+  const milestones = await page
+    .locator("#tokenomics")
+    .locator("text=/end of Y\\d+/i")
+    .count();
+  log("EmissionCurve", "4 cumulative milestones rendered", milestones === 4, `count=${milestones}`);
+
+  await ctx.close();
+});
+
+// ─────── 11c. TOKENOMICS — VestingTimeline ───────
+await inGroup("Tokenomics · VestingTimeline", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("tokenomics")?.scrollIntoView());
+  await page.waitForTimeout(2500);
+
+  // Bars: 5 buckets × 2 rects (cliff + vesting) = 10
+  const labels = ["TGE · Seed", "TGE · Series A", "Foundation", "Strategic", "Team"];
+  for (const label of labels) {
+    const found = await page
+      .locator("#tokenomics text", { hasText: label })
+      .count();
+    log("VestingTimeline", `row "${label}" present`, found > 0);
+  }
+
+  // Month ticks 0..60
+  const ticks = await page
+    .locator("#tokenomics text")
+    .filter({ hasText: /^M\d+$/ })
+    .count();
+  log("VestingTimeline", "6 month ticks (M0..M60)", ticks === 6, `count=${ticks}`);
+
+  await ctx.close();
+});
+
+// ─────── 11d. TOKENOMICS — UtilityCards ───────
+await inGroup("Tokenomics · UtilityCards", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("tokenomics")?.scrollIntoView());
+  await page.waitForTimeout(400);
+
+  const cards = await page
+    .locator("#tokenomics .grid[style*='repeat(5, 1fr)'] > div")
+    .count();
+  log("UtilityCards", "5 utility cards present", cards === 5, `count=${cards}`);
+
+  // Hover behaviour on first card
+  const first = page
+    .locator("#tokenomics .grid[style*='repeat(5, 1fr)'] > div")
+    .first();
+  const before = await first.evaluate((e) => getComputedStyle(e).borderColor);
+  await first.hover();
+  await page.waitForTimeout(220);
+  const after = await first.evaluate((e) => getComputedStyle(e).borderColor);
+  log("UtilityCards", "border swaps to moss on hover", before !== after, `${before} → ${after}`);
+
+  const transform = await first.evaluate((e) => getComputedStyle(e).transform);
+  log("UtilityCards", "card lifts on hover", /matrix|translate/.test(transform) && transform !== "none");
+
+  await ctx.close();
+});
+
+// ─────── 11e. TOKENOMICS — ValueAccrualLive ───────
+await inGroup("Tokenomics · ValueAccrualLive", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("tokenomics")?.scrollIntoView({ block: "end" }));
+  await page.waitForTimeout(400);
+
+  const livePulse = await page.locator("#tokenomics .va-pulse").count();
+  log("ValueAccrualLive", "LIVE pulse indicator present", livePulse === 1);
+
+  // Burn ledger rows (3 sources)
+  const burnSources = ["Retire-to-Earn burn", "Buy-back & burn", "Vault liquidation"];
+  for (const s of burnSources) {
+    const found = await page
+      .locator("#tokenomics li")
+      .filter({ hasText: s })
+      .count();
+    log("ValueAccrualLive", `burn source "${s}" present`, found > 0);
+  }
+
+  // Total burned ticks within 9s
+  const getTotal = () =>
+    page.evaluate(() => {
+      // Find the largest font-display in the live ledger area
+      const labels = document.querySelectorAll("#tokenomics .font-mono");
+      const target = Array.from(labels).find((el) =>
+        /total \$ccm burned/i.test(el.textContent ?? ""),
+      );
+      const value = target?.parentElement?.querySelector(".font-display");
+      return value?.textContent?.trim() ?? null;
+    });
+  const t1 = await getTotal();
+  log("ValueAccrualLive", "total burned readout present", !!t1 && /\d/.test(t1 ?? ""), `value=${t1}`);
+  await page.waitForTimeout(9000);
+  const t2 = await getTotal();
+  log("ValueAccrualLive", "total burned ticks within 9s", t1 !== t2, `${t1} → ${t2}`);
+
+  await ctx.close();
+});
+
 // ─────── 11. DARK MODE — same checks (lightweight) ───────
 await inGroup("Dark mode parity", async () => {
   const { ctx, page } = await newCtx("dark");

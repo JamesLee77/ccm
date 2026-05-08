@@ -252,14 +252,21 @@
       "label": "§ 11 · roadmap",
       "h1Pre": "Six phases.",
       "h1Em": "One destination.",
-      "phases": [
-        { "n": "0", "title": "Foundation", "when": "done", "body": "Standard, contracts, whitepaper", "state": "done" },
-        { "n": "1", "title": "Mainnet", "when": "26 Q3", "body": "Audit, TGE, AMM seed", "state": "current" },
-        { "n": "2", "title": "Mining + DeFi", "when": "26 Q4", "body": "5 pilot nodes, wrappers", "state": "planned" },
-        { "n": "3", "title": "DeFi full", "when": "27 H1", "body": "Vault, index, insurance, veCCM", "state": "planned" },
-        { "n": "4", "title": "Scale", "when": "27–28", "body": "100+ nodes, multi-chain", "state": "planned" },
-        { "n": "5", "title": "Standard", "when": "28+", "body": "UNFCCC Article 6 alignment", "state": "planned" }
-      ]
+      "lead": "From the foundation work that's already shipped to UNFCCC Article 6 alignment in the late decade. Click a phase below to inspect its deliverables; the gantt below maps the same phases to calendar time.",
+      "trackLabel": "phase track",
+      "ganttLabel": "delivery gantt",
+      "milestonesLabel": "milestone ledger",
+      "progressLabel": "live execution"
+    },
+    "risks": {
+      "label": "§ 12 · risks",
+      "h1Pre": "Transparency starts",
+      "h1Em": "with disclosing risk.",
+      "lead": "Six risk domains, each rated and mitigated. Click a dot in the matrix to expand its mitigation stack; the dispute pipeline and insurance ledger below show how invalid credits actually unwind.",
+      "matrixLabel": "risk matrix",
+      "defenseLabel": "defense in depth",
+      "disputeLabel": "dispute resolution",
+      "insuranceLabel": "insurance vault"
     },
     "risks": {
       "label": "§ 12 · risks",

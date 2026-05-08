@@ -1,19 +1,17 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Section from "../../components/site/Section";
 import SectionLabel from "../../components/site/SectionLabel";
 import Heading from "../../components/site/Heading";
-
-type Phase = {
-  n: string;
-  title: string;
-  when: string;
-  body: string;
-  state: "done" | "current" | "planned";
-};
+import { PhaseTrack, PhaseDetail } from "./roadmap/PhaseTrack";
+import DeliveryGantt from "./roadmap/DeliveryGantt";
+import MilestoneList from "./roadmap/MilestoneList";
+import LiveProgress from "./roadmap/LiveProgress";
 
 export default function Roadmap() {
   const { t } = useTranslation("earth");
-  const phases = t("roadmap.phases", { returnObjects: true }) as Phase[];
+  const [active, setActive] = useState<string>("p1");
+
   return (
     <Section id="roadmap">
       <SectionLabel>{t("roadmap.label")}</SectionLabel>
@@ -21,60 +19,37 @@ export default function Roadmap() {
         pre={t("roadmap.h1Pre")}
         em={t("roadmap.h1Em")}
         maxWidth={900}
-        className="mt-8 mb-16"
+        className="mt-8 mb-6"
       />
-      <div className="relative">
-        <div
-          className="absolute left-0 right-0"
-          style={{ top: 30, height: 1, background: "var(--rule)" }}
-        />
-        <div className="grid" style={{ gridTemplateColumns: `repeat(${phases.length}, 1fr)` }}>
-          {phases.map((p) => {
-            const dotBg =
-              p.state === "done"
-                ? "var(--moss)"
-                : p.state === "current"
-                  ? "var(--paper)"
-                  : "var(--paper)";
-            const dotBorder =
-              p.state === "done"
-                ? "var(--moss)"
-                : p.state === "current"
-                  ? "var(--ink)"
-                  : "var(--rule)";
-            return (
-              <div key={p.n} className="pr-4 relative">
-                <div
-                  style={{
-                    width: 14,
-                    height: 14,
-                    background: dotBg,
-                    border: `2px solid ${dotBorder}`,
-                    borderRadius: "50%",
-                    marginBottom: 24,
-                    marginLeft: -1,
-                  }}
-                />
-                <div className="font-display italic text-moss" style={{ fontSize: 14 }}>
-                  phase {p.n}
-                </div>
-                <div className="font-display text-ink mt-1" style={{ fontSize: 22 }}>
-                  {p.title}
-                </div>
-                <div className="font-mono text-[11px] tracking-[0.12em] uppercase text-ink-soft mt-2">
-                  {p.when}
-                </div>
-                <div
-                  className="font-body text-ink-soft mt-2"
-                  style={{ fontSize: 13, lineHeight: 1.5 }}
-                >
-                  {p.body}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+      <p
+        className="font-body text-ink-soft mb-12"
+        style={{ fontSize: 19, lineHeight: 1.5, maxWidth: 720 }}
+      >
+        {t("roadmap.lead")}
+      </p>
+
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5">
+        {t("roadmap.trackLabel")}
       </div>
+      <div className="grid gap-6" style={{ gridTemplateColumns: "1.4fr 1fr" }}>
+        <PhaseTrack active={active} onActive={setActive} />
+        <PhaseDetail active={active} />
+      </div>
+
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("roadmap.ganttLabel")}
+      </div>
+      <DeliveryGantt />
+
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("roadmap.milestonesLabel")}
+      </div>
+      <MilestoneList />
+
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("roadmap.progressLabel")}
+      </div>
+      <LiveProgress />
     </Section>
   );
 }

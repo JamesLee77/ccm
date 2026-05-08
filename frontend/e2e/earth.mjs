@@ -625,6 +625,234 @@ await inGroup("Architecture · SecurityCards", async () => {
   await ctx.close();
 });
 
+// ─────── 13a. ROADMAP — PhaseTrack + PhaseDetail ───────
+await inGroup("Roadmap · PhaseTrack", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("roadmap")?.scrollIntoView());
+  await page.waitForTimeout(1500);
+
+  const phases = await page
+    .locator("#roadmap button[aria-label^='Phase']")
+    .count();
+  log("PhaseTrack", "6 phase buttons rendered", phases === 6, `count=${phases}`);
+
+  // Hover Phase 3 — detail panel should update with deliverable text unique to P3
+  const p3 = page.locator("#roadmap button[aria-label='Phase 3 DeFi full']");
+  await p3.hover();
+  await page.waitForTimeout(250);
+  const panelHasUnique = await page
+    .locator("#roadmap")
+    .locator("text=veCCM governance launch")
+    .count();
+  log("PhaseTrack", "panel reflects P3 deliverables on hover", panelHasUnique > 0);
+
+  // Progress bar fill exists
+  const progressBar = await page
+    .locator("#roadmap")
+    .locator("text=delivered")
+    .count();
+  log("PhaseTrack", "progress label rendered", progressBar > 0);
+
+  await ctx.close();
+});
+
+// ─────── 13b. ROADMAP — DeliveryGantt ───────
+await inGroup("Roadmap · DeliveryGantt", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("roadmap")?.scrollIntoView());
+  await page.waitForTimeout(2000);
+
+  const svg = page.locator("#roadmap svg[aria-label*='delivery gantt']");
+  log("DeliveryGantt", "labelled svg present", await svg.count() === 1);
+
+  // 4 year labels (2026, 2027, 2028, 2029)
+  for (const y of ["2026", "2027", "2028", "2029"]) {
+    const found = await svg.locator(`text=${y}`).count();
+    log("DeliveryGantt", `year ${y} labelled`, found > 0);
+  }
+
+  // Today marker labelled NOW
+  const nowMarker = await svg.locator("text=NOW").count();
+  log("DeliveryGantt", "NOW marker present", nowMarker > 0);
+
+  await ctx.close();
+});
+
+// ─────── 13c. ROADMAP — MilestoneList ───────
+await inGroup("Roadmap · MilestoneList", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("roadmap")?.scrollIntoView());
+  await page.waitForTimeout(1500);
+
+  // Count rows in the milestone list — header + 12 = 13 li
+  const rows = await page
+    .locator("#roadmap ol > li")
+    .count();
+  log(
+    "MilestoneList",
+    "12 milestones + header (13 rows)",
+    rows >= 13,
+    `count=${rows}`,
+  );
+
+  // State labels appear (done, current, planned)
+  for (const state of ["done", "current", "planned"]) {
+    const found = await page
+      .locator("#roadmap span")
+      .filter({ hasText: new RegExp(`^${state}$`, "i") })
+      .count();
+    log("MilestoneList", `state "${state}" rendered`, found > 0);
+  }
+
+  await ctx.close();
+});
+
+// ─────── 13d. ROADMAP — LiveProgress ───────
+await inGroup("Roadmap · LiveProgress", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("roadmap")?.scrollIntoView({ block: "end" }));
+  await page.waitForTimeout(400);
+
+  const livePulse = await page.locator("#roadmap .lp-pulse").count();
+  log("LiveProgress", "LIVE pulse indicator present", livePulse === 1);
+
+  const labels = ["Phase 1 progress", "Milestones completed", "Days until phase 2", "Active contributors"];
+  for (const l of labels) {
+    const found = await page
+      .locator("#roadmap")
+      .locator(`text=${l}`)
+      .count();
+    log("LiveProgress", `readout "${l}" present`, found > 0);
+  }
+
+  await ctx.close();
+});
+
+// ─────── 14a. RISKS — RiskMatrix + MitigationDetail ───────
+await inGroup("Risks · RiskMatrix", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("risks")?.scrollIntoView());
+  await page.waitForTimeout(1800);
+
+  // 6 risk dots in the matrix svg
+  const dots = await page
+    .locator("#risks svg[aria-label='Risk matrix'] circle[role='button']")
+    .count();
+  log("RiskMatrix", "6 risk dots", dots === 6, `count=${dots}`);
+
+  // SVG arcs use fill=transparent; dispatchEvent("mouseenter") doesn't
+  // bubble through React's delegated handler. Use click() instead — the
+  // RiskMatrix dot also wires onClick to the same setActive.
+  const adoption = page.locator("#risks circle[aria-label='Adoption']");
+  await adoption.click({ force: true });
+  await page.waitForTimeout(300);
+
+  const panelHas = await page
+    .locator("#risks")
+    .locator("text=Verra / Gold Standard lock-in")
+    .count();
+  log("RiskMatrix", "mitigation panel updates on hover", panelHas > 0);
+
+  await ctx.close();
+});
+
+// ─────── 14b. RISKS — DefenseInDepth ───────
+await inGroup("Risks · DefenseInDepth", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("risks")?.scrollIntoView());
+  await page.waitForTimeout(1500);
+
+  const labels = [
+    "Stake bond",
+    "M-of-N consensus",
+    "Slashing",
+    "ZK-proof option",
+    "Dispute layer",
+    "Insurance Vault",
+  ];
+  for (const l of labels) {
+    const found = await page
+      .locator("#risks")
+      .locator(`text=${l}`)
+      .count();
+    log("DefenseInDepth", `layer "${l}" present`, found > 0);
+  }
+
+  await ctx.close();
+});
+
+// ─────── 14c. RISKS — DisputeFlow ───────
+await inGroup("Risks · DisputeFlow", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("risks")?.scrollIntoView());
+  await page.waitForTimeout(1500);
+
+  const steps = await page
+    .locator("#risks ol > li")
+    .count();
+  log("DisputeFlow", "5 steps rendered", steps === 5, `count=${steps}`);
+
+  const expected = ["Raise", "Bond", "Panel review", "Resolution", "Remedy"];
+  const labels = await page
+    .locator("#risks ol > li")
+    .evaluateAll((els) =>
+      els.map((e) => e.querySelector(".font-display")?.textContent?.trim()),
+    );
+  log(
+    "DisputeFlow",
+    "step labels match expected order",
+    JSON.stringify(labels) === JSON.stringify(expected),
+    `labels=${JSON.stringify(labels)}`,
+  );
+
+  await ctx.close();
+});
+
+// ─────── 14d. RISKS — InsuranceLedger ───────
+await inGroup("Risks · InsuranceLedger", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("risks")?.scrollIntoView({ block: "end" }));
+  await page.waitForTimeout(400);
+
+  const livePulse = await page.locator("#risks .il-pulse").count();
+  log("InsuranceLedger", "LIVE pulse indicator present", livePulse === 1);
+
+  const labels = ["Premiums collected", "Claims paid", "Reserve balance", "Coverage ratio"];
+  for (const l of labels) {
+    const found = await page
+      .locator("#risks")
+      .locator(`text=${l}`)
+      .count();
+    log("InsuranceLedger", `readout "${l}" present`, found > 0);
+  }
+
+  // Premiums readout ticks within 9s
+  const getPremium = () =>
+    page.evaluate(() => {
+      const labels = document.querySelectorAll("#risks .font-mono");
+      const target = Array.from(labels).find((el) =>
+        /premiums collected/i.test(el.textContent ?? ""),
+      );
+      const value = target?.parentElement?.querySelector(".font-display");
+      return value?.textContent?.trim() ?? null;
+    });
+  const p1 = await getPremium();
+  log("InsuranceLedger", "premiums readout present", !!p1 && /\d/.test(p1 ?? ""), `value=${p1}`);
+  await page.waitForTimeout(11000);
+  const p2 = await getPremium();
+  log("InsuranceLedger", "premiums tick within 11s", p1 !== p2, `${p1} → ${p2}`);
+
+  await ctx.close();
+});
+
 // ─────── 11. DARK MODE — same checks (lightweight) ───────
 await inGroup("Dark mode parity", async () => {
   const { ctx, page } = await newCtx("dark");

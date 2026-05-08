@@ -467,6 +467,164 @@ await inGroup("Tokenomics · ValueAccrualLive", async () => {
   await ctx.close();
 });
 
+// ─────── 12a. ARCHITECTURE — StackDiagram ───────
+await inGroup("Architecture · StackDiagram", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("arch")?.scrollIntoView());
+  await page.waitForTimeout(1500);
+
+  const layers = await page
+    .locator("#arch button[aria-label^='L']")
+    .count();
+  log("StackDiagram", "8 layer buttons rendered", layers === 8, `count=${layers}`);
+
+  // Hover L7 (DeFi Primitives). Buttons have full bounding boxes so a
+  // real hover() works here (unlike SVG arcs in AllocationRing).
+  const defi = page.locator("#arch button[aria-label='L7 DeFi Primitives']");
+  await defi.hover();
+  await page.waitForTimeout(250);
+
+  const panelBodyVisible = await page
+    .locator("#arch")
+    .locator("text=Eight composable building blocks")
+    .count();
+  log(
+    "StackDiagram",
+    "detail panel updates on hover",
+    panelBodyVisible > 0,
+    `body matches=${panelBodyVisible}`,
+  );
+
+  // L5 button has the moss star
+  const l5 = page.locator("#arch button[aria-label='L5 NFT Registry']");
+  const starCount = await l5.locator("text=★").count();
+  log("StackDiagram", "L5 carries moss star", starCount > 0);
+
+  await ctx.close();
+});
+
+// ─────── 12b. ARCHITECTURE — DataFlow ───────
+await inGroup("Architecture · DataFlow", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("arch")?.scrollIntoView());
+  await page.waitForTimeout(1500);
+
+  const svg = page.locator("#arch svg[aria-label*='Data flow']");
+  log("DataFlow", "labelled svg present", await svg.count() === 1);
+
+  // Sources: 5 small dots
+  const sources = ["Sentinel-2", "Planet Labs", "GEDI LiDAR", "IoT mesh", "DAC monitors"];
+  for (const s of sources) {
+    const found = await page
+      .locator("#arch text", { hasText: s })
+      .count();
+    log("DataFlow", `source "${s}" present`, found > 0);
+  }
+
+  // Stages: 4
+  const stages = ["Oracle aggregator", "VVB consensus", "CCM-NFT mint", "$CCM wrap"];
+  for (const s of stages) {
+    const found = await page
+      .locator("#arch text", { hasText: s })
+      .count();
+    log("DataFlow", `stage "${s}" present`, found > 0);
+  }
+
+  // df-flow animation classes attached
+  const flowCount = await page.locator("#arch .df-flow").count();
+  log("DataFlow", "flow animation classes attached", flowCount > 0, `count=${flowCount}`);
+
+  await ctx.close();
+});
+
+// ─────── 12c. ARCHITECTURE — ContractMap ───────
+await inGroup("Architecture · ContractMap", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("arch")?.scrollIntoView());
+  await page.waitForTimeout(1500);
+
+  const groupLabels = ["core", "defi", "governance", "verification"];
+  for (const gl of groupLabels) {
+    const found = await page
+      .locator("#arch span")
+      .filter({ hasText: new RegExp(`^${gl}$`, "i") })
+      .count();
+    log("ContractMap", `group "${gl}" rendered`, found > 0);
+  }
+
+  // Total contract count = 5+8+3+3 = 19
+  const codeNodes = await page.locator("#arch code").count();
+  log("ContractMap", "19 contract nodes rendered", codeNodes === 19, `count=${codeNodes}`);
+
+  await ctx.close();
+});
+
+// ─────── 12d. ARCHITECTURE — Composability ───────
+await inGroup("Architecture · Composability", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("arch")?.scrollIntoView());
+  await page.waitForTimeout(1500);
+
+  // Both lanes
+  for (const lane of ["$CCM ERC-20", "CCM-NFT ERC-1155"]) {
+    const found = await page
+      .locator("#arch")
+      .locator(`text=${lane}`)
+      .count();
+    log("Composability", `lane "${lane}" present`, found > 0);
+  }
+
+  // 5 protocols on each lane
+  const protocols = ["Uniswap V3/V4", "Curve", "Balancer", "OpenSea / Blur", "Sudoswap"];
+  for (const p of protocols) {
+    const found = await page
+      .locator("#arch span")
+      .filter({ hasText: p })
+      .count();
+    log("Composability", `protocol "${p}" listed`, found > 0);
+  }
+
+  await ctx.close();
+});
+
+// ─────── 12e. ARCHITECTURE — SecurityCards ───────
+await inGroup("Architecture · SecurityCards", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.getElementById("arch")?.scrollIntoView({ block: "end" }));
+  await page.waitForTimeout(400);
+
+  // Find the security cards grid (5-column repeat at the bottom of #arch)
+  const cards = await page
+    .locator("#arch .grid[style*='repeat(5, 1fr)'] > div")
+    .count();
+  log("SecurityCards", "5 security cards present", cards === 5, `count=${cards}`);
+
+  const titles = ["Non-upgradeable", "External audits", "Multi-sig admin", "48h timelock", "Bug bounty"];
+  for (const t of titles) {
+    const found = await page
+      .locator("#arch")
+      .locator(`text=${t}`)
+      .count();
+    log("SecurityCards", `card "${t}" present`, found > 0);
+  }
+
+  // Hover behaviour on first
+  const first = page
+    .locator("#arch .grid[style*='repeat(5, 1fr)'] > div")
+    .first();
+  await first.hover();
+  await page.waitForTimeout(220);
+  const transform = await first.evaluate((e) => getComputedStyle(e).transform);
+  log("SecurityCards", "hover lifts the card", transform !== "none" && /matrix|translate/.test(transform));
+
+  await ctx.close();
+});
+
 // ─────── 11. DARK MODE — same checks (lightweight) ───────
 await inGroup("Dark mode parity", async () => {
   const { ctx, page } = await newCtx("dark");

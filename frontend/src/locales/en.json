@@ -139,17 +139,12 @@
       "label": "§ 5 · architecture",
       "h1Pre": "Eight layers,",
       "h1Em": "separated concerns.",
-      "lead": "L5 NFT = traceability · L6 Token = liquidity · L7 DeFi = composability. Swap one layer; the rest stand.",
-      "layers": [
-        ["L8", "Application", "Wallet · marketplace · ESG dashboard"],
-        ["L7", "DeFi Primitives ★", "Wrap · AMM · Vault · Index · Insurance"],
-        ["L6", "Token Layer", "$CCM ERC-20 · veCCM"],
-        ["L5", "NFT Registry ★", "CCM-NFT ERC-1155 (source-of-truth)"],
-        ["L4", "Verification", "VVB consensus · ZK proof"],
-        ["L3", "Oracle / MRV", "Sentinel-2 · IoT · LiDAR"],
-        ["L2", "Mining (CCMine)", "Physical / Verification nodes"],
-        ["L1", "Settlement", "Base (Coinbase L2)"]
-      ]
+      "lead": "L5 NFT = traceability · L6 Token = liquidity · L7 DeFi = composability. Each layer ships independently; swap one and the rest still stand.",
+      "stackLabel": "stack · hover a layer",
+      "dataflowLabel": "data flow · physics → onchain",
+      "contractsLabel": "smart contracts · 19 modules",
+      "composabilityLabel": "external composability",
+      "securityLabel": "security policy"
     },
     "mining": {
       "label": "§ 6 · ccmine",

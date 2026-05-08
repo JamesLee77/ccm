@@ -19,7 +19,7 @@ export default function Roadmap() {
         pre={t("roadmap.h1Pre")}
         em={t("roadmap.h1Em")}
         maxWidth={900}
-        className="mt-8 mb-6"
+        className="mt-12 mb-16"
       />
       <p
         className="font-body text-ink-soft mb-12"

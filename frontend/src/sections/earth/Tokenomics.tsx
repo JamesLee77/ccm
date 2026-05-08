@@ -29,7 +29,7 @@ export default function Tokenomics() {
             maxWidth={720}
           />
           <p
-            className="font-body text-ink-soft mt-8"
+            className="font-body text-ink-soft mt-10"
             style={{ fontSize: 19, lineHeight: 1.5, maxWidth: 640 }}
           >
             {t("tokenomics.lead")}

@@ -61,7 +61,7 @@ export function PageHero({ pre, em, lead, right }: HeroProps) {
             <em className="italic-moss">{em}</em>
           </h1>
           <p
-            className="font-body text-ink-soft mt-7 max-w-[680px]"
+            className="font-body text-ink-soft mt-10 max-w-[680px]"
             style={{ fontSize: 22, lineHeight: 1.5 }}
           >
             {lead}

@@ -22,7 +22,7 @@ export default function Mining() {
         <div>
           <Heading pre={t("mining.h1Pre")} em={t("mining.h1Em")} maxWidth={720} />
           <p
-            className="font-body text-ink-soft mt-8"
+            className="font-body text-ink-soft mt-10"
             style={{ fontSize: 19, lineHeight: 1.5, maxWidth: 640 }}
           >
             {t("mining.lead")}

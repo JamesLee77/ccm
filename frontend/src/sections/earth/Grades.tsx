@@ -24,7 +24,7 @@ export default function Grades() {
         pre={t("grades.h1Pre")}
         em={t("grades.h1Em")}
         maxWidth={900}
-        className="mt-8 mb-12"
+        className="mt-12 mb-16"
       />
       <div className="border border-rule" style={{ background: "var(--paper-deep)" }}>
         <div

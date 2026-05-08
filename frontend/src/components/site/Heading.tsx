@@ -6,21 +6,18 @@ const styles = {
     fontSize: "clamp(72px, 9vw, 132px)",
     lineHeight: 0.92,
     letterSpacing: "-0.025em",
-    margin: 0,
   },
   h2: {
     fontWeight: 500,
     fontSize: "clamp(40px, 5vw, 64px)",
     lineHeight: 1.05,
     letterSpacing: "-0.02em",
-    margin: 0,
   },
   h3: {
     fontWeight: 500,
     fontSize: 32,
     lineHeight: 1.1,
     letterSpacing: "-0.015em",
-    margin: 0,
   },
 } as const;
 

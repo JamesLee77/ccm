@@ -23,7 +23,7 @@ export default function Market() {
         pre={t("market.h1Pre")}
         em={t("market.h1Em")}
         maxWidth={900}
-        className="mt-8 mb-12"
+        className="mt-12 mb-16"
       />
       <p
         className="font-body text-ink-soft mb-16"

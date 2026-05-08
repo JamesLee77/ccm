@@ -21,7 +21,7 @@ export default function Scenarios() {
         pre={t("scenarios.h1Pre")}
         em={t("scenarios.h1Em")}
         maxWidth={900}
-        className="mt-8 mb-12"
+        className="mt-12 mb-16"
       />
 
       {/* TGE structure */}

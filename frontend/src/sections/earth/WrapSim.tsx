@@ -18,7 +18,7 @@ export default function WrapSim() {
         pre={t("wrap.h1Pre")}
         em={t("wrap.h1Em")}
         maxWidth={900}
-        className="mt-8 mb-6"
+        className="mt-12 mb-16"
       />
       <p
         className="font-body text-ink-soft mb-12"

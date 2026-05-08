@@ -2,6 +2,9 @@ import { useTranslation } from "react-i18next";
 import Section from "../../components/site/Section";
 import SectionLabel from "../../components/site/SectionLabel";
 import Heading from "../../components/site/Heading";
+import MarketShareTimeline from "./vs/MarketShareTimeline";
+import MoatCards from "./vs/MoatCards";
+import AdoptionLive from "./vs/AdoptionLive";
 
 const renderCell = (value: string) => {
   if (value.startsWith("✓")) return <span className="text-moss font-medium">{value}</span>;
@@ -72,6 +75,21 @@ export default function Vs() {
           </div>
         ))}
       </div>
+
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("vs.shareLabel")}
+      </div>
+      <MarketShareTimeline />
+
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("vs.moatLabel")}
+      </div>
+      <MoatCards />
+
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("vs.adoptionLabel")}
+      </div>
+      <AdoptionLive />
     </Section>
   );
 }

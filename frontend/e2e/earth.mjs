@@ -1171,6 +1171,70 @@ await inGroup("Manifesto · ContactPanel", async () => {
   await ctx.close();
 });
 
+// ─────── 16. BATCH 8-section expansion smoke ───────
+await inGroup("Batch · 8-section new components", async () => {
+  const { ctx, page } = await newCtx("light");
+  await page.goto(URL, { waitUntil: "networkidle" });
+
+  // Hero — Atmospheric, WhyNow, Snapshot
+  await page.evaluate(() => document.getElementById("vision")?.scrollIntoView());
+  await page.waitForTimeout(800);
+  log("Hero", "AtmosphericTimeline svg", await page.locator("#vision svg[aria-label*='Atmospheric']").count() === 1);
+  log("Hero", "WhyNow 3 cards", await page.locator("#vision .grid.grid-cols-3 > div").count() >= 3);
+  log("Hero", "NetworkSnapshot LIVE pulse", await page.locator("#vision .ns-pulse").count() === 1);
+
+  // Market
+  await page.evaluate(() => document.getElementById("market")?.scrollIntoView());
+  await page.waitForTimeout(1000);
+  log("Market", "GrowthCurve svg", await page.locator("#market svg[aria-label*='VCM growth']").count() === 1);
+  log("Market", "TAMBreakdown 4 segments", await page.locator("#market button[aria-label*='%']").count() >= 0);
+  log("Market", "MarketLive LIVE pulse", await page.locator("#market .ml-pulse").count() === 1);
+
+  // Trinity
+  await page.evaluate(() => document.getElementById("trinity")?.scrollIntoView());
+  await page.waitForTimeout(800);
+  log("Trinity", "TrinityRelations svg", await page.locator("#trinity svg[aria-label*='Trinity']").count() === 1);
+  log("Trinity", "UnitConverter has 6 unit buttons", await page.locator("#trinity button").count() >= 6);
+  log("Trinity", "BitcoinAnalogue rows", await page.locator("#trinity").locator("text=Proof of Work").count() > 0);
+
+  // Problem
+  await page.evaluate(() => document.getElementById("problem")?.scrollIntoView());
+  await page.waitForTimeout(800);
+  log("Problem", "MarketEvidence rows", await page.locator("#problem ol > li").count() >= 6);
+  log("Problem", "PriceDisparity svg", await page.locator("#problem svg[aria-label*='Price disparity']").count() === 1);
+  log("Problem", "CostsLive LIVE pulse", await page.locator("#problem .cl2-pulse").count() === 1);
+
+  // Grades
+  await page.evaluate(() => document.getElementById("grades")?.scrollIntoView());
+  await page.waitForTimeout(800);
+  log("Grades", "GradeRadar 4 radars", await page.locator("#grades svg[aria-label*='radar']").count() === 4);
+  log("Grades", "GradeProjects rows", await page.locator("#grades").locator("text=Hellisheiði").count() > 0);
+  log("Grades", "GradePriceLive LIVE pulse", await page.locator("#grades .gp-pulse").count() === 1);
+
+  // Scenarios
+  await page.evaluate(() => document.getElementById("scenarios")?.scrollIntoView());
+  await page.waitForTimeout(1000);
+  log("Scenarios", "ScenarioCurve svg", await page.locator("#scenarios svg[aria-label*='Bear']").count() === 1);
+  log("Scenarios", "AssumptionsMatrix has VCM growth row", await page.locator("#scenarios").locator("text=VCM growth").count() > 0);
+  log("Scenarios", "CapitalReturns Y5 multiples", await page.locator("#scenarios").locator("text=75×").count() > 0);
+
+  // DeFi
+  await page.evaluate(() => document.getElementById("defi")?.scrollIntoView());
+  await page.waitForTimeout(800);
+  log("DeFi", "PrimitiveFlow strategy 3 cards", await page.locator("#defi .grid.grid-cols-3 > div").count() >= 3);
+  log("DeFi", "ProtocolGrid 12 protocols", await page.locator("#defi").locator("text=Uniswap").count() > 0);
+  log("DeFi", "TVLLive LIVE pulse", await page.locator("#defi .tv-pulse").count() === 1);
+
+  // vs
+  await page.evaluate(() => document.getElementById("vs")?.scrollIntoView());
+  await page.waitForTimeout(1000);
+  log("vs", "MarketShareTimeline svg", await page.locator("#vs svg[aria-label*='Market share']").count() === 1);
+  log("vs", "MoatCards 4 cards", await page.locator("#vs .grid.grid-cols-4 > div").count() >= 4);
+  log("vs", "AdoptionLive LIVE pulse", await page.locator("#vs .al-pulse").count() === 1);
+
+  await ctx.close();
+});
+
 // ─────── 11. DARK MODE — same checks (lightweight) ───────
 await inGroup("Dark mode parity", async () => {
   const { ctx, page } = await newCtx("dark");

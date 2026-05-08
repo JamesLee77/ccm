@@ -1,5 +1,8 @@
 import { useTranslation } from "react-i18next";
 import Heading from "../../components/site/Heading";
+import AtmosphericTimeline from "./hero/AtmosphericTimeline";
+import WhyNow from "./hero/WhyNow";
+import NetworkSnapshot from "./hero/NetworkSnapshot";
 
 export default function Hero() {
   const { t } = useTranslation("earth");
@@ -102,6 +105,24 @@ export default function Hero() {
         <span>{t("hero.scrollHint")}</span>
         <span>{t("hero.nextChapter")}</span>
       </div>
+
+      {/* Atmospheric record */}
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-20">
+        {t("hero.atmosphericLabel")}
+      </div>
+      <AtmosphericTimeline />
+
+      {/* Why now */}
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("hero.whyNowLabel")}
+      </div>
+      <WhyNow />
+
+      {/* Network snapshot */}
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("hero.snapshotLabel")}
+      </div>
+      <NetworkSnapshot />
     </section>
   );
 }

@@ -2,6 +2,9 @@ import { useTranslation } from "react-i18next";
 import Section from "../../components/site/Section";
 import SectionLabel from "../../components/site/SectionLabel";
 import Heading from "../../components/site/Heading";
+import PrimitiveFlow from "./defi/PrimitiveFlow";
+import ProtocolGrid from "./defi/ProtocolGrid";
+import TVLLive from "./defi/TVLLive";
 
 export default function Defi() {
   const { t } = useTranslation("earth");
@@ -54,6 +57,21 @@ export default function Defi() {
           </div>
         ))}
       </div>
+
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("defi.strategyLabel")}
+      </div>
+      <PrimitiveFlow />
+
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("defi.protocolLabel")}
+      </div>
+      <ProtocolGrid />
+
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("defi.tvlLabel")}
+      </div>
+      <TVLLive />
     </Section>
   );
 }

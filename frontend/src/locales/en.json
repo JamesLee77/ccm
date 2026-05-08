@@ -45,6 +45,9 @@
       "lead": "CCM is a unit. One tonne of CO₂e — verified once, retired once, fluid in between. The CCM Network is the onchain infrastructure that lets it travel.",
       "ctaPaper": "Read the whitepaper →",
       "ctaGithub": "View on GitHub",
+      "atmosphericLabel": "atmospheric record",
+      "whyNowLabel": "why now",
+      "snapshotLabel": "network snapshot",
       "readout": {
         "label": "atmosphere · live readout",
         "ppm": "422.8",
@@ -63,6 +66,9 @@
       "h1Pre": "$2B today, $250B by 2050.",
       "h1Em": "But the market is broken.",
       "lead": "The voluntary carbon market is forecast at 25× growth by 2030 and 125× by 2050. McKinsey, the World Bank, and IPCC all agree — provided the market actually works.",
+      "growthLabel": "growth curve",
+      "tamLabel": "TAM by segment",
+      "liveLabel": "market pulse",
       "milestones": [
         { "year": "2024", "value": "$2B", "note": "today" },
         { "year": "2026", "value": "$8B", "note": "estimate" },
@@ -77,6 +83,9 @@
       "h1EmA": "network",
       "h1EmB": "unit",
       "h1EmC": "token",
+      "relationsLabel": "trinity relations",
+      "converterLabel": "unit converter · SI prefixes",
+      "bitcoinLabel": "bitcoin analogue",
       "items": [
         {
           "n": "01",
@@ -102,6 +111,9 @@
       "label": "§ 2 · what broke",
       "h1Pre": "The voluntary carbon market",
       "h1Em": "has four failures.",
+      "evidenceLabel": "evidence · sources",
+      "disparityLabel": "price disparity",
+      "costsLabel": "live · failure costs",
       "items": [
         ["Opacity", "Provenance lost in PDF registries; spreadsheets traded by phone."],
         ["Double-counting", "Same tonne sold across registries with no shared ledger."],
@@ -132,6 +144,9 @@
       "label": "§ 4 · grading",
       "h1Pre": "Not all tonnes are equal.",
       "h1Em": "The standard says so.",
+      "radarLabel": "grade radar",
+      "projectsLabel": "example projects",
+      "priceLabel": "live · grade price ratio",
       "rows": [
         ["A", "Direct Air Capture · Mineralization", "1,000+ yr", "5-of-7"],
         ["B", "Biochar · Enhanced Weathering", "100+ yr", "4-of-6"],
@@ -197,6 +212,9 @@
       "label": "§ 8 · TGE + scenarios",
       "h1Pre": "Seed $0.15, Series A $0.20.",
       "h1Em": "Beyond — the market decides.",
+      "curveLabel": "trajectory curve",
+      "assumptionsLabel": "scenario drivers",
+      "returnsLabel": "capital return cone",
       "tge": {
         "label": "TGE round structure",
         "rows": [
@@ -227,6 +245,9 @@
       "h1Pre": "Eight primitives.",
       "h1Em": "Composable from day one.",
       "lead": "Wrap, vault lending, fractionalization, NFT yield, retire-to-earn, insurance, index, grade wrappers — all standard ERC-20 / ERC-1155. Plug into Uniswap, Curve, Aave, Pendle, OpenSea, Sudoswap immediately.",
+      "strategyLabel": "example strategies",
+      "protocolLabel": "external protocols",
+      "tvlLabel": "live · TVL",
       "items": [
         ["7.2", "Wrap / Unwrap", "NFT ⇆ $CCM 1:1, FIFR self-correcting"],
         ["7.3", "Grade Wrappers", "$CCM-A/B/C/D — grade-specific price discovery"],
@@ -243,6 +264,9 @@
       "h1Pre": "Originate,",
       "h1Em": "not tokenize.",
       "lead": "Earlier onchain carbon projects merely tokenized credits from external registries. CCM mints, verifies, and grades onchain from issuance.",
+      "shareLabel": "market share evolution",
+      "moatLabel": "structural moats",
+      "adoptionLabel": "live · adoption ledger",
       "rows": [
         ["Originate vs Tokenize", "Tokenize", "Tokenize", "Tokenize", "✓ Originate"],
         ["NFT × ERC-20 Dual", "ERC-20 only", "ERC-20 only", "ERC-20 only", "✓ Both, 1:1"],

@@ -2,6 +2,9 @@ import { useTranslation } from "react-i18next";
 import Section from "../../components/site/Section";
 import SectionLabel from "../../components/site/SectionLabel";
 import Heading from "../../components/site/Heading";
+import ScenarioCurve from "./scenarios/ScenarioCurve";
+import AssumptionsMatrix from "./scenarios/AssumptionsMatrix";
+import CapitalReturns from "./scenarios/CapitalReturns";
 
 export default function Scenarios() {
   const { t } = useTranslation("earth");
@@ -140,6 +143,21 @@ export default function Scenarios() {
       >
         {t("scenarios.disclaimer")}
       </div>
+
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("scenarios.curveLabel")}
+      </div>
+      <ScenarioCurve />
+
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("scenarios.assumptionsLabel")}
+      </div>
+      <AssumptionsMatrix />
+
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("scenarios.returnsLabel")}
+      </div>
+      <CapitalReturns />
     </Section>
   );
 }

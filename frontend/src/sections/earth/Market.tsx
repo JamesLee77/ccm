@@ -2,6 +2,9 @@ import { useTranslation } from "react-i18next";
 import Section from "../../components/site/Section";
 import SectionLabel from "../../components/site/SectionLabel";
 import Heading from "../../components/site/Heading";
+import GrowthCurve from "./market/GrowthCurve";
+import TAMBreakdown from "./market/TAMBreakdown";
+import MarketLive from "./market/MarketLive";
 
 type Milestone = {
   year: string;
@@ -67,6 +70,21 @@ export default function Market() {
           </div>
         ))}
       </div>
+
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("market.growthLabel")}
+      </div>
+      <GrowthCurve />
+
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("market.tamLabel")}
+      </div>
+      <TAMBreakdown />
+
+      <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
+        {t("market.liveLabel")}
+      </div>
+      <MarketLive />
     </Section>
   );
 }

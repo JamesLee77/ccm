@@ -165,6 +165,7 @@ textarea {
     grid-template-columns: 1fr !important;
   }
   /* Repeat(N, 1fr) inline grids fall back to single column on phones */
+  div[style*="grid-template-columns: repeat(2, 1fr)"],
   div[style*="grid-template-columns: repeat(3, 1fr)"],
   div[style*="grid-template-columns: repeat(4, 1fr)"],
   div[style*="grid-template-columns: repeat(5, 1fr)"],
@@ -316,5 +317,91 @@ textarea {
   #grades > div.border > div[style*="grid-template-columns: 120px 2fr 1fr 1fr"] {
     grid-template-columns: 100px 1.6fr 1fr 1fr !important;
     padding: 16px 20px !important;
+  }
+}
+
+/* ────── Mobile fixes for tables with fixed-pixel grid columns ──────
+ * Several tables use inline grid-template-columns with fixed pixel
+ * widths that exceed the 375px viewport. Stack each row's cells
+ * vertically on mobile so content stays readable.
+ */
+@media (max-width: 640px) {
+  /* MarketEvidence (#problem): "200px 80px 1fr 120px" */
+  #problem ol > li[style*="grid-template-columns: 200px 80px 1fr 120px"] {
+    grid-template-columns: 1fr !important;
+    grid-auto-flow: row !important;
+    row-gap: 6px !important;
+    padding: 16px 18px !important;
+  }
+  /* Hide the header row — the per-row labels are inferred from each
+     cell's intrinsic styling (mono moss for source, etc.) */
+  #problem ol > li:first-child[style*="grid-template-columns: 200px 80px 1fr 120px"] {
+    display: none !important;
+  }
+  /* Visually emphasise topic chip in stacked mode */
+  #problem ol > li[style*="grid-template-columns: 200px 80px 1fr 120px"] > span:last-child {
+    align-self: flex-start;
+  }
+
+  /* DocumentsLibrary (#manifesto): "120px 1.6fr 80px 80px 100px 24px" */
+  #manifesto ol > li > a[style*="grid-template-columns: 120px 1.6fr 80px 80px 100px 24px"],
+  #manifesto ol > li[style*="grid-template-columns: 120px 1.6fr 80px 80px 100px 24px"] {
+    grid-template-columns: 1fr auto !important;
+    grid-auto-flow: row !important;
+    row-gap: 6px !important;
+    padding: 16px 18px !important;
+  }
+  #manifesto ol > li:first-child[style*="grid-template-columns: 120px 1.6fr 80px 80px 100px 24px"] {
+    display: none !important;
+  }
+
+  /* MilestoneList (#roadmap): "60px 80px 1fr 1.4fr" */
+  #roadmap ol > li[style*="grid-template-columns: 60px 80px 1fr 1.4fr"] {
+    grid-template-columns: auto 1fr !important;
+    grid-auto-flow: row !important;
+    row-gap: 4px !important;
+    padding: 14px 18px !important;
+  }
+  #roadmap ol > li:first-child[style*="grid-template-columns: 60px 80px 1fr 1.4fr"] {
+    display: none !important;
+  }
+
+  /* ContractMap (#arch): row "1fr auto" with right-align right-aligns
+     the role text into a tight space. Stack on mobile. */
+  #arch ul > li[style*="grid-template-columns: 1fr auto"] {
+    grid-template-columns: 1fr !important;
+    grid-auto-flow: row !important;
+    row-gap: 4px !important;
+  }
+  #arch ul > li[style*="grid-template-columns: 1fr auto"] > span:last-child {
+    text-align: left !important;
+  }
+
+  /* Composability (#arch): "180px 1fr" rows fit but cramped — give them
+     stacked layout for more space. */
+  #arch ul > li[style*="grid-template-columns: 180px 1fr"] {
+    grid-template-columns: 1fr !important;
+    grid-auto-flow: row !important;
+    row-gap: 4px !important;
+  }
+
+  /* ContactPanel newsletter row (#manifesto): "1fr 1.6fr auto" */
+  #manifesto div[style*="grid-template-columns: 1fr 1.6fr auto"] {
+    grid-template-columns: 1fr !important;
+    grid-auto-flow: row !important;
+    row-gap: 16px !important;
+  }
+
+  /* Generic 1.4fr/1fr nested heroes (Mining + Tokenomics inner content) */
+  #mining > div[style*="grid-template-columns: 1.4fr 1fr"],
+  #tokenomics > div[style*="grid-template-columns: 1.4fr 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  /* Risks matrix + detail panel pair "1fr 1fr" (already collapses via
+     general rule, but ensure detail follows the matrix) */
+  #risks > div.grid[style*="grid-template-columns: 1fr 1fr"] {
+    gap: 16px !important;
   }
 }

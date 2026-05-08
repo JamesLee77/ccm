@@ -45,11 +45,20 @@ export default function SiteNav() {
       className="sticky top-0 z-10 backdrop-blur-md border-b border-rule"
       style={{ background: "var(--nav-bg)" }}
     >
-      <div className="px-14 py-5 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3.5 text-ink">
-          <Wordmark size={22} />
-          <span className="font-mono text-[11px] tracking-[0.12em] uppercase text-ink-soft">
-            ccmnetwork.net
+      <div className="px-14 py-4 flex items-center justify-between">
+        <Link
+          to="/"
+          className="flex items-center gap-4 text-ink"
+          aria-label="CCM Network — home"
+        >
+          <Wordmark size={32} />
+          <span
+            className="font-mono text-[10px] tracking-[0.18em] uppercase text-ink-soft hidden md:block pl-4 border-l border-rule"
+            style={{ lineHeight: 1.4 }}
+          >
+            Carbon Credit
+            <br />
+            Measurement
           </span>
         </Link>
 

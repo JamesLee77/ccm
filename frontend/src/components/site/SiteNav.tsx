@@ -33,7 +33,7 @@ export default function SiteNav() {
         <Link to="/" className="flex items-center gap-3.5 text-ink">
           <Wordmark size={22} />
           <span className="font-mono text-[11px] tracking-[0.12em] uppercase text-ink-soft">
-            ccm.network
+            ccmnetwork.net
           </span>
         </Link>
 

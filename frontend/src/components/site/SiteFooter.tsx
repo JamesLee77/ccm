@@ -52,9 +52,9 @@ export default function SiteFooter() {
           <div className="mt-4.5 font-mono text-[11px] tracking-[0.12em] uppercase text-ink-soft leading-7">
             CCM Foundation
             <br />
-            ccm.network · ccm.earth
+            ccmnetwork.net
             <br />
-            foundation@ccm.network
+            foundation@ccmnetwork.net
           </div>
         </div>
         {COLS.map((col) => (

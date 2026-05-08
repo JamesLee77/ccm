@@ -7,7 +7,7 @@ type Props = {
 
 /**
  * Network diagram — central hub + N satellite nodes on a circle of radius 88.
- * Hub is a 22-radius ink circle with the label centered in IBM Plex Mono.
+ * Hub is a 22-radius ink circle with the label centered in JetBrains Mono.
  * Used as the right-side hero figure on multiple pages.
  *
  * Ported from site-shared.jsx with tokens routed through CSS variables so it
@@ -58,7 +58,7 @@ export default function NodeNetwork({
         x="0"
         y="4"
         textAnchor="middle"
-        fontFamily="IBM Plex Mono, monospace"
+        fontFamily="JetBrains Mono, ui-monospace, monospace"
         fontSize="9"
         letterSpacing="1.5"
         fill="var(--paper)"

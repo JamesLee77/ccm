@@ -1,12 +1,12 @@
 @import "tailwindcss";
 @import "@rainbow-me/rainbowkit/styles.css";
-@import "@fontsource-variable/fraunces";
-@import "@fontsource-variable/source-serif-4";
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/inter/600.css";
-@import "@fontsource/ibm-plex-mono/400.css";
-@import "@fontsource/ibm-plex-mono/500.css";
+@import "@fontsource/space-grotesk/400.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/space-grotesk/700.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@import "@fontsource/jetbrains-mono/600.css";
 
 /* Design tokens — exposed as CSS variables, switched via [data-theme]. */
 :root,
@@ -47,10 +47,11 @@
   --color-sky: var(--sky);
   --color-rule: var(--rule);
 
-  --font-display: "Fraunces Variable", serif;
-  --font-body: "Source Serif 4 Variable", serif;
-  --font-ui: "Inter", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  /* grotesk-mono pairing — display + ui = Space Grotesk; body + mono = JetBrains Mono. */
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "JetBrains Mono", ui-monospace, monospace;
+  --font-ui: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   --radius-none: 0;
 }
@@ -66,13 +67,12 @@ html {
   color: var(--ink);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  font-family: "Inter", system-ui, sans-serif;
+  font-family: "Space Grotesk", system-ui, sans-serif;
 }
 
 body {
   background: var(--paper);
   color: var(--ink);
-  font-feature-settings: "ss01" on, "cv11" on;
   text-wrap: pretty;
 }
 
@@ -83,12 +83,13 @@ h3 {
   text-wrap: balance;
 }
 
-/* Italic-moss accent: moss color + italic for display word emphasis. */
+/* Italic-moss accent — grotesk-mono pairing drops italic. The accent
+   becomes moss color + heavier weight on the same upright glyph. */
 em.italic-moss,
 .italic-moss {
-  font-style: italic;
+  font-style: normal;
   color: var(--moss);
-  font-weight: 400;
+  font-weight: 600;
 }
 
 /* Reset: every interactive surface uses sharp edges (radius 0). */

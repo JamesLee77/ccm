@@ -62,6 +62,14 @@ body,
   min-height: 100vh;
 }
 
+html,
+body {
+  /* `clip` prevents horizontal overflow without disabling sticky positioning,
+     unlike `hidden` which establishes a new scroll container that breaks
+     position:sticky for nested children (SiteNav / AnchorNav). */
+  overflow-x: clip;
+}
+
 html {
   background: var(--paper);
   color: var(--ink);
@@ -104,4 +112,120 @@ textarea {
 ::selection {
   background: var(--moss);
   color: var(--paper);
+}
+
+/* ─────────────── Mobile responsive overrides ───────────────
+ *
+ * Earth was authored at 1440px desktop. The rules below collapse
+ * the most common multi-column inline grids into a single column
+ * on phones (≤640px) and into 2 columns on small tablets (641–
+ * 1023px), without touching the per-component code.
+ */
+
+@media (max-width: 1024px) {
+  /* Section padding shrinks on tablet+ */
+  section[id] {
+    padding: 80px 32px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Section padding shrinks further on phone */
+  section[id] {
+    padding: 56px 18px !important;
+  }
+
+  /* Section nested blocks (paper-deep panels) — keep readable padding */
+  section[id] > div[style*="padding: 32px 40px"],
+  section[id] > div[style*="padding: 40px"],
+  section[id] > div[style*="padding: 48px"],
+  section[id] [style*="padding: 32px 40px"] {
+    padding: 24px 18px !important;
+  }
+}
+
+/* Collapse the 1.4fr 1fr hero grid below 1024px */
+@media (max-width: 1024px) {
+  div[style*="grid-template-columns: 1.4fr 1fr"],
+  div[style*="gridTemplateColumns: \"1.4fr 1fr\""] {
+    grid-template-columns: 1fr !important;
+  }
+  div[style*="grid-template-columns: 1.5fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  div[style*="grid-template-columns: 1.4fr 1fr 1fr 1fr"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+/* Card grids — collapse on phones */
+@media (max-width: 640px) {
+  .grid.grid-cols-3,
+  .grid.grid-cols-4 {
+    grid-template-columns: 1fr !important;
+  }
+  /* Repeat(N, 1fr) inline grids fall back to single column on phones */
+  div[style*="grid-template-columns: repeat(3, 1fr)"],
+  div[style*="grid-template-columns: repeat(4, 1fr)"],
+  div[style*="grid-template-columns: repeat(5, 1fr)"],
+  div[style*="grid-template-columns: repeat(6, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* Pair grid (1fr 1fr) collapses too */
+  div[style*="grid-template-columns: 1fr 1fr"]:not([style*="auto"]):not([style*="repeat"]) {
+    grid-template-columns: 1fr !important;
+  }
+  /* 1fr auto 1fr (wrap simulator) collapses */
+  div[style*="grid-template-columns: 1fr auto 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Tablet — 4-col card grids become 2-col */
+@media (min-width: 641px) and (max-width: 1023px) {
+  .grid.grid-cols-4,
+  div[style*="grid-template-columns: repeat(4, 1fr)"],
+  div[style*="grid-template-columns: repeat(5, 1fr)"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+/* Hero h1 size fall — clamp() already handles this in Heading,
+   but extra safety for inline display copy */
+@media (max-width: 640px) {
+  h1, h2, h3 {
+    word-break: keep-all;
+  }
+}
+
+/* Tables / wide blocks — wrap SVG-rich panels in horizontal scroll */
+@media (max-width: 640px) {
+  /* allow horizontal scroll inside paper-deep blocks for charts */
+  div[style*="background: var(--paper-deep)"] {
+    overflow-x: auto;
+  }
+}
+
+/* Anchor nav already uses overflow-x-auto; ensure it doesn't bleed */
+@media (max-width: 640px) {
+  nav[aria-label="In-page navigation"] ul {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+}
+
+/* SiteNav padding shrink */
+@media (max-width: 640px) {
+  header > div[class*="px-14"] {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+}
+
+/* Footer — 4-col footer collapses on mobile (handled in JSX too) */
+@media (max-width: 640px) {
+  footer > div[style*="grid-template-columns: 1.4fr 1fr 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
 }

@@ -1235,6 +1235,99 @@ await inGroup("Batch · 8-section new components", async () => {
   await ctx.close();
 });
 
+// ─────── 17. MOBILE — 375px iPhone viewport ───────
+await inGroup("Mobile · iPhone 375px", async () => {
+  const ctx = await browser.newContext({
+    viewport: { width: 375, height: 800 },
+    colorScheme: "light",
+    deviceScaleFactor: 2,
+  });
+  const page = await ctx.newPage();
+  await page.goto(URL, { waitUntil: "networkidle" });
+
+  // Test the user-visible behaviour: horizontal scroll should not be
+  // possible. body sets overflow-x:hidden so even if some inner element
+  // is technically wider, the user can't see or scroll past the viewport.
+  await page.evaluate(() => window.scrollTo(200, 0));
+  await page.waitForTimeout(120);
+  const scrolledX = await page.evaluate(() => window.scrollX);
+  log("Mobile", "no horizontal scroll possible", scrolledX === 0, `scrollX=${scrolledX}`);
+
+  // Hamburger present, desktop nav hidden
+  const hamburger = await page.locator("button[aria-label='Open menu']").count();
+  log("Mobile", "hamburger button rendered", hamburger === 1, `count=${hamburger}`);
+
+  const desktopNavLinks = await page
+    .locator("header nav.hidden")
+    .count();
+  log(
+    "Mobile",
+    "desktop nav has hidden class on phone",
+    desktopNavLinks > 0,
+    `count=${desktopNavLinks}`,
+  );
+
+  // Open drawer, click first link, drawer closes
+  await page.click("button[aria-label='Open menu']");
+  await page.waitForTimeout(220);
+  const drawerOpen = await page.locator("header nav.flex.flex-col").count();
+  log("Mobile", "drawer opens on hamburger click", drawerOpen >= 1);
+
+  // Sections still render at mobile width
+  const requiredIds = ["vision", "market", "trinity", "mining", "manifesto"];
+  for (const id of requiredIds) {
+    const el = await page.locator(`#${id}`).count();
+    log("Mobile", `#${id} renders`, el >= 1);
+  }
+
+  // Hero grid collapses to single column on mobile.
+  // Locate the grid by its className (.grid.items-end is the hero two-col).
+  const heroGrid = page.locator("#vision .grid.items-end").first();
+  const heroCols = await heroGrid.evaluate((el) => getComputedStyle(el).gridTemplateColumns);
+  // Single column = either "Npx" alone, or "1fr"
+  const isSingleCol =
+    /^\d+(\.\d+)?px$/.test(heroCols) ||
+    heroCols === "1fr" ||
+    !heroCols.includes(" ");
+  log(
+    "Mobile",
+    "hero grid collapses to single column",
+    isSingleCol,
+    `grid-template-columns=${heroCols}`,
+  );
+
+  await ctx.close();
+});
+
+// ─────── 18. TABLET — 768px iPad viewport ───────
+await inGroup("Tablet · iPad 768px", async () => {
+  const ctx = await browser.newContext({
+    viewport: { width: 768, height: 1024 },
+    colorScheme: "light",
+  });
+  const page = await ctx.newPage();
+  await page.goto(URL, { waitUntil: "networkidle" });
+
+  await page.evaluate(() => window.scrollTo(200, 0));
+  await page.waitForTimeout(120);
+  const scrolledX = await page.evaluate(() => window.scrollX);
+  log("Tablet", "no horizontal scroll possible", scrolledX === 0, `scrollX=${scrolledX}`);
+
+  // At 768 the desktop nav remains hidden (md breakpoint = 768 in Tailwind v4 default)
+  // and hamburger should still be visible.
+  const hamburger = await page.locator("button[aria-label='Open menu']").count();
+  log("Tablet", "hamburger present at 768px", hamburger >= 1);
+
+  // Sections render
+  const someIds = ["vision", "market", "tokenomics", "manifesto"];
+  for (const id of someIds) {
+    const el = await page.locator(`#${id}`).count();
+    log("Tablet", `#${id} renders`, el >= 1);
+  }
+
+  await ctx.close();
+});
+
 // ─────── 11. DARK MODE — same checks (lightweight) ───────
 await inGroup("Dark mode parity", async () => {
   const { ctx, page } = await newCtx("dark");

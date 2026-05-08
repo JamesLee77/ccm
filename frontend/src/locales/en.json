@@ -155,12 +155,11 @@
       "label": "§ 6 · ccmine",
       "h1Pre": "Nodes mine.",
       "h1Em": "Per verified tonne reduced.",
-      "lead": "Proof of Carbon Removal/Reduction (PoCR). Bitcoin's PoW hash is replaced by verifiable reduction activity as the issuance unit.",
-      "roles": [
-        ["Physical", "Operate DAC · mineralization · biochar · afforestation directly"],
-        ["Verification", "Run oracle nodes attesting satellite/IoT data"],
-        ["Storage", "Distributed registry storage (IPFS / Arweave)"]
-      ]
+      "lead": "Proof of Carbon Removal/Reduction (PoCR). Bitcoin's PoW hash is replaced by verifiable reduction activity as the issuance unit. The hub below shows live mints across the network.",
+      "flowLabel": "issuance flow · five steps",
+      "rolesLabel": "node operator · three paths",
+      "economicsLabel": "revenue + fee split",
+      "metricsLabel": "live network metrics"
     },
     "tokenomics": {
       "label": "§ 7 · tokenomics",

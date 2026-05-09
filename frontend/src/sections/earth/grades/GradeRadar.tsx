@@ -48,16 +48,17 @@ const GRADES: Grade[] = [
   },
 ];
 
-const SIZE = 220;
+// Wider viewBox + per-axis textAnchor keeps side labels from clipping.
+const SIZE = 240;
 const CX = SIZE / 2;
 const CY = SIZE / 2;
-const R_MAX = 80;
+const R_MAX = 76;
 
 const AXES = [
-  { id: "permanence", label: "Permanence", angle: -Math.PI / 2 },
-  { id: "additionality", label: "Additionality", angle: 0 },
-  { id: "mrv", label: "MRV", angle: Math.PI / 2 },
-  { id: "leakage", label: "Leakage ↓", angle: Math.PI },
+  { id: "permanence", label: "Permanence", angle: -Math.PI / 2, anchor: "middle" as const, dy: -2 },
+  { id: "additionality", label: "Additionality", angle: 0, anchor: "end" as const, dy: 4 },
+  { id: "mrv", label: "MRV", angle: Math.PI / 2, anchor: "middle" as const, dy: 12 },
+  { id: "leakage", label: "Leakage ↓", angle: Math.PI, anchor: "start" as const, dy: 4 },
 ] as const;
 
 function pointFor(axis: number, score: number): [number, number] {
@@ -177,15 +178,16 @@ export default function GradeRadar() {
                       : `opacity 600ms ease-out ${gi * 140}ms, transform 600ms cubic-bezier(0.22, 1, 0.36, 1) ${gi * 140}ms`,
                   }}
                 />
-                {/* axis labels */}
+                {/* axis labels — per-axis textAnchor + dy to keep side
+                    labels inside the SVG box on every viewport. */}
                 {AXES.map((a) => {
-                  const [x, y] = pointFor(a.angle, 6.4);
+                  const [x, y] = pointFor(a.angle, 6.6);
                   return (
                     <text
                       key={a.id}
                       x={x}
-                      y={y + 3}
-                      textAnchor="middle"
+                      y={y + a.dy}
+                      textAnchor={a.anchor}
                       fontFamily="JetBrains Mono, ui-monospace, monospace"
                       fontSize={8}
                       letterSpacing={1.2}

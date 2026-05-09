@@ -24,53 +24,110 @@ const COLS = [
 
 export default function AssumptionsMatrix() {
   return (
-    <div
-      className="border border-rule"
-      style={{ background: "var(--paper-deep)" }}
-    >
+    <>
+      {/* Desktop: full table */}
       <div
-        className="grid items-center font-mono text-[11px] tracking-[0.12em] uppercase text-ink-soft"
-        style={{
-          gridTemplateColumns: "1.6fr 1fr 1fr 1fr",
-          gap: 16,
-          padding: "16px 24px",
-          borderBottom: "1px solid var(--rule)",
-        }}
+        className="border border-rule hidden md:block"
+        style={{ background: "var(--paper-deep)" }}
       >
-        {COLS.map((c) => (
-          <span key={c.id} style={c.color ? { color: c.color } : undefined}>
-            {c.label}
-          </span>
-        ))}
-      </div>
-      {DRIVERS.map((d, i) => (
         <div
-          key={d.id}
-          className="grid items-center"
+          className="grid items-center font-mono text-[11px] tracking-[0.12em] uppercase text-ink-soft"
           style={{
             gridTemplateColumns: "1.6fr 1fr 1fr 1fr",
             gap: 16,
-            padding: "18px 24px",
-            borderBottom: i < DRIVERS.length - 1 ? "1px solid var(--rule)" : "none",
+            padding: "16px 24px",
+            borderBottom: "1px solid var(--rule)",
           }}
         >
-          <span
-            className="font-display text-ink"
-            style={{ fontSize: 14, fontWeight: 500 }}
-          >
-            {d.label}
-          </span>
-          <span className="font-mono text-clay" style={{ fontSize: 14 }}>
-            {d.bear}
-          </span>
-          <span className="font-mono text-ink" style={{ fontSize: 14 }}>
-            {d.base}
-          </span>
-          <span className="font-mono text-moss" style={{ fontSize: 14 }}>
-            {d.bull}
-          </span>
+          {COLS.map((c) => (
+            <span key={c.id} style={c.color ? { color: c.color } : undefined}>
+              {c.label}
+            </span>
+          ))}
         </div>
-      ))}
-    </div>
+        {DRIVERS.map((d, i) => (
+          <div
+            key={d.id}
+            className="grid items-center"
+            style={{
+              gridTemplateColumns: "1.6fr 1fr 1fr 1fr",
+              gap: 16,
+              padding: "18px 24px",
+              borderBottom: i < DRIVERS.length - 1 ? "1px solid var(--rule)" : "none",
+            }}
+          >
+            <span
+              className="font-display text-ink"
+              style={{ fontSize: 14, fontWeight: 500 }}
+            >
+              {d.label}
+            </span>
+            <span className="font-mono text-clay" style={{ fontSize: 14 }}>
+              {d.bear}
+            </span>
+            <span className="font-mono text-ink" style={{ fontSize: 14 }}>
+              {d.base}
+            </span>
+            <span className="font-mono text-moss" style={{ fontSize: 14 }}>
+              {d.bull}
+            </span>
+          </div>
+        ))}
+      </div>
+      {/* Mobile: bear/base/bull stacked per driver */}
+      <div
+        className="md:hidden border border-rule"
+        style={{ background: "var(--paper-deep)" }}
+      >
+        {DRIVERS.map((d, i) => (
+          <div
+            key={d.id}
+            style={{
+              padding: "16px 20px",
+              borderBottom: i < DRIVERS.length - 1 ? "1px solid var(--rule)" : "none",
+            }}
+          >
+            <div
+              className="font-display text-ink mb-3"
+              style={{ fontSize: 14, fontWeight: 500 }}
+            >
+              {d.label}
+            </div>
+            <div style={{ display: "flex", gap: 12 }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div
+                  className="font-mono text-[10px] tracking-[0.12em] uppercase mb-1"
+                  style={{ color: "var(--clay)" }}
+                >
+                  Bear
+                </div>
+                <div className="font-mono text-clay" style={{ fontSize: 14 }}>
+                  {d.bear}
+                </div>
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div
+                  className="font-mono text-[10px] tracking-[0.12em] uppercase mb-1"
+                  style={{ color: "var(--moss-2)" }}
+                >
+                  Base
+                </div>
+                <div className="font-mono text-ink" style={{ fontSize: 14 }}>
+                  {d.base}
+                </div>
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div className="font-mono text-[10px] tracking-[0.12em] uppercase text-moss mb-1">
+                  Bull
+                </div>
+                <div className="font-mono text-moss" style={{ fontSize: 14 }}>
+                  {d.bull}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }

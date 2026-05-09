@@ -28,7 +28,7 @@ export default function Mining() {
             {t("mining.lead")}
           </p>
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-center md:justify-end">
           <MiningNetwork size={300} count={7} />
         </div>
       </div>

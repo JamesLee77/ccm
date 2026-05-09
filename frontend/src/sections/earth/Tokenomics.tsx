@@ -35,7 +35,7 @@ export default function Tokenomics() {
             {t("tokenomics.lead")}
           </p>
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-center md:justify-end">
           <AllocationRing active={active} onHover={setActive} />
         </div>
       </div>
@@ -44,8 +44,9 @@ export default function Tokenomics() {
       <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5 mt-16">
         {t("tokenomics.allocationLabel")}
       </div>
+      {/* Desktop: full table */}
       <div
-        className="border border-rule"
+        className="border border-rule hidden md:block"
         style={{ background: "var(--paper-deep)" }}
         onMouseLeave={() => setActive(null)}
       >
@@ -115,6 +116,62 @@ export default function Tokenomics() {
             </div>
           );
         })}
+      </div>
+      {/* Mobile: stacked allocation cards */}
+      <div
+        className="md:hidden border border-rule"
+        style={{ background: "var(--paper-deep)" }}
+      >
+        {ALLOCATION.map((row, i) => (
+          <div
+            key={row.id}
+            style={{
+              padding: "18px 20px",
+              borderBottom:
+                i < ALLOCATION.length - 1 ? "1px solid var(--rule)" : "none",
+            }}
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <span
+                aria-hidden
+                style={{
+                  width: 12,
+                  height: 12,
+                  background: row.color,
+                  display: "inline-block",
+                  flexShrink: 0,
+                }}
+              />
+              <div
+                className="font-display text-ink"
+                style={{ fontSize: 17, fontWeight: 500 }}
+              >
+                {row.label}
+              </div>
+              <div className="ml-auto font-mono text-moss" style={{ fontSize: 14 }}>
+                {row.pct}%
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+              <div>
+                <div className="font-mono text-[10px] tracking-[0.12em] uppercase text-moss mb-0.5">
+                  Tokens
+                </div>
+                <div className="font-mono text-ink" style={{ fontSize: 13 }}>
+                  {row.tokens}
+                </div>
+              </div>
+              <div>
+                <div className="font-mono text-[10px] tracking-[0.12em] uppercase text-moss mb-0.5">
+                  Notes
+                </div>
+                <div className="font-body text-ink-soft" style={{ fontSize: 13, lineHeight: 1.45 }}>
+                  {row.note}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Emission curve */}

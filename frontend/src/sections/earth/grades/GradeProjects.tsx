@@ -19,56 +19,95 @@ const PROJECTS: Project[] = [
 
 export default function GradeProjects() {
   return (
-    <div
-      className="border border-rule"
-      style={{ background: "var(--paper-deep)" }}
-    >
+    <>
+      {/* Desktop: full table */}
       <div
-        className="grid items-center font-mono text-[11px] tracking-[0.12em] uppercase text-ink-soft"
-        style={{
-          gridTemplateColumns: "80px 1.4fr 1.6fr 100px 80px",
-          gap: 16,
-          padding: "16px 24px",
-          borderBottom: "1px solid var(--rule)",
-        }}
+        className="border border-rule hidden md:block"
+        style={{ background: "var(--paper-deep)" }}
       >
-        <span className="text-moss">grade</span>
-        <span>project</span>
-        <span>category</span>
-        <span>yield</span>
-        <span>vintage</span>
-      </div>
-      {PROJECTS.map((p, i) => (
         <div
-          key={p.name}
-          className="grid items-baseline transition-colors hover:bg-paper"
+          className="grid items-center font-mono text-[11px] tracking-[0.12em] uppercase text-ink-soft"
           style={{
             gridTemplateColumns: "80px 1.4fr 1.6fr 100px 80px",
             gap: 16,
             padding: "16px 24px",
-            borderBottom: i < PROJECTS.length - 1 ? "1px solid var(--rule)" : "none",
+            borderBottom: "1px solid var(--rule)",
           }}
         >
-          <span className="font-mono text-moss" style={{ fontSize: 12, letterSpacing: 1.2 }}>
-            {p.grade}
-          </span>
-          <span
-            className="font-display text-ink"
-            style={{ fontSize: 14, fontWeight: 500 }}
-          >
-            {p.name}
-          </span>
-          <span className="font-body text-ink-soft" style={{ fontSize: 13 }}>
-            {p.category}
-          </span>
-          <span className="font-mono text-ink" style={{ fontSize: 12 }}>
-            {p.yield}
-          </span>
-          <span className="font-mono text-ink-soft" style={{ fontSize: 12 }}>
-            {p.vintage}
-          </span>
+          <span className="text-moss">grade</span>
+          <span>project</span>
+          <span>category</span>
+          <span>yield</span>
+          <span>vintage</span>
         </div>
-      ))}
-    </div>
+        {PROJECTS.map((p, i) => (
+          <div
+            key={p.name}
+            className="grid items-baseline transition-colors hover:bg-paper"
+            style={{
+              gridTemplateColumns: "80px 1.4fr 1.6fr 100px 80px",
+              gap: 16,
+              padding: "16px 24px",
+              borderBottom: i < PROJECTS.length - 1 ? "1px solid var(--rule)" : "none",
+            }}
+          >
+            <span className="font-mono text-moss" style={{ fontSize: 12, letterSpacing: 1.2 }}>
+              {p.grade}
+            </span>
+            <span
+              className="font-display text-ink"
+              style={{ fontSize: 14, fontWeight: 500 }}
+            >
+              {p.name}
+            </span>
+            <span className="font-body text-ink-soft" style={{ fontSize: 13 }}>
+              {p.category}
+            </span>
+            <span className="font-mono text-ink" style={{ fontSize: 12 }}>
+              {p.yield}
+            </span>
+            <span className="font-mono text-ink-soft" style={{ fontSize: 12 }}>
+              {p.vintage}
+            </span>
+          </div>
+        ))}
+      </div>
+      {/* Mobile: stacked project cards */}
+      <div
+        className="md:hidden border border-rule"
+        style={{ background: "var(--paper-deep)" }}
+      >
+        {PROJECTS.map((p, i) => (
+          <div
+            key={p.name}
+            style={{
+              padding: "16px 20px",
+              borderBottom: i < PROJECTS.length - 1 ? "1px solid var(--rule)" : "none",
+            }}
+          >
+            <div className="flex items-center gap-3 mb-1">
+              <span className="font-mono text-moss" style={{ fontSize: 11, letterSpacing: 1.2 }}>
+                {p.grade}
+              </span>
+              <span className="ml-auto font-mono text-ink-soft" style={{ fontSize: 11 }}>
+                {p.vintage}
+              </span>
+            </div>
+            <div
+              className="font-display text-ink mb-1"
+              style={{ fontSize: 14, fontWeight: 500, lineHeight: 1.3 }}
+            >
+              {p.name}
+            </div>
+            <div className="font-body text-ink-soft mb-2" style={{ fontSize: 13, lineHeight: 1.4 }}>
+              {p.category}
+            </div>
+            <div className="font-mono text-ink" style={{ fontSize: 12 }}>
+              {p.yield}
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }

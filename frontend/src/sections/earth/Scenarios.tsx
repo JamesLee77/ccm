@@ -28,7 +28,8 @@ export default function Scenarios() {
       <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5">
         {t("scenarios.tge.label")}
       </div>
-      <div className="border border-rule mb-16" style={{ background: "var(--paper-deep)" }}>
+      {/* Desktop: full table */}
+      <div className="border border-rule mb-16 hidden md:block" style={{ background: "var(--paper-deep)" }}>
         <div
           className="grid items-center font-mono text-[11px] tracking-[0.12em] uppercase text-ink-soft"
           style={{
@@ -65,12 +66,46 @@ export default function Scenarios() {
           </div>
         ))}
       </div>
+      {/* Mobile: stacked label-value cards */}
+      <div className="md:hidden border border-rule mb-16" style={{ background: "var(--paper-deep)" }}>
+        {tgeRows.map((row, i) => (
+          <div
+            key={i}
+            style={{
+              padding: "18px 20px",
+              borderBottom:
+                i < tgeRows.length - 1 ? "1px solid var(--rule)" : "none",
+              fontWeight: i === tgeRows.length - 1 ? 600 : undefined,
+            }}
+          >
+            <div
+              className="font-display text-ink mb-3"
+              style={{ fontSize: 18 }}
+            >
+              {row[0]}
+            </div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+              {row.slice(1).map((cell, ci) => (
+                <div key={ci}>
+                  <div className="font-mono text-[10px] tracking-[0.12em] uppercase text-moss mb-0.5">
+                    {tgeCols[ci + 1]}
+                  </div>
+                  <div className="font-mono text-ink-soft" style={{ fontSize: 13 }}>
+                    {cell}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
 
       {/* Price scenarios */}
       <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5">
         {t("scenarios.price.label")}
       </div>
-      <div className="border border-rule" style={{ background: "var(--paper-deep)" }}>
+      {/* Desktop: full table */}
+      <div className="border border-rule hidden md:block" style={{ background: "var(--paper-deep)" }}>
         <div
           className="grid items-center font-mono text-[11px] tracking-[0.12em] uppercase text-ink-soft"
           style={{
@@ -109,6 +144,45 @@ export default function Scenarios() {
                 {cell}
               </div>
             ))}
+          </div>
+        ))}
+      </div>
+      {/* Mobile: stacked label-value cards */}
+      <div className="md:hidden border border-rule" style={{ background: "var(--paper-deep)" }}>
+        {priceRows.map((row, i) => (
+          <div
+            key={i}
+            style={{
+              padding: "18px 20px",
+              borderBottom:
+                i < priceRows.length - 1 ? "1px solid var(--rule)" : "none",
+            }}
+          >
+            <div
+              className="font-display text-ink mb-3"
+              style={{ fontSize: 18 }}
+            >
+              {row[0]}
+            </div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+              {row.slice(1).map((cell, ci) => (
+                <div key={ci}>
+                  <div className="font-mono text-[10px] tracking-[0.12em] uppercase text-moss mb-0.5">
+                    {priceCols[ci + 1]}
+                  </div>
+                  <div
+                    className={
+                      ci === row.length - 2
+                        ? "font-mono text-moss"
+                        : "font-mono text-ink"
+                    }
+                    style={{ fontSize: 13 }}
+                  >
+                    {cell}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>

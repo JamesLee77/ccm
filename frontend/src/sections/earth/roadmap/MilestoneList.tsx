@@ -5,6 +5,7 @@ type MilestoneState = "done" | "current" | "planned";
 
 type Milestone = {
   phase: string;
+  when: string;
   label: string;
   detail: string;
   state: MilestoneState;
@@ -12,18 +13,19 @@ type Milestone = {
 
 // Curated, calendar-ordered list — investor-relevant moments only.
 const MILESTONES: Milestone[] = [
-  { phase: "P0", label: "Standard v1.0 published", detail: "CC BY 4.0; mapped to Verra, Gold Standard, ICVCM CCP", state: "done" },
-  { phase: "P0", label: "Whitepaper v1.0", detail: "39 pages, 14 chapters, English", state: "done" },
-  { phase: "P0", label: "Foundation legal scoping", detail: "ADGM/BVI options narrowed; counsel engaged", state: "done" },
-  { phase: "P1", label: "External audit", detail: "Trail of Bits / OpenZeppelin / Quantstamp engagement", state: "current" },
-  { phase: "P1", label: "TGE: Seed + Series A", detail: "$0.15 / $0.20, $45M total cap, vesting per round", state: "current" },
-  { phase: "P1", label: "AMM seed", detail: "$CCM/USDC + $CCM/ETH on Uniswap V3 (Base)", state: "planned" },
-  { phase: "P2", label: "5 CCMine pilot nodes", detail: "1 DAC · 1 mineralization · 1 biochar · 2 afforestation", state: "planned" },
-  { phase: "P2", label: "VVB onboarding", detail: "Five Tier-1 VVB institutions live", state: "planned" },
-  { phase: "P3", label: "Vault lending GA", detail: "NFT collateral; LTV 30–70% by grade", state: "planned" },
-  { phase: "P3", label: "veCCM governance launch", detail: "Lock-and-vote, escrow, treasury rights", state: "planned" },
-  { phase: "P4", label: "Multi-chain bridges", detail: "Optimism, Arbitrum, Polygon zkEVM", state: "planned" },
-  { phase: "P5", label: "UNFCCC Article 6 alignment", detail: "Native A6.4ER ↔ CCM bridge", state: "planned" },
+  { phase: "P0", when: "2026 Q1", label: "Standard v1.0 published", detail: "CC BY 4.0; mapped to Verra, Gold Standard, ICVCM CCP", state: "done" },
+  { phase: "P0", when: "2026 Q1", label: "Whitepaper v1.0", detail: "39 pages, 14 chapters, English", state: "done" },
+  { phase: "P0", when: "2026 Q2", label: "Foundation legal scoping", detail: "ADGM/BVI options narrowed; counsel engaged", state: "done" },
+  { phase: "P1", when: "2026 Q2–Q3", label: "External audit", detail: "Trail of Bits / OpenZeppelin / Quantstamp engagement", state: "current" },
+  { phase: "P1", when: "2026 Q3", label: "TGE: Seed + Series A", detail: "$0.15 / $0.20, $45M total cap, vesting per round", state: "current" },
+  { phase: "P1", when: "2026 Q3", label: "AMM seed", detail: "$CCM/USDC + $CCM/ETH on Uniswap V3 (Base)", state: "planned" },
+  { phase: "P1", when: "2026 Q3–Q4", label: "Exchange listing", detail: "Tier-1 CEX + DEX listings; market-maker engagement", state: "planned" },
+  { phase: "P2", when: "2026 Q4", label: "5 CCMine pilot nodes", detail: "1 DAC · 1 mineralization · 1 biochar · 2 afforestation", state: "planned" },
+  { phase: "P2", when: "2027 Q1", label: "VVB onboarding", detail: "Five Tier-1 VVB institutions live", state: "planned" },
+  { phase: "P3", when: "2027 Q2", label: "Vault lending GA", detail: "NFT collateral; LTV 30–70% by grade", state: "planned" },
+  { phase: "P3", when: "2027 Q2", label: "veCCM governance launch", detail: "Lock-and-vote, escrow, treasury rights", state: "planned" },
+  { phase: "P4", when: "2027 Q4", label: "Multi-chain bridges", detail: "Optimism, Arbitrum, Polygon zkEVM", state: "planned" },
+  { phase: "P5", when: "2028 Q3", label: "UNFCCC Article 6 alignment", detail: "Native A6.4ER ↔ CCM bridge", state: "planned" },
 ];
 
 const STATE_META: Record<MilestoneState, { label: string; color: string }> = {
@@ -71,16 +73,18 @@ export default function MilestoneList() {
         margin: 0,
       }}
     >
+      {/* Desktop table */}
       <li
-        className="grid items-center font-mono text-[11px] tracking-[0.12em] uppercase text-ink-soft"
+        className="hidden md:grid items-center font-mono text-[11px] tracking-[0.12em] uppercase text-ink-soft"
         style={{
-          gridTemplateColumns: "60px 80px 1fr 1.4fr",
+          gridTemplateColumns: "55px 110px 80px 1fr 1.4fr",
           gap: 16,
           padding: "16px 24px",
           borderBottom: "1px solid var(--rule)",
         }}
       >
         <span>phase</span>
+        <span>when</span>
         <span>state</span>
         <span>milestone</span>
         <span>detail</span>
@@ -90,11 +94,8 @@ export default function MilestoneList() {
         return (
           <li
             key={`${m.phase}-${m.label}`}
-            className="grid items-baseline transition-colors"
+            className="transition-colors"
             style={{
-              gridTemplateColumns: "60px 80px 1fr 1.4fr",
-              gap: 16,
-              padding: "16px 24px",
               borderBottom:
                 i < MILESTONES.length - 1 ? "1px solid var(--rule)" : "none",
               opacity: shown ? 1 : 0,
@@ -104,47 +105,102 @@ export default function MilestoneList() {
                 : `opacity 280ms ease-out ${i * 50}ms, transform 280ms ease-out ${i * 50}ms`,
             }}
           >
-            <span
-              className="font-mono text-moss"
-              style={{ fontSize: 12, letterSpacing: 1 }}
-            >
-              {m.phase}
-            </span>
-            <span
-              className="font-mono"
+            {/* Desktop row */}
+            <div
+              className="hidden md:grid items-baseline"
               style={{
-                fontSize: 11,
-                letterSpacing: 1.6,
-                textTransform: "uppercase",
-                color: meta.color,
+                gridTemplateColumns: "55px 110px 80px 1fr 1.4fr",
+                gap: 16,
+                padding: "16px 24px",
               }}
             >
-              {/* state pip */}
               <span
-                aria-hidden
+                className="font-mono text-moss"
+                style={{ fontSize: 12, letterSpacing: 1 }}
+              >
+                {m.phase}
+              </span>
+              <span
+                className="font-mono text-ink"
+                style={{ fontSize: 12, letterSpacing: 0.6 }}
+              >
+                {m.when}
+              </span>
+              <span
+                className="font-mono"
                 style={{
-                  display: "inline-block",
-                  width: 8,
-                  height: 8,
-                  background: meta.color,
-                  marginRight: 8,
-                  verticalAlign: "middle",
+                  fontSize: 11,
+                  letterSpacing: 1.6,
+                  textTransform: "uppercase",
+                  color: meta.color,
                 }}
-              />
-              {meta.label}
-            </span>
-            <span
-              className="font-display text-ink"
-              style={{ fontSize: 15, fontWeight: 500 }}
+              >
+                <span
+                  aria-hidden
+                  style={{
+                    display: "inline-block",
+                    width: 8,
+                    height: 8,
+                    background: meta.color,
+                    marginRight: 8,
+                    verticalAlign: "middle",
+                  }}
+                />
+                {meta.label}
+              </span>
+              <span
+                className="font-display text-ink"
+                style={{ fontSize: 15, fontWeight: 500 }}
+              >
+                {m.label}
+              </span>
+              <span
+                className="font-body text-ink-soft"
+                style={{ fontSize: 13, lineHeight: 1.5 }}
+              >
+                {m.detail}
+              </span>
+            </div>
+
+            {/* Mobile card */}
+            <div
+              className="md:hidden"
+              style={{ padding: "16px 20px" }}
             >
-              {m.label}
-            </span>
-            <span
-              className="font-body text-ink-soft"
-              style={{ fontSize: 13, lineHeight: 1.5 }}
-            >
-              {m.detail}
-            </span>
+              <div
+                className="flex items-center justify-between mb-2 font-mono"
+                style={{ fontSize: 11, letterSpacing: 1.4, textTransform: "uppercase" }}
+              >
+                <span style={{ color: "var(--moss)" }}>
+                  {m.phase} · <span style={{ color: "var(--ink)" }}>{m.when}</span>
+                </span>
+                <span style={{ color: meta.color, display: "inline-flex", alignItems: "center" }}>
+                  <span
+                    aria-hidden
+                    style={{
+                      display: "inline-block",
+                      width: 7,
+                      height: 7,
+                      background: meta.color,
+                      marginRight: 6,
+                    }}
+                  />
+                  {meta.label}
+                </span>
+              </div>
+              <div
+                className="font-display text-ink mb-1"
+                style={{ fontSize: 15, fontWeight: 500, lineHeight: 1.3 }}
+              >
+                {m.label}
+              </div>
+              <div
+                className="font-body text-ink-soft"
+                style={{ fontSize: 13, lineHeight: 1.5 }}
+              >
+                {m.detail}
+              </div>
+            </div>
           </li>
         );
       })}

@@ -397,7 +397,7 @@ Write `onchain/scripts/_dry-run-phase1.ts`:
 /**
  * Dry-run the entire Phase 1 deploy sequence against a forked Base mainnet,
  * in-process. No real transactions; verifies that:
- *   - CCMToken deploys and admin holds MINTER_ROLE
+ *   - CCMToken deploys and admin holds DEFAULT_ADMIN_ROLE / MINTER_ROLE / PAUSER_ROLE
  *   - CCMVesting deploys and links to the token
  *   - Mint of 10M CCM to a dummy treasury succeeds
  *   - Cap headroom is correct after mint
@@ -427,10 +427,12 @@ async function main() {
   const tokenAddr = await token.getAddress();
   console.log("Token:", tokenAddr, "version:", await token.VERSION());
 
+  const ADMIN = await token.DEFAULT_ADMIN_ROLE();
   const MINTER = await token.MINTER_ROLE();
-  if (!(await token.hasRole(MINTER, deployer.address))) {
-    throw new Error("Deployer missing MINTER_ROLE after deploy");
-  }
+  const PAUSER = await token.PAUSER_ROLE();
+  if (!(await token.hasRole(ADMIN, deployer.address))) throw new Error("Deployer missing DEFAULT_ADMIN_ROLE after deploy");
+  if (!(await token.hasRole(MINTER, deployer.address))) throw new Error("Deployer missing MINTER_ROLE after deploy");
+  if (!(await token.hasRole(PAUSER, deployer.address))) throw new Error("Deployer missing PAUSER_ROLE after deploy");
 
   // Step B: Deploy Vesting
   const Vesting = await ethers.getContractFactory("CCMVesting");

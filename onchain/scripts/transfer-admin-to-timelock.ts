@@ -88,7 +88,8 @@ export async function runHandoff(
     }
     console.log(`[grant] ${r.name} → ${timelockAddr} …`);
     const tx = await token.grantRole(r.hash, timelockAddr);
-    const receipt = await tx.wait();
+    // 2 confirmations so the RPC re-indexes before the next hasRole() check.
+    const receipt = await tx.wait(2);
     if (!receipt) throw new Error(`grantRole ${r.name} tx.wait() returned null`);
     console.log(`        tx: ${tx.hash}`);
     txHashes.push(tx.hash);
@@ -115,7 +116,7 @@ export async function runHandoff(
       }
       console.log(`[renounce] ${r.name} on ${signerAddr} …`);
       const tx = await token.renounceRole(r.hash, signerAddr);
-      const receipt = await tx.wait();
+      const receipt = await tx.wait(2);
       if (!receipt) throw new Error(`renounceRole ${r.name} tx.wait() returned null`);
       console.log(`           tx: ${tx.hash}`);
       txHashes.push(tx.hash);

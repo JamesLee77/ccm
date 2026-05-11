@@ -92,7 +92,8 @@ async function main() {
 
   const tx = await token.mint(TREASURY, amountWei);
   console.log("\nMint tx:", tx.hash);
-  const receipt = await tx.wait();
+  // Wait 2 confirmations so the RPC has time to re-index before we read state.
+  const receipt = await tx.wait(2);
   if (!receipt) {
     throw new Error("tx.wait() returned null — receipt not confirmed; aborting before post-mint asserts");
   }

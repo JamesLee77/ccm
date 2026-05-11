@@ -40,6 +40,13 @@ export async function runHandoff(
   signer: Signer,
   opts: { skipRenounce?: boolean } = {},
 ): Promise<HandoffResult> {
+  // Fail fast on bad input — callers from unit tests don't go through main()'s
+  // env-var parsing so this function has to defend itself.
+  if (!ethers.isAddress(tokenAddr)) throw new Error(`runHandoff: tokenAddr invalid: ${tokenAddr}`);
+  if (!ethers.isAddress(timelockAddr)) throw new Error(`runHandoff: timelockAddr invalid: ${timelockAddr}`);
+  if (tokenAddr === ethers.ZeroAddress) throw new Error("runHandoff: tokenAddr must not be zero");
+  if (timelockAddr === ethers.ZeroAddress) throw new Error("runHandoff: timelockAddr must not be zero");
+
   const token = await ethers.getContractAt("CCMToken", tokenAddr, signer);
   const signerAddr = await signer.getAddress();
 
@@ -47,11 +54,19 @@ export async function runHandoff(
   const MINTER_ROLE = await token.MINTER_ROLE();
   const PAUSER_ROLE = await token.PAUSER_ROLE();
 
+  // roleEntries[0] MUST be DEFAULT_ADMIN_ROLE so that the reversed renounce
+  // loop renounces admin LAST. If you add a role, preserve this invariant —
+  // the assertion below catches any silent reordering.
   const roleEntries: { name: string; hash: string }[] = [
     { name: "DEFAULT_ADMIN_ROLE", hash: DEFAULT_ADMIN_ROLE },
     { name: "MINTER_ROLE", hash: MINTER_ROLE },
     { name: "PAUSER_ROLE", hash: PAUSER_ROLE },
   ];
+  if (roleEntries[0].hash !== DEFAULT_ADMIN_ROLE) {
+    throw new Error(
+      "BUG: roleEntries[0] must be DEFAULT_ADMIN_ROLE so reverse() renounces it last",
+    );
+  }
 
   // Sanity: deployer must currently hold DEFAULT_ADMIN_ROLE (otherwise nothing they
   // do here is authorized). The other two are warned about but not required.
@@ -133,6 +148,9 @@ async function main() {
   }
   const TOKEN = ethers.getAddress(TOKEN_RAW);
   const TIMELOCK = ethers.getAddress(TIMELOCK_RAW);
+  if (TOKEN === ethers.ZeroAddress) {
+    throw new Error("TOKEN must not be the zero address");
+  }
   if (TIMELOCK === ethers.ZeroAddress) {
     throw new Error("TIMELOCK must not be the zero address");
   }
@@ -141,7 +159,7 @@ async function main() {
   if (network.chainId !== 8453n && !ALLOW_TESTNET) {
     throw new Error(
       `Refusing to run: chainId is ${network.chainId} (expected 8453 = Base mainnet). ` +
-        `Set ALLOW_TESTNET=1 to override (Sepolia rehearsal only).`,
+        `Set ALLOW_TESTNET=1 to allow non-mainnet rehearsal chains (84532, 31337, 1337).`,
     );
   }
 

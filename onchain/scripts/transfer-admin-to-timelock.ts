@@ -184,7 +184,10 @@ async function main() {
   console.log(`\n${result.txHashes.length} tx(s) sent: ${result.txHashes.join(", ")}`);
 }
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+// Only run if this script is invoked directly (not imported)
+if (require.main === module) {
+  main().catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
+}

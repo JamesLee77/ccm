@@ -256,15 +256,28 @@ import { ethers } from "hardhat";
 
 async function main() {
   const TOKEN = process.env.CCM_TOKEN;
-  const TREASURY = process.env.TREASURY_ADDRESS;
+  const TREASURY_RAW = process.env.TREASURY_ADDRESS;
   const ALLOW_TESTNET = process.env.ALLOW_TESTNET === "1";
-  const AMOUNT_CCM = BigInt(process.env.AMOUNT_CCM ?? "10000000");
+
+  let AMOUNT_CCM: bigint;
+  try {
+    AMOUNT_CCM = BigInt(process.env.AMOUNT_CCM ?? "10000000");
+  } catch {
+    throw new Error(`AMOUNT_CCM is not a valid integer: "${process.env.AMOUNT_CCM}"`);
+  }
+  if (AMOUNT_CCM <= 0n) {
+    throw new Error(`AMOUNT_CCM must be > 0 (got ${AMOUNT_CCM})`);
+  }
 
   if (!TOKEN || !ethers.isAddress(TOKEN)) {
     throw new Error("CCM_TOKEN env var (valid address) required");
   }
-  if (!TREASURY || !ethers.isAddress(TREASURY)) {
+  if (!TREASURY_RAW || !ethers.isAddress(TREASURY_RAW)) {
     throw new Error("TREASURY_ADDRESS env var (valid address) required");
+  }
+  const TREASURY = ethers.getAddress(TREASURY_RAW); // EIP-55 normalisation
+  if (TREASURY === ethers.ZeroAddress) {
+    throw new Error("TREASURY_ADDRESS must not be the zero address");
   }
 
   const network = await ethers.provider.getNetwork();
@@ -295,14 +308,15 @@ async function main() {
 
   console.log("=".repeat(70));
   console.log("MINT TREASURY (Phase 1)");
-  console.log("  Network    :", network.name, "chainId", network.chainId.toString());
-  console.log("  Token      :", TOKEN);
-  console.log("  Deployer   :", deployer.address);
-  console.log("  Treasury   :", TREASURY);
-  console.log("  Amount     :", AMOUNT_CCM.toString(), "CCM");
-  console.log("  Amount wei :", amountWei.toString());
-  console.log("  Supply now :", ethers.formatUnits(supplyBefore, 18), "CCM");
-  console.log("  Cap        :", ethers.formatUnits(cap, 18), "CCM");
+  console.log("  Network             :", network.name, "chainId", network.chainId.toString());
+  console.log("  Token               :", TOKEN);
+  console.log("  Deployer            :", deployer.address);
+  console.log("  Treasury            :", TREASURY);
+  console.log("  Amount              :", AMOUNT_CCM.toString(), "CCM");
+  console.log("  Amount wei          :", amountWei.toString());
+  console.log("  Supply now          :", ethers.formatUnits(supplyBefore, 18), "CCM");
+  console.log("  Cap                 :", ethers.formatUnits(cap, 18), "CCM");
+  console.log("  Cap left after mint :", ethers.formatUnits(cap - supplyBefore - amountWei, 18), "CCM");
   console.log("=".repeat(70));
   console.log("Sending in 10 seconds. Ctrl-C to abort.");
   await new Promise((r) => setTimeout(r, 10_000));
@@ -310,7 +324,10 @@ async function main() {
   const tx = await token.mint(TREASURY, amountWei);
   console.log("\nMint tx:", tx.hash);
   const receipt = await tx.wait();
-  console.log("Mined in block", receipt?.blockNumber);
+  if (!receipt) {
+    throw new Error("tx.wait() returned null — receipt not confirmed; aborting before post-mint asserts");
+  }
+  console.log("Mined in block", receipt.blockNumber);
 
   const supplyAfter = await token.totalSupply();
   const treasuryBal = await token.balanceOf(TREASURY);

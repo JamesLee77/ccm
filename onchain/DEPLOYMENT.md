@@ -1,0 +1,329 @@
+# CCM Smart Contract Deployment Record
+
+> Time-ordered record of deployed contract addresses, transaction hashes, and verification status.
+> Update this document on every new deployment or migration.
+>
+> **Status (2026-05-09)**: Testnet (Base Sepolia) deploy complete; mainnet
+> deploy pending. CCM-renamed sources were forked from the czero precursor
+> (which had its own CZM-branded testnet deployment, see `czero/DEPLOYMENT.md`).
+> Mainnet deploy gated on the pre-deploy checklist below (`docs/ccm-phase0-architecture.md` §1).
+
+---
+
+## Sandbox — Base Sepolia testnet (deployed 2026-05-09)
+
+For the public testnet sandbox at testnet.ccmnetwork.net. These tokens
+have no real value; the contracts were deployed with the existing czero
+testnet dev EOA as both deployer and admin (no multisig needed for sandbox).
+
+### Network
+
+| Item | Value |
+|---|---|
+| Chain | Base Sepolia |
+| Chain ID | `84532` |
+| RPC | `https://sepolia.base.org` |
+| Explorer | https://sepolia.basescan.org |
+| Solidity | 0.8.24 (Cancun, optimizer 200 runs) |
+
+### Deployer / Admin
+
+| Item | Value |
+|---|---|
+| Deployer | `0xB722843587DA96bdFb5638Bb0AbC8FC56a9dfa1D` (EOA, testnet only) |
+| Admin | same EOA — sandbox does not need multisig |
+| Roles on Token | `DEFAULT_ADMIN_ROLE`, `MINTER_ROLE`, `PAUSER_ROLE` |
+| Roles on Vesting | `DEFAULT_ADMIN_ROLE`, `SCHEDULE_MANAGER_ROLE` |
+
+### Deployed contracts
+
+| Contract | Address | BaseScan |
+|---|---|---|
+| **CCMToken v1.0.0** | `0x5641d6A2a6AD2B835b37489c72D2Bd716903CEFD` | [verified](https://sepolia.basescan.org/address/0x5641d6A2a6AD2B835b37489c72D2Bd716903CEFD#code) |
+| **CCMVesting** | `0xc3E1bC1073b89DB6593e4257aD903A1611Bb24C5` | [verified](https://sepolia.basescan.org/address/0xc3E1bC1073b89DB6593e4257aD903A1611Bb24C5#code) |
+| **CCMSandboxFaucet** *(sandbox-only)* | `0xfADAc6697d2Ee295d03a4De0F5ef79A431290E46` | [verified](https://sepolia.basescan.org/address/0xfADAc6697d2Ee295d03a4De0F5ef79A431290E46#code) |
+| **CCMSandboxNFT** *(sandbox-only)* | `0xbC3EAc7514F82A868807b81b165D2121495380E9` | [verified](https://sepolia.basescan.org/address/0xbC3EAc7514F82A868807b81b165D2121495380E9#code) |
+| **CCMSandboxVault** *(sandbox-only)* | `0xEd62b71e9ff0200CFf02C8F38618Af153C609334` | [verified](https://sepolia.basescan.org/address/0xEd62b71e9ff0200CFf02C8F38618Af153C609334#code) |
+| **CCMSandboxGradeWrapper** *(sandbox-only)* | `0x35A4f714847cDB0e34e40cFA99A9CDB0ed232986` | [verified](https://sepolia.basescan.org/address/0x35A4f714847cDB0e34e40cFA99A9CDB0ed232986#code) |
+| ↳ CCM-A token | `0x90f9654B8e912715614aE8072D272c456323F8F4` | [verified](https://sepolia.basescan.org/address/0x90f9654B8e912715614aE8072D272c456323F8F4#code) |
+| ↳ CCM-B token | `0xa13374DAbc181A7d0657252F16B37eEC95570C8B` | [verified](https://sepolia.basescan.org/address/0xa13374DAbc181A7d0657252F16B37eEC95570C8B#code) |
+| ↳ CCM-C token | `0xb0c14AcbAa95364AC359d0AecAf2885B52e1c9B2` | [verified](https://sepolia.basescan.org/address/0xb0c14AcbAa95364AC359d0AecAf2885B52e1c9B2#code) |
+| ↳ CCM-D token | `0x35571eC6301B2Ef57D153a08D05cdDa1dF9721B2` | [verified](https://sepolia.basescan.org/address/0x35571eC6301B2Ef57D153a08D05cdDa1dF9721B2#code) |
+| **CCMSandboxUSDC** *(sandbox-only, 6 dec)* | `0x87D1726B81095257A9ed70Aa1e67AA740bE485B6` | [verified](https://sepolia.basescan.org/address/0x87D1726B81095257A9ed70Aa1e67AA740bE485B6#code) |
+| **CCMSandboxLending** *(sandbox-only)* | `0x307e18456647B81A6BA5e90aE90949e70bB8f8C6` | [verified](https://sepolia.basescan.org/address/0x307e18456647B81A6BA5e90aE90949e70bB8f8C6#code) |
+| **CCMSandboxFractionalizer** *(sandbox-only)* | `0x39FefEE1f75e711c51BA303F70CC2053eAF9Fe3a` | [verified](https://sepolia.basescan.org/address/0x39FefEE1f75e711c51BA303F70CC2053eAF9Fe3a#code) |
+| ↳ FRAC0 (lazily deployed, NFT id 0) | `0xa99A094d02a6D75f7887ebb35d26117C8DA6EbAb` | [verified](https://sepolia.basescan.org/address/0xa99A094d02a6D75f7887ebb35d26117C8DA6EbAb#code) |
+| **CCMSandboxYield** *(sandbox-only)* | `0x566010522f7B93b89a823Be1cFfCead53c6e1dF4` | [verified](https://sepolia.basescan.org/address/0x566010522f7B93b89a823Be1cFfCead53c6e1dF4#code) |
+| **CCMSandboxInsurance** *(sandbox-only, seeded 1000 USDC)* | `0xb0F2dDB07fcE42EC677eC7a45D642f88adcc48c3` | [verified](https://sepolia.basescan.org/address/0xb0F2dDB07fcE42EC677eC7a45D642f88adcc48c3#code) |
+| **CCMSandboxIndexBasket** *(sandbox-only)* | `0x4dcea36A3d6C11dA6a7d443C05908c0a4D405423` | [verified](https://sepolia.basescan.org/address/0x4dcea36A3d6C11dA6a7d443C05908c0a4D405423#code) |
+| ↳ CCM-PRIME (60A/30B/10C/0D) | `0x8f3Ab4641EaF59b81a07D8bABd97D93e94245D8A` | [verified](https://sepolia.basescan.org/address/0x8f3Ab4641EaF59b81a07D8bABd97D93e94245D8A#code) |
+| ↳ CCM-FOREST (0A/30B/60C/10D) | `0x3bD1A48345F5D11EFe7C458daB4584474b3Db9d8` | [verified](https://sepolia.basescan.org/address/0x3bD1A48345F5D11EFe7C458daB4584474b3Db9d8#code) |
+| ↳ CCM-TECH (70A/30B/0C/0D) | `0x886320E5fbc3Ba482d6148D2e15B941C6a201FBf` | [verified](https://sepolia.basescan.org/address/0x886320E5fbc3Ba482d6148D2e15B941C6a201FBf#code) |
+| **CCMSandboxRebate** *(sandbox-only, §7.9 Retire-to-Earn)* | `0x11213DBc93999b95b5d5a6fdC8a0ddE7e01c5fbD` | [verified](https://sepolia.basescan.org/address/0x11213DBc93999b95b5d5a6fdC8a0ddE7e01c5fbD#code) |
+| ~~CCMSandboxVault v0~~ *(decommissioned)* | ~~`0x69c5eB2BB679E88BAc40525cD20d1Ea84905633D`~~ | first deploy used 1:1 raw atoms (no 1e18 scale); MINTER_ROLE revoked 2026-05-09 |
+
+### Initial state (post-deploy)
+
+CCMToken:
+- `name`: `"CCM Network Token"`
+- `symbol`: `"CCM"`
+- `decimals`: 18
+- `cap`: 5,000,000,000 CCM
+- `VERSION`: `"1.0.0"`
+- `totalSupply`: 0 (no mint yet)
+- `paused`: false
+
+CCMVesting:
+- `ccm`: `0x5641d6A2a6AD2B835b37489c72D2Bd716903CEFD` (linked)
+- `getScheduleCount`: 0
+
+CCMSandboxFaucet *(testnet-only)*:
+- `token`: `0x5641d6A2a6AD2B835b37489c72D2Bd716903CEFD`
+- `CLAIM_AMOUNT`: 100 CCM
+- `COOLDOWN`: 86,400 s (24h)
+- Granted `MINTER_ROLE` on CCMToken at tx `0x20ac68f5cc2c17a8b4fb23646800c4ed1acb499b93cc47ce8ec911cd95971a7e`
+- Smoke-tested: deployer claimed 100 CCM at tx `0x6b3311696355ebff583b8372e5b48ec740f28adb0ef24dce166db56a7750fc47`
+- 14 hardhat unit tests passing on this contract
+
+CCMSandboxVault *(testnet-only)*:
+- ERC-1155 NFT ⇄ ERC-20 CCM 1:1 wrap (1 tonne ↔ 1 CCM, vault scales by 10^18)
+- FIFR enforced in-contract: lower-grade entries returned first (D → C → B → A); FIFO within grade
+- Per-tx hop cap: 5 (split larger unwraps across multiple txs)
+- ReentrancyGuard + CEI ordering on wrap/unwrap
+- Constructor refuses chainId 8453
+- MINTER_ROLE granted on CCMToken at tx `0x5b3fd8cf674b8e6ce6c0d92b1b9c52ecb1bb228e595746adbf87e658653694f1`
+- Smoke-tested wrap 5 NFT → 5 CCM (`0x4d61e0cacf...`), unwrap 5 CCM → 5 NFT (`0xfae0b3beb4...`)
+- 17 hardhat unit tests passing on this contract; full suite **210 passing**
+
+NOTE: a v0 vault was deployed earlier (`0x69c5eB2B...`) with a 1:1 raw-atom bug
+(no 1e18 scaling). NFTs were recovered, MINTER_ROLE revoked, current vault is
+v1 at `0xEd62b71e...`.
+
+CCMSandboxNFT *(testnet-only)*:
+- ERC-1155 with on-chain `meta(id)` (grade A/B/C/D, vintage 2020–2030, tonnage 1–1,000, projectId, minter)
+- `MINT_COOLDOWN`: 1 hour per address
+- `mint(grade, vintage, tonnage, projectId)` open to anyone
+- `retire(id, amount)` burns and increments `retiredTotal`
+- Constructor refuses chainId 8453 (mainnet)
+- Smoke-tested: mint id 0 grade A 2026 50t at tx `0x5a6e02fdc70b8ee89bdd16999e9a266cab00b1c95864b983aa020a2c91e6f06a`, retire 20 at tx `0x3936c230b6e7dede5253bbd7f8edb7a8cef36c1eb42112b19d6d5f9b47ff8f20`
+- 19 hardhat unit tests passing on this contract; full suite **193 passing**
+
+### Notes
+
+- Same script as czero proven on its CZM testnet (deploy-presale.ts) but
+  crashed mid-way reading `VERSION()` immediately after deploy due to RPC
+  state caching (czero's known issue, doc §6 in czero DEPLOYMENT.md).
+  CCMVesting was deployed via a one-off `_deploy-vesting-only.ts` helper.
+- Both contracts verified on BaseScan via `hardhat verify --network baseSepolia`.
+- The next operational step is to mint a small allocation to the vesting
+  contract and create a sandbox schedule so portal/testnet UIs have data
+  to render.
+
+---
+
+## Phase 0 — Mainnet pre-audit deploy (Base)
+
+### Network (planned)
+
+| Item | Value |
+|---|---|
+| Chain | **Base mainnet** |
+| Chain ID | `8453` |
+| RPC | `https://mainnet.base.org` |
+| Explorer | https://basescan.org |
+| Solidity | `0.8.24` (Cancun EVM, optimizer 200 runs) |
+| Deploy date | _pending_ |
+
+### Pre-deploy gating list
+
+Per `docs/ccm-phase0-architecture.md` §1, **none of the following may be skipped**:
+
+- [⚠] **Admin role on every contract granted to a Gnosis Safe 3-of-5 (no EOA)** — flow rehearsed end-to-end on Base Sepolia: Safe v1.4.1 3-of-4 (`0xCD2A…3108`) deployed via canonical factory, wired as sole proposer/executor on Timelock v2 (`0x1280…6362`), 3-of-4 EIP-712 SafeTx → `Timelock.schedule` → `CallScheduled` event verified 2026-05-09. Mainnet step left: deploy a Safe at safe.global with the real 5 signers, run `scripts/deploy-timelock.ts` and `scripts/transfer-admin-to-timelock.ts` against it.
+- [x] **`CCMTimelock` (48h delay) implemented** — `contracts/CCMTimelock.sol` enforces 48h floor on-chain (chainId 84532 / 8453); local Hardhat permitted to use shorter delays for unit tests. Deploy via `scripts/deploy-timelock.ts`, hand admin off via `scripts/transfer-admin-to-timelock.ts`. End-to-end rehearsal status: see "Mainnet pre-flight rehearsal" below.
+- [x] **Bug bounty program scope drafted** — `BUG_BOUNTY.md` + `SECURITY.md`. $500K cap, standard tiers (Critical $100K-$500K · High $25K-$100K · Medium $5K-$25K · Low $1K-$5K), KYC ≥$10K. Live submission to Immunefi gated on mainnet deploy + vault funding (operator runbook in `BUG_BOUNTY.md`).
+- [ ] Slither + manual review **re-run on the renamed CCM* sources**
+- [x] **Off-chain KYC whitelist with admin gate** — `CCMKYCRegistry` deployed as a single source of truth (`isKYCed(addr)` bool). Two-role design: `KYC_OPERATOR_ROLE` (Safe, hot) flips per-user status without timelock so daily approvals are real-time; `DEFAULT_ADMIN_ROLE` (Timelock, slow) manages operators. Sumsub or Persona feeds the operator role from off-chain. Base Sepolia rehearsal at `0x9172…2E46` (admin = rehearsal Timelock `0x3EbA…d979`) — handoff verified end-to-end on 2026-05-09.
+- [ ] BaseScan API key configured for verify
+- [ ] Deployer wallet (Gnosis Safe owner) funded for deploy gas
+
+### Mainnet runbook (per privileged contract)
+
+For each of `CCMToken`, `CCMVesting`, `CCMStaking`, `CCMTGESale`, `CCMMigration`:
+
+1. Deploy contract with the deployer EOA holding all roles (existing flow).
+2. From the multisig, schedule `grantRole(DEFAULT_ADMIN_ROLE, timelock)` on the contract — but on mainnet, since the *deployer* is still admin at this point, the deployer just calls it directly: `contract.grantRole(DEFAULT_ADMIN_ROLE, timelock)`.
+3. Deployer also grants `PAUSER_ROLE` (and any other privileged roles) to the timelock.
+4. Deployer calls `contract.renounceRole(...)` for every role they hold. **Order matters**: renounce non-admin roles first, then renounce `DEFAULT_ADMIN_ROLE` last — once the admin role is gone, the deployer cannot recover any other role.
+5. Sanity: `hasRole(ADMIN, deployer) === false`, `hasRole(ADMIN, timelock) === true`. From here, every privileged op is `multisig → timelock.schedule → wait 48h → timelock.execute`.
+
+The `scripts/transfer-admin-to-timelock.ts` script automates steps 2–4 for `CCMToken`. Replicate the same pattern for `CCMVesting` etc. by adapting the role list.
+
+### Mainnet pre-flight rehearsal (Base Sepolia · 2026-05-09)
+
+Rehearsal token + timelock deployed separately from the sandbox token (sandbox
+`CCMToken` at `0x5641…CEFD` keeps its EOA admin so primitive deploys can grant
+`MINTER_ROLE` directly).
+
+| Contract | Address | BaseScan |
+|---|---|---|
+| CCMToken (rehearsal) | `0xB5e54084eEFcc4ddc93F3A6AA7A6Dea501FB3999` | [verified](https://sepolia.basescan.org/address/0xB5e54084eEFcc4ddc93F3A6AA7A6Dea501FB3999#code) |
+| CCMTimelock v1 (48h, deployer=proposer/executor placeholder) | `0x3EbA7887525f1E68dc946760a96B01d1E1a1d979` | [verified](https://sepolia.basescan.org/address/0x3EbA7887525f1E68dc946760a96B01d1E1a1d979#code) |
+| CCMKYCRegistry (admin=Timelock-v1, operator=deployer placeholder) | `0x9172D6eaF05587b595f4eE894B4C7917Be652E46` | [verified](https://sepolia.basescan.org/address/0x9172D6eaF05587b595f4eE894B4C7917Be652E46#code) |
+| Safe (3-of-4, v1.4.1) | `0xCD2A73Fbd9B179Cd32f0d6fC7e488e2bE3a63108` | [safe.global](https://app.safe.global/home?safe=basesep:0xCD2A73Fbd9B179Cd32f0d6fC7e488e2bE3a63108) |
+| CCMTimelock v2 (48h, **Safe** as proposer/executor) | `0x1280E7C73e22D35c1319145B7a9eCa4199786362` | [verified](https://sepolia.basescan.org/address/0x1280E7C73e22D35c1319145B7a9eCa4199786362#code) |
+
+**Handoff completed end-to-end:**
+
+| Check | Result |
+|---|---|
+| `hasRole(DEFAULT_ADMIN_ROLE, deployer)` | `false` |
+| `hasRole(DEFAULT_ADMIN_ROLE, timelock)` | `true` |
+| `hasRole(PAUSER_ROLE, deployer)` | `false` |
+| `hasRole(PAUSER_ROLE, timelock)` | `true` |
+| Direct EOA `grantRole` | ✓ reverts |
+| Scheduled `grantRole(MINTER_ROLE, alice)` via timelock | ✓ pending, ETA 2026-05-11T10:46:48Z (48h) |
+| `timelock.getMinDelay()` | `172800` s |
+
+This proves the mainnet handoff script works on a live chain. For mainnet,
+substitute the deployer EOA in `PROPOSERS` / `EXECUTORS` with the Gnosis Safe
+3-of-5 address and run the same scripts.
+
+#### Safe-controlled rehearsal (Timelock v2, 2026-05-09)
+
+Beyond the v1 timelock with EOA placeholder, a **second** rehearsal proves
+the same flow works with a real multisig in the loop. A 3-of-4 Safe
+v1.4.1 was deployed at `0xCD2A…3108`, and a fresh `CCMTimelock v2` at
+`0x1280…6362` was deployed with the Safe as its sole proposer/executor.
+
+Safe owners (testnet only):
+
+| # | Address |
+|---|---|
+| 1 | `0x953e7c875e0636171a3c223148183c4a8b604e5B` (bob) |
+| 2 | `0xAF2f45364657d9A9e40b80489Ed15baDC4dc098D` (carol) |
+| 3 | `0xB722843587DA96bdFb5638Bb0AbC8FC56a9dfa1D` (deployer) |
+| 4 | `0xD4EecF3a15e6727C91E2435216e4f071717411F0` (alice) |
+
+Threshold: **3** (the same threshold mainnet uses, just one fewer owner
+since we only have 4 keys in the test env).
+
+End-to-end check: 3 of 4 owners (bob, deployer, alice) signed an
+EIP-712 `SafeTx` calling `Timelock.schedule(grantRole(MINTER_ROLE,
+alice))`. Concatenated sigs were submitted via `Safe.execTransaction`.
+Result: `CallScheduled` event emitted by the timelock, op id
+`0xaa2aef…5c57`, ETA = submission + 48 h. **The Safe was accepted as
+PROPOSER, exactly as designed.**
+
+Mainnet substitution: deploy a Safe via [safe.global](https://app.safe.global)
+(3-of-5 with the real signers), then run `scripts/deploy-timelock.ts` with
+`PROPOSERS=<safe>` and `EXECUTORS=<safe>` (or `EXECUTORS=0x000…000` to
+allow anyone to push the execute button after the delay). The handoff
+script (`scripts/transfer-admin-to-timelock.ts`) is unchanged.
+
+### Deployed contracts
+
+| Contract | Address | BaseScan | Verify |
+|---|---|---|---|
+| CCMToken v1.0.0 | _pending_ | _pending_ | _pending_ |
+| CCMVesting | _pending_ | _pending_ | _pending_ |
+
+### Initial state (post-deploy snapshot)
+
+#### CCMToken
+- `name`: "CCM Network Token"
+- `symbol`: "CCM"
+- `decimals`: 18
+- `cap`: 5,000,000,000 CCM
+- `totalSupply`: 0 CCM (mint pending)
+- `paused`: `false`
+- Admin: Gnosis Safe (3-of-5)
+- MINTER_ROLE: Vesting contract + admin
+- PAUSER_ROLE: admin only
+
+#### CCMVesting
+- `ccm`: _CCMToken address_
+- `getScheduleCount`: 0
+
+---
+
+## Operations (Phase 0)
+
+### SAFT investor onboarding procedure
+
+For each KYC-approved investor:
+
+```ts
+// 1. Admin mints the investor's allocation to the Vesting contract
+await token.mint("<vestingAddr>", amountInWei);
+
+// 2. Admin creates the schedule (single or batch)
+await vesting.createSchedule(
+  investorAddr,    // beneficiary
+  amountInWei,     // 18 decimals
+  startTime,       // typically the sale-end timestamp
+  cliffSeconds,    // e.g. 12 months = 31_536_000
+  vestSeconds,     // e.g. 36 months = 94_608_000
+  true             // revocable (so admin can redirect tokens for v2 migration)
+);
+
+// (or batch)
+await vesting.createScheduleBatch(
+  [a1, a2, a3], [amt1, amt2, amt3],
+  startTime, cliffSeconds, vestSeconds, true
+);
+```
+
+All admin txs go through the 48h Timelock; `mint` and `createSchedule`
+calls are queued via the multisig and executed after the delay.
+
+### Phase 1 migration preparation (only if audit requires v2)
+
+If external audit identifies a critical issue requiring code change:
+1. Deploy CCMTokenV2 with the audit fix
+2. Deploy CCMMigration (`scripts/deploy-migration.ts`)
+3. v2.grantRole(MINTER_ROLE, migrationAddr)
+4. SAFT holders call `migrate()` → v1 burned + v2 minted
+5. After 30-day deadline: migration.close() permanently
+6. v2.revokeRole(MINTER_ROLE, migration)
+
+If audit returns clean: skip this section entirely; v1 is canonical.
+
+---
+
+## Mainnet pre-deployment checklist (consolidated)
+
+| Item | Status |
+|---|---|
+| External audit (Trail of Bits / OZ / Quantstamp) | ❌ scheduled after Phase 0 fundraise closes |
+| Admin → Multisig (Gnosis Safe 3-of-5) | ⚠ Mainnet signers/threshold = policy decision (out-of-band). Base Sepolia rehearsal complete: 3-of-4 Safe v1.4.1 deployed at `0xCD2A…3108`, wired as sole proposer/executor on Timelock v2 (`0x1280…6362`); 3-sig EIP-712 schedule round-trip proven 2026-05-09. |
+| Timelock (48h) | ✅ `CCMTimelock` implemented + tested (12/12 tests · 348/348 suite); Base Sepolia rehearsal complete (handoff proven end-to-end on 2026-05-09) |
+| Bug bounty (Immunefi) | ⚠ Program scope drafted — see [`BUG_BOUNTY.md`](./BUG_BOUNTY.md) and [`SECURITY.md`](./SECURITY.md). $500K cap, KYC ≥$10K. Submission gated on mainnet deploy + vault funding. |
+| KYC oracle integration | ✅ `CCMKYCRegistry` implemented + tested (22/22 tests · 370/370 suite); Base Sepolia rehearsal complete — operator (hot) / admin (timelock) role split working as designed |
+| SAFT template + migration clause | ⚠ separate legal review needed |
+| Holder registry (off-chain DB, portal D1) | ✅ `ccm-portal-db` D1 created (`dbd8f008-99a2-48cc-afac-6144fec3f29b`); migrations 0001+0002 applied; tables: `users`, `vesting_schedules`, `kyc_status`, `holder_snapshots`, `sync_runs`, `auth_nonces`, `sent_notifications`. Sync job + admin API ready (58/58 portal-api tests). Operational once `CCM_VESTING_ADDRESS` / `CCM_KYC_REGISTRY_ADDRESS` / `CCM_TOKEN_ADDRESS` are set in `wrangler.toml` post-mainnet-deploy. |
+
+See [`SECURITY_REVIEW.md`](./SECURITY_REVIEW.md) for the full security
+review (carried over from czero — must be re-run on CCM-renamed sources
+before mainnet).
+
+---
+
+## Inheritance from czero
+
+The contract source was forked from czero (CZM branding) with a
+mechanical 1:1 rename on 2026-05-09. Nothing else changed. The czero
+testnet deployment on Base Sepolia (chainId 84532, addresses recorded
+in `czero/DEPLOYMENT.md`) remains as historical reference but is
+unrelated to the CCM mainnet deploy that will occur here.
+
+The migration contract (CCMMigration) was demonstrated end-to-end on
+the czero testnet (1000 CZM swap, CEI pattern, 0 Slither warnings).
+That validation transfers to CCM since only identifiers were renamed.
+
+---
+
+## Change log
+
+| Date | Change |
+|---|---|
+| 2026-05-09 | Forked from czero/contracts; mechanical CZM → CCM rename; awaiting compile + test re-run on renamed sources, then pre-deploy gating |

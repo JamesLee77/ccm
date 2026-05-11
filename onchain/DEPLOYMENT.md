@@ -220,6 +220,105 @@ Mainnet substitution: deploy a Safe via [safe.global](https://app.safe.global)
 allow anyone to push the execute button after the delay). The handoff
 script (`scripts/transfer-admin-to-timelock.ts`) is unchanged.
 
+#### Phase 1 + Phase 2 full-pipeline rehearsal (Base Sepolia · 2026-05-12)
+
+End-to-end rehearsal of the entire post-spec Phase 1 + Phase 2 sequence on
+fresh contract instances. Validates: the new `mint-treasury-phase1.ts`
+(chainId guard + 6 safety guards), the refactored
+`transfer-admin-to-timelock.ts` (now handles MINTER_ROLE), the new
+`transfer-vesting-admin-to-timelock.ts`, the new `verify-phase2-handoff.ts`
+(14-assertion read-only verifier), and the new `schedule-mint-via-timelock.ts`
+(Safe Wallet calldata helper).
+
+Roles for this rehearsal: deployer EOA (`0xB722…fa1D`) plays both Deployer
+and GovSafe (testnet shortcut — validates scripts without multi-sig
+friction; mainnet uses a real Gnosis Safe 3-of-5). Treasury is a one-time
+throwaway random address.
+
+Rehearsal ran twice:
+- **Round 1** (commit `6c1fa26`, pre-fix) — completed end-to-end, but
+  surfaced two RPC stale-state race conditions on public `sepolia.base.org`:
+  (a) `mint-treasury-phase1.ts` post-mint `totalSupply()` returned `0` even
+  though the mint tx had landed (`Supply diff mismatch: 0 != 10e18`);
+  (b) `transfer-admin-to-timelock.ts` renounce phase refused to proceed
+  because `hasRole(timelock)` returned `false` immediately after the grant
+  tx mined. Both were post-tx eth_call latency, not on-chain bugs — the txs
+  themselves were correct and the second invocation (idempotent replay)
+  completed cleanly. Final state was still validated by all 14 verifier
+  assertions.
+- **Round 2** (commit `593038f`, post-fix) — `await tx.wait()` was changed
+  to `await tx.wait(2)` (two confirmations) for every state-mutation call
+  in the three scripts. Re-running on fresh contracts produced a clean
+  end-to-end pass with no false-positive failures. The mint script and
+  both handoff scripts completed their full sequences (11 + 6 + 4 txs) on
+  the first try.
+
+| Contract | Address (round 2) | BaseScan |
+|---|---|---|
+| CCMToken (phase1+2 rehearsal) | `0x49B5014bC3Ab72e538E34dCD4b64eC00cd04B8D3` | [verified](https://sepolia.basescan.org/address/0x49B5014bC3Ab72e538E34dCD4b64eC00cd04B8D3#code) |
+| CCMVesting (phase1+2 rehearsal) | `0x24557f090C5e21a6fd305cD9Bb239185b2D4D1F1` | [verified](https://sepolia.basescan.org/address/0x24557f090C5e21a6fd305cD9Bb239185b2D4D1F1#code) |
+| CCMTimelock (phase1+2 rehearsal, self-admin, 48h, deployer=PROPOSER+EXECUTOR placeholder) | `0x50F384c6641B16364dcaed741F944728e027aC6F` | [verified](https://sepolia.basescan.org/address/0x50F384c6641B16364dcaed741F944728e027aC6F#code) |
+| Treasury (throwaway, holds 10 CCM) | `0x7a27FBd9a533F72a057B91314e30a35bAE36EB19` | — |
+
+**Round 2 transactions** (the validated run):
+
+| # | Step | Tx hash |
+|---|---|---|
+| 5 | Mint 10 CCM → Treasury | [`0x5acd5e2e15164d3d5f068ee72ee4f9d125a4d62261268e368dbb3b47ec4e46bb`](https://sepolia.basescan.org/tx/0x5acd5e2e15164d3d5f068ee72ee4f9d125a4d62261268e368dbb3b47ec4e46bb) |
+| 8.1 | Token grant DEFAULT_ADMIN → Timelock | [`0xdc84e819ce8bb7e865032290c364a130a9f92da9ec411eea43c576dde803a98f`](https://sepolia.basescan.org/tx/0xdc84e819ce8bb7e865032290c364a130a9f92da9ec411eea43c576dde803a98f) |
+| 8.2 | Token grant MINTER → Timelock | [`0xad651ad0bed50ddb735f24d9f3d6576834f1a3d8486ddf863ac76633d290931c`](https://sepolia.basescan.org/tx/0xad651ad0bed50ddb735f24d9f3d6576834f1a3d8486ddf863ac76633d290931c) |
+| 8.3 | Token grant PAUSER → Timelock | [`0xd085b5e9b8cc99f0675634d49283b2a25a5bfc540f54b72fa0311aa0c56eb7dd`](https://sepolia.basescan.org/tx/0xd085b5e9b8cc99f0675634d49283b2a25a5bfc540f54b72fa0311aa0c56eb7dd) |
+| 8.4 | Token renounce PAUSER (deployer) | [`0xb7173e950a1f29f60e78dbf9b70c8e1d4a99efbb400be248f652e1246147126d`](https://sepolia.basescan.org/tx/0xb7173e950a1f29f60e78dbf9b70c8e1d4a99efbb400be248f652e1246147126d) |
+| 8.5 | Token renounce MINTER (deployer) | [`0x46c6529670e58af14046426b23cc8c76c7e5e036c45a5d7eef04b91dc577eb58`](https://sepolia.basescan.org/tx/0x46c6529670e58af14046426b23cc8c76c7e5e036c45a5d7eef04b91dc577eb58) |
+| 8.6 | Token renounce DEFAULT_ADMIN (deployer) | [`0x6fb68400a249302e8e8d7f4cdbc9804c0b8c984d284bba2f4e0087557818ff97`](https://sepolia.basescan.org/tx/0x6fb68400a249302e8e8d7f4cdbc9804c0b8c984d284bba2f4e0087557818ff97) |
+| 9.1 | Vesting grant DEFAULT_ADMIN → Timelock | [`0xfe556c7f7728faf1828067561d2c1570f6e8dd49d2d4ff526b0ba42fcad9d835`](https://sepolia.basescan.org/tx/0xfe556c7f7728faf1828067561d2c1570f6e8dd49d2d4ff526b0ba42fcad9d835) |
+| 9.2 | Vesting grant SCHEDULE_MANAGER → Timelock | [`0xbfc153345732a0f7756a5b2ffdafa2d9d35348c1e4008be2b59df2fb1bb70a95`](https://sepolia.basescan.org/tx/0xbfc153345732a0f7756a5b2ffdafa2d9d35348c1e4008be2b59df2fb1bb70a95) |
+| 9.3 | Vesting renounce SCHEDULE_MANAGER (deployer) | [`0x66a3b8f075ecf92a411bf814997affcefbb9aaa9f718a64d59c485a1a6e2a2ef`](https://sepolia.basescan.org/tx/0x66a3b8f075ecf92a411bf814997affcefbb9aaa9f718a64d59c485a1a6e2a2ef) |
+| 9.4 | Vesting renounce DEFAULT_ADMIN (deployer) | [`0x4790ee8b0e703fcc537439675bd5092e0913e64ee8327c9b2a8cc90f85985e66`](https://sepolia.basescan.org/tx/0x4790ee8b0e703fcc537439675bd5092e0913e64ee8327c9b2a8cc90f85985e66) |
+
+**Verifier output** (Step 10, `verify-phase2-handoff.ts`):
+
+```
+✓ Token.hasRole(ADMIN, deployer)        = false
+✓ Token.hasRole(MINTER, deployer)       = false
+✓ Token.hasRole(PAUSER, deployer)       = false
+✓ Token.hasRole(ADMIN, timelock)        = true
+✓ Token.hasRole(MINTER, timelock)       = true
+✓ Token.hasRole(PAUSER, timelock)       = true
+✓ Vesting.hasRole(ADMIN, deployer)             = false
+✓ Vesting.hasRole(SCHEDULE_MANAGER, deployer)  = false
+✓ Vesting.hasRole(ADMIN, timelock)             = true
+✓ Vesting.hasRole(SCHEDULE_MANAGER, timelock)  = true
+✓ Timelock.hasRole(PROPOSER, govSafe)   = true
+✓ Timelock.hasRole(EXECUTOR, govSafe)   = true
+✓ Timelock.hasRole(TIMELOCK_ADMIN, deployer) = false
+✓ Timelock.getMinDelay()                = 172800
+✓ All Phase 2 handoff checks passed
+```
+
+**Idempotency spot check** (Step 12): re-running
+`transfer-admin-to-timelock.ts` against the now-handed-off Token correctly
+throws `Signer 0xB722…fa1D does not hold DEFAULT_ADMIN_ROLE`, confirming
+the script refuses to act after the deployer's authority has been revoked.
+
+**Schedule-mint helper** (Step 11): `schedule-mint-via-timelock.ts` produced
+the expected Safe Wallet calldata for a future mint of 5 CCM, with
+operation id `0xddab83c7f2b2620c021ade6c25662e783da20c1dd43734aaf350f1eb10edeff7`
+(salt label: `sepolia-rehearsal-2026-05-12`). Schedule data 324 bytes,
+execute data 292 bytes — both readable by Safe Wallet's Contract
+Interaction form.
+
+**Cost**: ~0.00009 ETH per full rehearsal at Base Sepolia base fees
+(~30M gas across ~15 txs at ~0.003 gwei). Round 1 + Round 2 combined
+spent ~0.00018 ETH from the deployer's testnet float.
+
+**Mainnet RPC recommendation** (reinforced): the two race conditions
+observed in Round 1 were on the public `sepolia.base.org` endpoint.
+With `tx.wait(2)` they no longer manifest, but mainnet should still use
+a paid RPC (Alchemy / Infura) for both lower stale-state risk and
+predictable gas estimation. The Phase 1 spec §5 already requires this;
+do not relax it.
+
 ### Deployed contracts
 
 | Contract | Address | BaseScan | Verify |
@@ -326,4 +425,5 @@ That validation transfers to CCM since only identifiers were renamed.
 
 | Date | Change |
 |---|---|
+| 2026-05-12 | Phase 1 + Phase 2 full-pipeline rehearsal completed on Base Sepolia (round 2 clean pass after `tx.wait(2)` fix at commit `593038f`); all 14 verifier assertions ✓; idempotency spot check ✓; schedule-mint calldata helper output validated. See section above. |
 | 2026-05-09 | Forked from czero/contracts; mechanical CZM → CCM rename; awaiting compile + test re-run on renamed sources, then pre-deploy gating |

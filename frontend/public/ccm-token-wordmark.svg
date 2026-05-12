@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!--
+    CCM Network token icon (wordmark variant). Reuses the exact glyph
+    geometry from frontend/src/components/brand/wordmark-paths.ts —
+    two ink-c's + a moss-m at canonical sizes (r=28, s=10). Wordmark
+    occupies y=22..78 in its 256x100 native viewBox; here we translate
+    by +78 to center it vertically inside the 256x256 token canvas.
+    Reversed onto a moss field: all three glyphs become paper-colored.
+  -->
+  <rect width="256" height="256" rx="40" fill="#2dbf63"/>
+  <g transform="translate(0, 78)" fill="#f5f3ec">
+    <!-- c at (46,50) -->
+    <path d="M 72.40 40.66 A 28 28 0 1 0 72.40 59.34 L 62.97 56.00 A 18 18 0 1 1 62.97 44.00 Z"/>
+    <!-- c at (116,50) -->
+    <path d="M 142.40 40.66 A 28 28 0 1 0 142.40 59.34 L 132.97 56.00 A 18 18 0 1 1 132.97 44.00 Z"/>
+    <!-- m starting at x=158 -->
+    <path d="M 158 22 L 168 22 L 168 78 L 158 78 Z"/>
+    <path d="M 168 22 L 179.84 22 A 21.84 28 0 0 1 201.68 50 L 201.68 78 L 191.68 78 L 191.68 50 A 11.84 18 0 0 0 179.84 32 L 168 32 Z"/>
+    <path d="M 201.68 22 L 223.52 22 A 21.84 28 0 0 1 245.36 50 L 245.36 78 L 235.36 78 L 235.36 50 A 11.84 18 0 0 0 223.52 32 L 201.68 32 Z"/>
+  </g>
+</svg>

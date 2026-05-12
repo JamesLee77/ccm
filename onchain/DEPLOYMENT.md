@@ -321,27 +321,60 @@ do not relax it.
 
 ### Deployed contracts
 
-| Contract | Address | BaseScan | Verify |
-|---|---|---|---|
-| CCMToken v1.0.0 | _pending_ | _pending_ | _pending_ |
-| CCMVesting | _pending_ | _pending_ | _pending_ |
+See **Phase 1 — Mainnet** section below for real deployed addresses.
+
+---
+
+## Phase 1 — Mainnet (Base, deployed 2026-05-12)
+
+> **Phase 1 deliberately uses an EOA admin / minter / pauser / treasury all on a single MetaMask EOA (no Safe / no Timelock / no hardware wallet).** This is an explicit risk acceptance for fast deployment; the migration path to (a) hardware wallet, (b) Safe + Timelock is fully scripted and Sepolia-rehearsed. See `docs/superpowers/specs/2026-05-11-ccm-mainnet-deploy-design.md` §9 and `docs/superpowers/specs/2026-05-12-ccm-phase2-timelock-migration-design.md` for the planned Phase 2 governance handoff.
+
+### Network
+
+| Item | Value |
+|---|---|
+| Chain | Base mainnet |
+| Chain ID | `8453` |
+| RPC | CDP (`https://api.developer.coinbase.com/rpc/v1/base/...`) |
+| Explorer | https://basescan.org |
+| Solidity | 0.8.24 (Cancun, optimizer 200 runs) |
+
+### Deployer / Admin / Treasury (Phase 1, EOA-only)
+
+| Item | Value |
+|---|---|
+| Deployer EOA (MetaMask) | `0xfcb1B5B833700E08714275E0DC321c534690E842` |
+| Token admin / minter / pauser | same EOA |
+| Vesting admin / schedule manager | same EOA |
+| Treasury (holds 10M CCM) | same EOA |
+
+### Deployed contracts
+
+| Contract | Address | BaseScan |
+|---|---|---|
+| **CCMToken v1.0.0** | `0x398b2eB83C59890a01418b8D661e9A36a7c9d23d` | [verified](https://basescan.org/address/0x398b2eB83C59890a01418b8D661e9A36a7c9d23d#code) |
+| **CCMVesting** | `0x019B68683a8c31f4A8295215D8Da7f8Ec95582dc` | [verified](https://basescan.org/address/0x019B68683a8c31f4A8295215D8Da7f8Ec95582dc#code) |
 
 ### Initial state (post-deploy snapshot)
 
-#### CCMToken
-- `name`: "CCM Network Token"
-- `symbol`: "CCM"
-- `decimals`: 18
-- `cap`: 5,000,000,000 CCM
-- `totalSupply`: 0 CCM (mint pending)
-- `paused`: `false`
-- Admin: Gnosis Safe (3-of-5)
-- MINTER_ROLE: Vesting contract + admin
-- PAUSER_ROLE: admin only
+CCMToken:
+- `totalSupply`: 10,000,000 CCM
+- `balanceOf(0xfcb1...E842)`: 10,000,000 CCM
+- `cap - totalSupply`: 4,990,000,000 CCM (remaining headroom for future mints)
+- `paused`: false
+- Mint tx: `0x9820cd1942f06512f4d152fd4443a3ac5c9d1d26068ce912208ad93b434f260f` ([BaseScan](https://basescan.org/tx/0x9820cd1942f06512f4d152fd4443a3ac5c9d1d26068ce912208ad93b434f260f))
 
-#### CCMVesting
-- `ccm`: _CCMToken address_
-- `getScheduleCount`: 0
+CCMVesting:
+- `ccm`: `0x398b2eB83C59890a01418b8D661e9A36a7c9d23d` (linked)
+- `getScheduleCount`: 0 (idle, available for future per-buyer SAFT schedules)
+
+### Deferred to Phase 2
+
+- Gnosis Safe 3-of-5 deployment
+- CCMTimelock (48h) deployment + admin handoff
+- Hardware wallet migration for admin and treasury
+- External security audit (separate track via `docs/audit-rfp.md`)
+- KYC Registry, TGE Sale, Staking, Migration contracts on mainnet
 
 ---
 
@@ -425,5 +458,6 @@ That validation transfers to CCM since only identifiers were renamed.
 
 | Date | Change |
 |---|---|
+| 2026-05-12 | **Phase 1 mainnet deploy executed.** CCMToken at `0x398b2eB83C59890a01418b8D661e9A36a7c9d23d`, CCMVesting at `0x019B68683a8c31f4A8295215D8Da7f8Ec95582dc`, 10M CCM minted to deployer EOA. EOA-only governance, HW wallet + Safe + Timelock migration deferred to Phase 2. |
 | 2026-05-12 | Phase 1 + Phase 2 full-pipeline rehearsal completed on Base Sepolia (round 2 clean pass after `tx.wait(2)` fix at commit `593038f`); all 14 verifier assertions ✓; idempotency spot check ✓; schedule-mint calldata helper output validated. See section above. |
 | 2026-05-09 | Forked from czero/contracts; mechanical CZM → CCM rename; awaiting compile + test re-run on renamed sources, then pre-deploy gating |

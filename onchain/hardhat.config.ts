@@ -2,7 +2,11 @@ import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "solidity-coverage";
 import * as dotenv from "dotenv";
-dotenv.config();
+import * as path from "path";
+
+// Load env from the repo root (ccm/.env), not onchain/.env.
+// The repo root is one directory up from this config file.
+dotenv.config({ path: path.resolve(__dirname, "..", ".env") });
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "0x0000000000000000000000000000000000000000000000000000000000000001";
 const BASE_SEPOLIA_RPC = process.env.BASE_SEPOLIA_RPC || "https://sepolia.base.org";

@@ -4,12 +4,22 @@ import { ThemeContext } from "../../lib/theme";
 import type { Theme } from "../../lib/tokens";
 
 const STORAGE_KEY = "ccm-theme";
+const DEFAULT_THEME: Theme = "dark";
 
 function readInitial(): Theme {
-  if (typeof document === "undefined") return "light";
+  if (typeof document === "undefined") return DEFAULT_THEME;
+  // 1. Explicit data-theme already on <html> (set by the bootstrap script in index.html)
   const attr = document.documentElement.dataset.theme;
   if (attr === "dark" || attr === "light") return attr;
-  return "light";
+  // 2. Previously stored user toggle
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === "dark" || stored === "light") return stored;
+  } catch {
+    // localStorage unavailable
+  }
+  // 3. Site default
+  return DEFAULT_THEME;
 }
 
 type Props = {

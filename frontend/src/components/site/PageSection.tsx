@@ -40,34 +40,38 @@ type HeroProps = {
  */
 export function PageHero({ pre, em, lead, right }: HeroProps) {
   return (
-    <section style={{ padding: "120px 56px" }}>
+    <section className="px-6 py-20 md:px-14 md:py-30">
       <div
-        className="grid items-end gap-12"
-        style={{ gridTemplateColumns: right ? "1.4fr 1fr" : "1fr" }}
+        className={`grid items-end gap-12 ${
+          right ? "md:grid-cols-[1.4fr_1fr]" : ""
+        }`}
       >
-        <div>
+        <div className="min-w-0">
           <h1
             className="font-display"
             style={{
               fontWeight: 300,
-              fontSize: "clamp(72px, 9vw, 132px)",
-              lineHeight: 0.92,
-              letterSpacing: "-0.035em",
+              fontSize: "clamp(44px, 9vw, 132px)",
+              lineHeight: 0.95,
+              letterSpacing: "-0.03em",
               fontVariationSettings: '"opsz" 144',
               margin: 0,
+              overflowWrap: "break-word",
             }}
           >
             {pre}{" "}
             <em className="italic-moss">{em}</em>
           </h1>
           <p
-            className="font-body text-ink-soft mt-10 max-w-[680px]"
-            style={{ fontSize: 22, lineHeight: 1.5 }}
+            className="font-body text-ink-soft mt-8 max-w-[680px]"
+            style={{ fontSize: 18, lineHeight: 1.55 }}
           >
             {lead}
           </p>
         </div>
-        {right ? <div className="flex justify-end">{right}</div> : null}
+        {right ? (
+          <div className="hidden md:flex justify-end">{right}</div>
+        ) : null}
       </div>
     </section>
   );

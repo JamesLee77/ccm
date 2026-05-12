@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import Section from "../../components/site/Section";
 import PathwayCards from "./manifesto/PathwayCards";
 import DocumentsLibrary from "./manifesto/DocumentsLibrary";
@@ -23,22 +24,12 @@ export default function Manifesto() {
         {t("manifesto.h1")}
       </div>
       <div className="flex gap-3 mt-16">
-        <a
-          href="https://github.com/JamesLee77/ccm/blob/main/docs/CCM_Network_Whitepaper_v1.0.pdf"
-          target="_blank"
-          rel="noreferrer"
+        <Link
+          to="/whitepaper"
           className="font-mono text-[12px] tracking-[0.14em] uppercase px-7 py-4 bg-ink text-paper hover:bg-moss transition-colors"
         >
           {t("manifesto.ctaPaper")} →
-        </a>
-        <a
-          href="https://github.com/JamesLee77/ccm"
-          target="_blank"
-          rel="noreferrer"
-          className="font-mono text-[12px] tracking-[0.14em] uppercase px-7 py-4 border border-ink text-ink hover:border-moss hover:text-moss transition-colors"
-        >
-          {t("manifesto.ctaGithub")} ↗
-        </a>
+        </Link>
       </div>
 
       {/* Pathways — what to do next, by audience */}

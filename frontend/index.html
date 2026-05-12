@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,11 +9,16 @@
     <meta name="description" content="The Carbon Credit Standard. Verified. Onchain. DeFi-native." />
     <script>
       // Theme bootstrap — runs before React mounts to prevent flash.
+      // Order: stored user preference > "dark" default. We intentionally
+      // don't fall back to prefers-color-scheme; the brand default is dark
+      // and that's what new visitors should see.
       (() => {
-        const stored = localStorage.getItem("ccm-theme");
-        const prefers = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-        const theme = stored === "dark" || stored === "light" ? stored : prefers;
-        document.documentElement.dataset.theme = theme;
+        try {
+          var stored = localStorage.getItem("ccm-theme");
+          if (stored === "dark" || stored === "light") {
+            document.documentElement.dataset.theme = stored;
+          }
+        } catch (e) {}
       })();
     </script>
   </head>

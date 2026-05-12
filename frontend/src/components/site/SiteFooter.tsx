@@ -10,9 +10,10 @@ const COLS: FooterCol[] = [
   {
     heading: "network",
     links: [
-      { label: "Standard", to: "/" },
+      { label: "Overview", to: "/" },
       { label: "CCMine", to: "/ccmine" },
       { label: "Tokenomics", to: "/tokenomics" },
+      { label: "DeFi", to: "/defi" },
       { label: "Roadmap", to: "/roadmap" },
     ],
   },
@@ -20,7 +21,6 @@ const COLS: FooterCol[] = [
     heading: "build",
     links: [
       { label: "Whitepaper", to: "/whitepaper" },
-      { label: "GitHub ↗", to: "https://github.com/JamesLee77/ccm", external: true },
       { label: "Smart contracts", to: "#" },
       { label: "Audit reports", to: "#" },
     ],
@@ -34,6 +34,14 @@ const COLS: FooterCol[] = [
       { label: "Contact", to: "#" },
     ],
   },
+  {
+    heading: "legal",
+    links: [
+      { label: "Terms", to: "/terms" },
+      { label: "Privacy", to: "/privacy" },
+      { label: "Disclaimer", to: "/disclaimer" },
+    ],
+  },
 ];
 
 export default function SiteFooter() {
@@ -45,7 +53,7 @@ export default function SiteFooter() {
     >
       <div
         className="grid gap-12"
-        style={{ gridTemplateColumns: "1.4fr 1fr 1fr 1fr" }}
+        style={{ gridTemplateColumns: "1.4fr 1fr 1fr 1fr 1fr" }}
       >
         <div>
           <Wordmark size={32} />

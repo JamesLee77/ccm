@@ -14,7 +14,7 @@ const PATHWAYS: Pathway[] = [
     audience: "Investors",
     body: "Read the long form, review tokenomics, and route discussion to investor relations for the current round.",
     links: [
-      { label: "Whitepaper · 39 pages", href: "https://github.com/JamesLee77/ccm/blob/main/docs/CCM_Network_Whitepaper_v1.0.pdf" },
+      { label: "Whitepaper", href: "/whitepaper" },
       { label: "Tokenomics summary", href: "#tokenomics" },
       { label: "Investor relations →", href: "mailto:foundation@ccmnetwork.net?subject=Investor%20relations" },
     ],
@@ -38,7 +38,6 @@ const PATHWAYS: Pathway[] = [
     body: "Run a physical, verification, or storage node. Stake $CCM, earn per verified tonne reduced.",
     links: [
       { label: "CCMine onboarding", href: "#mining" },
-      { label: "Hardware reference", href: "https://github.com/JamesLee77/ccm" },
       { label: "Apply to operate →", href: "mailto:foundation@ccmnetwork.net?subject=Node%20operator" },
     ],
     icon: (
@@ -87,8 +86,8 @@ const PATHWAYS: Pathway[] = [
     audience: "Researchers",
     body: "Standard published CC BY 4.0. Contribute to MRV methodology, oracle integrations, and dispute case law.",
     links: [
-      { label: "Standard repository", href: "https://github.com/JamesLee77/ccm" },
       { label: "Architecture deep-dive", href: "#arch" },
+      { label: "Standard (CC BY 4.0) →", href: "mailto:foundation@ccmnetwork.net?subject=Standard%20repository" },
       { label: "Foundation contact →", href: "mailto:foundation@ccmnetwork.net?subject=Research" },
     ],
     icon: (

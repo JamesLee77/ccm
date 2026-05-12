@@ -2,18 +2,17 @@
   "common": {
     "appName": "CCM Network",
     "tagline": "The Carbon Credit Standard. Verified. Onchain. DeFi-native.",
-    "openApp": "Open App ↗",
+    "openApp": "Try testnet ↗",
     "readWhitepaper": "Read Whitepaper",
-    "viewGithub": "View on GitHub",
     "loading": "Loading…"
   },
   "nav": {
-    "standard": "Standard",
     "ccmine": "CCMine",
     "tokenomics": "Tokenomics",
+    "defi": "DeFi",
     "roadmap": "Roadmap",
     "whitepaper": "Whitepaper",
-    "app": "Open App ↗"
+    "app": "Try testnet ↗"
   },
   "footer": {
     "network": "Network",
@@ -44,7 +43,6 @@
       "h1Em": "the air.",
       "lead": "CCM is a unit. One tonne of CO₂e — verified once, retired once, fluid in between. The CCM Network is the onchain infrastructure that lets it travel.",
       "ctaPaper": "Read the whitepaper →",
-      "ctaGithub": "View on GitHub",
       "atmosphericLabel": "atmospheric record",
       "whyNowLabel": "why now",
       "snapshotLabel": "network snapshot",
@@ -308,8 +306,7 @@
     },
     "manifesto": {
       "h1": "The day CCM becomes an everyday unit — that is the infrastructure we are building toward.",
-      "ctaPaper": "Read the 39-page whitepaper",
-      "ctaGithub": "GitHub repository",
+      "ctaPaper": "Read the whitepaper",
       "pathwaysLabel": "next steps · by audience",
       "documentsLabel": "documents",
       "communityLabel": "community pulse",
@@ -340,9 +337,5 @@
     "h1Pre": "Eight primitives,",
     "h1Em": "one carbon unit.",
     "lead": "Wrap, vault, lend, fractionalize, retire, insure, index. CCM × DeFi composability — Uniswap, Curve, Aave, Pendle, OpenSea, Sudoswap."
-  },
-  "markets": {
-    "h1": "Markets",
-    "lead": "CCM series price discovery, your holdings, recent activity."
   }
 }

@@ -11,12 +11,6 @@ type ReadOut = {
 
 const READOUTS: ReadOut[] = [
   {
-    id: "stars",
-    label: "GitHub stars",
-    value: 1247,
-    step: [0, 2],
-  },
-  {
     id: "contributors",
     label: "Active contributors",
     value: 42,
@@ -99,7 +93,7 @@ export default function CommunityLive() {
       <div
         className="grid"
         style={{
-          gridTemplateColumns: "repeat(4, 1fr)",
+          gridTemplateColumns: "repeat(3, 1fr)",
           gap: 1,
           background: "var(--rule)",
         }}

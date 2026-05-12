@@ -13,7 +13,6 @@ const NAMESPACES = [
   "roadmap",
   "whitepaper",
   "defi",
-  "markets",
 ] as const;
 
 type Bundle = Record<string, Record<string, unknown>>;

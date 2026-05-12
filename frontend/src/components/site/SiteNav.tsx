@@ -7,21 +7,32 @@ import ThemeToggle from "./ThemeToggle";
 type NavItem = {
   id: string;
   to: string;
-  end?: boolean;
-  external?: boolean;
+  /** True when this entry is an in-page anchor (e.g. /#mining), not a real route. */
+  anchor?: boolean;
 };
 
 const NAV_ITEMS: NavItem[] = [
-  { id: "standard", to: "/" , end: true },
-  { id: "ccmine", to: "/ccmine" },
-  { id: "tokenomics", to: "/tokenomics" },
-  { id: "roadmap", to: "/roadmap" },
+  { id: "ccmine", to: "/#mining", anchor: true },
+  { id: "tokenomics", to: "/#tokenomics", anchor: true },
+  { id: "roadmap", to: "/#roadmap", anchor: true },
+  { id: "defi", to: "/defi" },
   { id: "whitepaper", to: "/whitepaper" },
-  { id: "app", to: "/markets" },
 ];
+
+// Phase 0: there is no mainnet app yet. The CTA points at the public testnet
+// sandbox (see docs/ccm-phase0-architecture.md §4.1). Will gain a second
+// "Open app ↗" button at app.ccmnetwork.net when mainnet TGE ships.
+const APP_ITEM = {
+  id: "app",
+  to: "https://testnet.ccmnetwork.net" as const,
+  external: true as const,
+};
 
 const linkBase =
   "font-mono text-[11px] tracking-[0.12em] uppercase pb-0.5 border-b transition-colors";
+
+const ctaBase =
+  "font-mono text-[11px] tracking-[0.12em] uppercase px-3 py-1.5 border transition-colors";
 
 export default function SiteNav() {
   const { t } = useTranslation("nav");
@@ -64,25 +75,44 @@ export default function SiteNav() {
 
         {/* Desktop nav (≥ md) */}
         <nav className="hidden md:flex gap-7">
-          {NAV_ITEMS.map((item) => (
-            <NavLink
-              key={item.id}
-              to={item.to}
-              end={item.end}
-              className={({ isActive }) =>
-                `${linkBase} ${
-                  isActive
-                    ? "text-moss border-moss"
-                    : "text-ink-soft border-transparent hover:text-ink"
-                }`
-              }
-            >
-              {t(item.id)}
-            </NavLink>
-          ))}
+          {NAV_ITEMS.map((item) =>
+            item.anchor ? (
+              <Link
+                key={item.id}
+                to={item.to}
+                className={`${linkBase} text-ink-soft border-transparent hover:text-ink`}
+              >
+                {t(item.id)}
+              </Link>
+            ) : (
+              <NavLink
+                key={item.id}
+                to={item.to}
+                className={({ isActive }) =>
+                  `${linkBase} ${
+                    isActive
+                      ? "text-moss border-moss"
+                      : "text-ink-soft border-transparent hover:text-ink"
+                  }`
+                }
+              >
+                {t(item.id)}
+              </NavLink>
+            ),
+          )}
         </nav>
 
         <div className="flex items-center gap-3">
+          {/* Desktop CTA button (≥ md) — external link to testnet sandbox */}
+          <a
+            href={APP_ITEM.to}
+            target="_blank"
+            rel="noreferrer"
+            className={`${ctaBase} hidden md:inline-flex items-center text-moss border-moss hover:text-paper hover:bg-moss`}
+          >
+            {t(APP_ITEM.id)}
+          </a>
+
           <ThemeToggle />
 
           {/* Mobile hamburger (< md) */}
@@ -132,23 +162,44 @@ export default function SiteNav() {
           style={{ background: "var(--paper)" }}
         >
           <nav className="flex flex-col py-4">
-            {NAV_ITEMS.map((item) => (
-              <NavLink
-                key={item.id}
-                to={item.to}
-                end={item.end}
+            {NAV_ITEMS.map((item) =>
+              item.anchor ? (
+                <Link
+                  key={item.id}
+                  to={item.to}
+                  onClick={() => setOpen(false)}
+                  className="font-mono text-[13px] tracking-[0.14em] uppercase px-5 py-3 border-l-2 text-ink-soft border-transparent hover:text-ink"
+                >
+                  {t(item.id)}
+                </Link>
+              ) : (
+                <NavLink
+                  key={item.id}
+                  to={item.to}
+                  onClick={() => setOpen(false)}
+                  className={({ isActive }) =>
+                    `font-mono text-[13px] tracking-[0.14em] uppercase px-5 py-3 border-l-2 ${
+                      isActive
+                        ? "text-moss border-moss"
+                        : "text-ink-soft border-transparent hover:text-ink"
+                    }`
+                  }
+                >
+                  {t(item.id)}
+                </NavLink>
+              ),
+            )}
+            <div className="px-5 pt-4">
+              <a
+                href={APP_ITEM.to}
+                target="_blank"
+                rel="noreferrer"
                 onClick={() => setOpen(false)}
-                className={({ isActive }) =>
-                  `font-mono text-[13px] tracking-[0.14em] uppercase px-5 py-3 border-l-2 ${
-                    isActive
-                      ? "text-moss border-moss"
-                      : "text-ink-soft border-transparent hover:text-ink"
-                  }`
-                }
+                className="font-mono text-[13px] tracking-[0.14em] uppercase px-4 py-3 border inline-flex items-center justify-center w-full text-moss border-moss hover:text-paper hover:bg-moss"
               >
-                {t(item.id)}
-              </NavLink>
-            ))}
+                {t(APP_ITEM.id)}
+              </a>
+            </div>
           </nav>
         </div>
       ) : null}

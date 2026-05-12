@@ -33,14 +33,6 @@ export default function Hero() {
             >
               {t("hero.ctaPaper")}
             </a>
-            <a
-              href="https://github.com/JamesLee77/ccm"
-              target="_blank"
-              rel="noreferrer"
-              className="font-mono text-[12px] tracking-[0.14em] uppercase px-7 py-4 border border-ink text-ink hover:border-moss hover:text-moss transition-colors"
-            >
-              {t("hero.ctaGithub")}
-            </a>
           </div>
         </div>
 

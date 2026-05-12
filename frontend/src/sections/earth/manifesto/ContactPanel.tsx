@@ -38,19 +38,15 @@ export default function ContactPanel() {
 
   return (
     <div
-      className="border border-rule"
-      style={{ background: "var(--paper-deep)", padding: "32px 40px" }}
+      className="border border-rule p-6 md:p-10"
+      style={{ background: "var(--paper-deep)" }}
     >
       <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-6">
         direct lines
       </div>
       <div
-        className="grid"
-        style={{
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: 24,
-          marginBottom: 32,
-        }}
+        className="grid grid-cols-1 md:grid-cols-3 mb-8"
+        style={{ gap: 24 }}
       >
         {CONTACTS.map((c) => (
           <div
@@ -83,12 +79,11 @@ export default function ContactPanel() {
 
       {/* Newsletter signup */}
       <div
-        className="border border-rule"
-        style={{ background: "var(--paper)", padding: "24px 28px" }}
+        className="border border-rule p-6 md:p-7"
+        style={{ background: "var(--paper)" }}
       >
         <div
-          className="grid items-end"
-          style={{ gridTemplateColumns: "1fr 1.6fr auto", gap: 24 }}
+          className="grid items-end gap-6 grid-cols-1 md:grid-cols-[1fr_1.6fr_auto]"
         >
           <div>
             <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-2">

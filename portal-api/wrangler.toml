@@ -1,0 +1,34 @@
+name = "ccm-portal-api"
+main = "src/index.ts"
+compatibility_date = "2026-04-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ----------------------------------------------------------------------------
+# Per docs/ccm-phase0-architecture.md §2:
+# portal.ccmnetwork.net targets Base mainnet (chainId 8453).
+# Vesting address is filled in only after the Phase 0 mainnet deploy.
+# Until then, deploys to a placeholder pages.dev URL for development.
+# ----------------------------------------------------------------------------
+
+[vars]
+ALLOWED_ORIGIN = "https://ccm-portal.pages.dev"
+RPC_URL = "https://mainnet.base.org"
+CHAIN_ID = "8453"
+CCM_VESTING_ADDRESS = "0x019B68683a8c31f4A8295215D8Da7f8Ec95582dc"  # Phase 1 mainnet deploy 2026-05-12
+CCM_KYC_REGISTRY_ADDRESS = "0x0000000000000000000000000000000000000000"  # TODO: Phase 2/3 — set after KYC Registry mainnet deploy (Base Sepolia rehearsal: 0x9172D6eaF05587b595f4eE894B4C7917Be652E46)
+CCM_TOKEN_ADDRESS = "0x398b2eB83C59890a01418b8D661e9A36a7c9d23d"  # Phase 1 mainnet deploy 2026-05-12
+APP_BASE_URL = "https://ccm-portal.pages.dev"
+API_BASE_URL = "https://ccm-portal-api.misterylee.workers.dev"
+RESEND_FROM = "CCM Portal <onboarding@resend.dev>"  # TODO: replace with real ccmnetwork sender once domain is verified
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ccm-portal-db"
+database_id = "dbd8f008-99a2-48cc-afac-6144fec3f29b"
+migrations_dir = "migrations"
+
+[triggers]
+crons = ["0 * * * *"]
+
+[dev]
+port = 8787

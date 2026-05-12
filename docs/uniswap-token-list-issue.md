@@ -37,9 +37,10 @@ CCM is the utility token of CCM Network — a carbon credit measurement protocol
 - BaseScan (verified source): https://basescan.org/address/0x398b2eB83C59890a01418b8D661e9A36a7c9d23d#code
 - GitHub: https://github.com/JamesLee77/ccm
 - Coinbase Token Hub EAS attestation: https://base.easscan.org/attestation/view/0x0b59cc6dfcca4a7e1d4fa77400143f905a7cb24a736be3453b4944556f421952
+- Whitepaper: https://ccmnetwork.net/whitepaper
 
 Logo (256×256 PNG, brand-aligned):
-https://raw.githubusercontent.com/JamesLee77/ccm/main/frontend/public/ccm-token-mark.png
+https://ccmnetwork.net/ccm-token-mark.png
 
 We acknowledge that without DEX liquidity or CoinGecko/CMC presence this request is unlikely to be accepted in the near term. Filing now for public transparency and to track listing demand. We will follow up once liquidity is in place and aggregator pages are live.
 ```

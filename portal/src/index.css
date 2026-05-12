@@ -1,0 +1,117 @@
+@import "tailwindcss";
+@import "@rainbow-me/rainbowkit/styles.css";
+@import "@fontsource/space-grotesk/400.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/space-grotesk/700.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@import "@fontsource/jetbrains-mono/600.css";
+
+/*
+ * CCM Portal — design system inherited verbatim from ccmnetwork.net.
+ * Single source of truth in frontend/src/lib/tokens.ts. Keep these in sync
+ * (or refactor to a shared workspace later).
+ */
+
+:root,
+[data-theme="light"] {
+  --paper: #f5f3ec;
+  --paper-deep: #ebe8de;
+  --ink: #0c0f10;
+  --ink-soft: #3a3f3c;
+  --moss: #2dbf63;
+  --moss2: #5fe089;
+  --moss-2: #5fe089;
+  --clay: #c8602e;
+  --sky: #4a7d8c;
+  --rule: #c9c5b8;
+  --nav-bg: rgba(245, 243, 236, 0.92);
+}
+
+[data-theme="dark"] {
+  --paper: #0a0e0c;
+  --paper-deep: #060908;
+  --ink: #eef1ea;
+  --ink-soft: #7a8278;
+  --moss: #2dbf63;
+  --moss2: #5fe089;
+  --moss-2: #5fe089;
+  --clay: #e88a4e;
+  --sky: #7ba9c4;
+  --rule: #1a221e;
+  --nav-bg: rgba(10, 14, 12, 0.92);
+}
+
+@theme {
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-moss: var(--moss);
+  --color-moss-2: var(--moss2);
+  --color-clay: var(--clay);
+  --color-sky: var(--sky);
+  --color-rule: var(--rule);
+
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "JetBrains Mono", ui-monospace, monospace;
+  --font-ui: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --radius-none: 0;
+}
+
+html,
+body,
+#root {
+  min-height: 100vh;
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+em.italic-moss,
+.italic-moss {
+  font-style: normal;
+  color: var(--moss);
+  font-weight: 600;
+}
+
+button,
+input,
+select,
+textarea {
+  border-radius: 0;
+}
+
+::selection {
+  background: var(--moss);
+  color: var(--paper);
+}
+
+/* RainbowKit ConnectButton — soften default rounded look to match
+   our sharp-edge design language. */
+[data-rk] button {
+  border-radius: 0 !important;
+}

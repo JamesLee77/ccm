@@ -1,0 +1,92 @@
+{
+  "common": {
+    "connect": "Connect Wallet",
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "ok": "OK",
+    "error": "Something went wrong"
+  },
+  "nav": {
+    "overview": "Overview",
+    "sale": "Sale",
+    "dashboard": "Dashboard",
+    "vesting": "Vesting",
+    "settings": "Settings",
+    "migrate": "Migrate"
+  },
+  "home": {
+    "title": "CCM Network Investor Portal",
+    "subtitle": "SAFT investor portal on Base mainnet. Connect your wallet to view your vesting schedule, claim vested tokens, and (if Phase 1 requires) migrate v1 → v2 after audit."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "cards": {
+      "totalBalance": "Total CCM",
+      "nextUnlock": "Next Unlock",
+      "claimable": "Currently Claimable",
+      "migration": "Migration Status"
+    },
+    "noNextUnlock": "No upcoming unlocks",
+    "recentActivity": "Recent activity",
+    "noActivity": "No activity yet"
+  },
+  "vesting": {
+    "title": "Your vesting schedules",
+    "subtitle": "SAFT allocations are locked in CCMVesting until the cliff date, then release linearly over the vesting period. Use Release to claim the currently-vested portion.",
+    "noSchedules": "No vesting schedules found for this address.",
+    "release": "Release {{amount}} CCM",
+    "awaitingWallet": "Awaiting wallet…",
+    "confirming": "Confirming…",
+    "fields": {
+      "total": "Total",
+      "released": "Released",
+      "releasable": "Releasable now",
+      "start": "Start",
+      "cliffEnds": "Cliff ends",
+      "fullyVested": "Fully vested"
+    },
+    "released": "Release confirmed. Tokens are in your wallet."
+  },
+  "settings": {
+    "title": "Settings",
+    "wallet": {
+      "title": "Wallet",
+      "connected": "Connected as",
+      "disconnect": "Disconnect"
+    },
+    "signIn": {
+      "title": "Sign in",
+      "description": "Sign a message with your wallet to view and manage your portal preferences.",
+      "button": "Sign in with Ethereum",
+      "signing": "Signing…"
+    },
+    "email": {
+      "title": "Email notifications",
+      "description": "Get notified when your CCM cliff ends or new tokens are claimable.",
+      "placeholder": "you@example.com",
+      "subscribe": "Subscribe",
+      "subscribed": "Subscribed as",
+      "verified": "Verified",
+      "unverified": "Pending verification — check your inbox.",
+      "remove": "Remove email"
+    },
+    "prefs": {
+      "title": "Notification preferences",
+      "cliff_7d": "Cliff ends in 7 days",
+      "cliff_1d": "Cliff ends tomorrow",
+      "claim_ready": "Tokens ready to claim"
+    },
+    "language": {
+      "title": "Language",
+      "en": "English"
+    },
+    "verified": "Email verified.",
+    "verifyError": "Verification link is invalid or expired."
+  },
+  "migrate": {
+    "title": "Migrate v1 → v2",
+    "description": "Available only if Phase 0.5 audit identifies a critical fix and a v2 token contract is deployed. Burns your v1 CCM and mints the same amount of v2 CCM 1:1 (or with a documented bonus). The portal disables this page automatically when migration is closed."
+  }
+}

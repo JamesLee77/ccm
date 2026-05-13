@@ -2,6 +2,8 @@ import { useTranslation } from "react-i18next";
 import TestnetLayout from "../components/site/TestnetLayout";
 import WalletStatusBar from "../components/wallet/WalletStatusBar";
 import StepCard from "../components/playground/StepCard";
+import MintForm from "../components/playground/MintForm";
+import NFTInventory from "../components/playground/NFTInventory";
 
 export default function Playground() {
   const { t } = useTranslation();
@@ -14,16 +16,17 @@ export default function Playground() {
       </section>
 
       <StepCard step={1} title={t("step1.title")} subtitle={t("step1.subtitle")}>
-        (MintForm + Inventory arrive in Task 7.)
+        <MintForm />
+        <NFTInventory />
       </StepCard>
       <StepCard step={2} title={t("step2.title")} subtitle={t("step2.subtitle")}>
-        (WrapForm arrives in Task 8.)
+        (WrapForm — Task 8)
       </StepCard>
       <StepCard step={3} title={t("step3.title")} subtitle={t("step3.subtitle")}>
-        (StakeForm arrives in Task 9.)
+        (StakeForm — Task 9)
       </StepCard>
       <StepCard step={4} title={t("step4.title")} subtitle={t("step4.subtitle")}>
-        (RewardPanel arrives in Task 10.)
+        (RewardPanel — Task 10)
       </StepCard>
     </TestnetLayout>
   );

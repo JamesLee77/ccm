@@ -15,3 +15,8 @@
 # (Korean legal agreement drafts, source design archive)
 docs/design/ccm.zip
 docs/design/design_handoff_ccm_network/
+
+# Phase 2 Sepolia rehearsal — ephemeral test wallet keys (throwaway, Sepolia only)
+.phase2-rehearsal-keys.json
+.phase2-rehearsal-state.json
+onchain/scripts/_phase2-*.ts

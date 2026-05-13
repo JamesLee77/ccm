@@ -160,6 +160,28 @@ the 7-component visualization layer (HeroBanner + LiveNetworkState +
 MiningNetworkViz + OracleConsensusPanel + YieldCurvePanel + ActivityFeed
 + NodeRegistrationCallout) above the existing 4-step playground.
 
+### Phase 2 rehearsal stack (deployed 2026-05-13)
+
+A throwaway end-to-end Phase 2 governance stack on Base Sepolia. Validates
+the full Safe 3-of-5 → Timelock → contract flow that mainnet will use
+post-handoff. State persisted in gitignored `.phase2-rehearsal-state.json`.
+
+| Contract | Address | Notes |
+|---|---|---|
+| Safe 3-of-5 (Protocol Kit v1.4.1) | `0xfC3E5cB16D8Af6305d9442C1343fab0fe3DA6a79` | 5 throwaway ephemeral owners, threshold 3 |
+| CCMTimelock (48h delay) | `0x9E80538dC02E9c4810C1D2d6074C209bFE0B13ca` | proposer + executor = Safe; admin = self |
+| CCMToken (rehearsal) | `0xB23785AF6C59591696BA2096F191DF4b8162fB45` | admin handed off to Timelock (6 txs) |
+| CCMVesting (rehearsal) | `0x0Fa4525725CC4d9330f8Aea08B3d6EC9c15F1384` | admin handed off to Timelock (4 txs) |
+| CCMKYCRegistry | `0xfcB2620d414624CDC555aD5B6e69063703787275` | deployed with admin=Timelock, operator=Safe (hot) |
+| CCMStaking | `0x8841FaBc8D6328C13C8CeabFE59677dFeD03CFC6` | deployed with admin=Timelock; pool unfunded (param only) |
+| CCMTGESale | `0x868588458b53DafEF886dA6b4e39cdDA8567d3D9` | deployed with admin=Timelock; USDC = Circle Base Sepolia 0x036C...CF7e |
+
+**Validation timeline:**
+- 2026-05-13 ~07:33 UTC: All deploys + Token/Vesting handoff complete. Safe 3-of-5 collected 3 sigs and called `Timelock.schedule` for 100 CCM mint to `0x...fee1` via deployer-rehearsal Token. Operation id `0x31e751f4242eecd52230ad265f88ce02c513dec4f4b73a6e501a92cf744b296c`, ETA `2026-05-15T07:33:52Z`.
+- 2026-05-15 ~07:33 UTC (pending): Safe → Timelock.execute → mint succeeds. Then verify treasury balance increased by 100 CCM. Run `scripts/_phase2-safe-execute.ts`.
+
+**Pattern validated:** new governance-controlled contracts deploy directly with `admin=Timelock` and `operator=Safe (hot)` — no separate handoff step. Only contracts that pre-exist with EOA admin (like Phase 1 mainnet Token+Vesting) need the migration handoff scripts.
+
 ### Notes
 
 - Same script as czero proven on its CZM testnet (deploy-presale.ts) but

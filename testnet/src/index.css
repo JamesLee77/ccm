@@ -27,6 +27,7 @@
   --clay: #c8602e;
   --sky: #4a7d8c;
   --rule: #c9c5b8;
+  --warn: #c8602e;
   --nav-bg: rgba(245, 243, 236, 0.92);
 
   /* Legacy testnet aliases — point old --tn-* names at the new palette so
@@ -54,6 +55,7 @@
   --clay: #e88a4e;
   --sky: #7ba9c4;
   --rule: #1a221e;
+  --warn: #e88a4e;
   --nav-bg: rgba(10, 14, 12, 0.92);
 
   --tn-bg: var(--paper);
@@ -78,6 +80,7 @@
   --color-clay: var(--clay);
   --color-sky: var(--sky);
   --color-rule: var(--rule);
+  --color-warn: var(--warn);
 
   --font-display: "Space Grotesk", system-ui, sans-serif;
   --font-body: "JetBrains Mono", ui-monospace, monospace;

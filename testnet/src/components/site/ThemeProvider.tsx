@@ -1,67 +1,27 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import type { ReactNode } from "react";
-import { ThemeContext } from "../../lib/theme";
-import type { Theme } from "../../lib/tokens";
+import { createContext, useContext, useEffect, useState } from "react";
 
-const STORAGE_KEY = "ccm-theme";
-const DEFAULT_THEME: Theme = "dark";
+type Theme = "light" | "dark";
+const ThemeCtx = createContext<{ theme: Theme; toggle: () => void } | null>(null);
 
-function readInitial(): Theme {
-  if (typeof document === "undefined") return DEFAULT_THEME;
-  // 1. Explicit data-theme already on <html> (e.g. SSR or upstream init)
-  const attr = document.documentElement.dataset.theme;
-  if (attr === "dark" || attr === "light") return attr;
-  // 2. User's previous toggle, if any
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored === "dark" || stored === "light") return stored;
-  } catch {
-    // localStorage unavailable
-  }
-  // 3. Site default
-  return DEFAULT_THEME;
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window === "undefined") return "light";
+    const stored = window.localStorage.getItem("ccm-testnet-theme");
+    return stored === "dark" || stored === "light" ? stored : "light";
+  });
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    try { window.localStorage.setItem("ccm-testnet-theme", theme); } catch {}
+  }, [theme]);
+  return (
+    <ThemeCtx.Provider value={{ theme, toggle: () => setTheme(t => t === "light" ? "dark" : "light") }}>
+      {children}
+    </ThemeCtx.Provider>
+  );
 }
 
-type Props = {
-  children: ReactNode;
-  /** Force a theme regardless of user preference (e.g. dark-only routes). */
-  force?: Theme;
-};
-
-export default function ThemeProvider({ children, force }: Props) {
-  const [theme, setTheme] = useState<Theme>(() => force ?? readInitial());
-
-  useEffect(() => {
-    if (force) {
-      document.documentElement.dataset.theme = force;
-      setTheme(force);
-      return;
-    }
-    document.documentElement.dataset.theme = theme;
-    try {
-      localStorage.setItem(STORAGE_KEY, theme);
-    } catch {
-      // localStorage unavailable — ignore.
-    }
-  }, [theme, force]);
-
-  const toggle = useCallback(() => {
-    if (force) return;
-    setTheme((t) => (t === "dark" ? "light" : "dark"));
-  }, [force]);
-
-  const set = useCallback(
-    (t: Theme) => {
-      if (force) return;
-      setTheme(t);
-    },
-    [force],
-  );
-
-  const value = useMemo(
-    () => ({ theme, isDark: theme === "dark", toggle, set }),
-    [theme, toggle, set],
-  );
-
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+export function useTheme() {
+  const ctx = useContext(ThemeCtx);
+  if (!ctx) throw new Error("useTheme outside ThemeProvider");
+  return ctx;
 }

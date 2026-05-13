@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0e0c" />
+    <title>CCM Network · Operator console</title>
+    <meta name="description" content="CCM Network operator console — token admin operations. Internal use." />
+    <meta name="robots" content="noindex,nofollow" />
+    <script>
+      // Pre-React FOUC guard: pick theme before first paint.
+      // Order: explicit data-theme already on <html> > localStorage > "dark" default.
+      (function () {
+        try {
+          var stored = localStorage.getItem("ccm-theme");
+          if (stored === "dark" || stored === "light") {
+            document.documentElement.dataset.theme = stored;
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

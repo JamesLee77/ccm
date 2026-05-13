@@ -85,7 +85,7 @@ contract CCMSandboxStaking is AccessControl, ReentrancyGuard {
         // R0 × (P_TGE / P) × (poolLeft / poolInit)
         uint256 priceFactor = (P0_TGE * 1e18) / currentPrice;
         uint256 poolFactor  = (poolRemaining * 1e18) / POOL_INIT;
-        uint256 r = (R0_BPS * priceFactor / 1e18) * poolFactor / 1e18;
+        uint256 r = (R0_BPS * priceFactor * poolFactor) / (1e18 * 1e18);
         return r > R0_BPS ? R0_BPS : r;
     }
 

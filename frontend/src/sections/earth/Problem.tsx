@@ -35,7 +35,7 @@ export default function Problem() {
         }}
       >
         <div
-          className="grid grid-cols-4"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4"
           style={{ gap: 1, background: "rgba(255,255,255,0.06)" }}
         >
           {items.map(([h, b], i) => (

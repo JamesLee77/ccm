@@ -25,9 +25,8 @@ export default function Defi() {
         {t("defi.lead")}
       </p>
       <div
-        className="grid"
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4"
         style={{
-          gridTemplateColumns: "repeat(4, 1fr)",
           gap: 1,
           background: "var(--rule)",
           border: "1px solid var(--rule)",

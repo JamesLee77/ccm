@@ -31,7 +31,7 @@ export default function Risks() {
       <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5">
         {t("risks.matrixLabel")}
       </div>
-      <div className="grid gap-6" style={{ gridTemplateColumns: "1fr 1fr" }}>
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
         <RiskMatrix active={active} onActive={setActive} />
         <MitigationDetail active={active} />
       </div>

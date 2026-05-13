@@ -31,7 +31,7 @@ export default function Roadmap() {
       <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-5">
         {t("roadmap.trackLabel")}
       </div>
-      <div className="grid gap-6" style={{ gridTemplateColumns: "1.4fr 1fr" }}>
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-[1.4fr_1fr]">
         <PhaseTrack active={active} onActive={setActive} />
         <PhaseDetail active={active} />
       </div>

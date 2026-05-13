@@ -16,8 +16,7 @@ export default function Mining() {
 
       {/* Hero — heading + lead + animated mining hub */}
       <div
-        className="grid items-end mt-8 mb-12"
-        style={{ gridTemplateColumns: "1.4fr 1fr", gap: 64 }}
+        className="grid items-end mt-8 mb-12 grid-cols-1 gap-8 md:grid-cols-[1.4fr_1fr] md:gap-16"
       >
         <div>
           <Heading pre={t("mining.h1Pre")} em={t("mining.h1Em")} maxWidth={720} />

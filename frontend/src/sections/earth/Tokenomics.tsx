@@ -19,8 +19,7 @@ export default function Tokenomics() {
 
       {/* Hero — heading/lead + animated allocation ring */}
       <div
-        className="grid items-center mt-8 mb-12"
-        style={{ gridTemplateColumns: "1.4fr 1fr", gap: 64 }}
+        className="grid items-center mt-8 mb-12 grid-cols-1 gap-8 md:grid-cols-[1.4fr_1fr] md:gap-16"
       >
         <div>
           <Heading

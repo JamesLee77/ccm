@@ -15,8 +15,7 @@ export default function Hero() {
         {t("hero.meta")}
       </div>
       <div
-        className="grid items-end"
-        style={{ gridTemplateColumns: "1.4fr 1fr", gap: 80 }}
+        className="grid items-end grid-cols-1 gap-12 md:grid-cols-[1.4fr_1fr] md:gap-20"
       >
         <div>
           <Heading as="h1" pre={t("hero.h1Pre")} em={t("hero.h1Em")} />

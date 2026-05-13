@@ -34,7 +34,7 @@ export default function Market() {
       <div
         className="grid"
         style={{
-          gridTemplateColumns: `repeat(${milestones.length}, 1fr)`,
+          gridTemplateColumns: `repeat(auto-fit, minmax(120px, 1fr))`,
           background: "var(--rule)",
           gap: 1,
           border: "1px solid var(--rule)",

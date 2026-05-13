@@ -36,8 +36,7 @@ export default function WrapSim() {
         style={{ background: "var(--paper-deep)", padding: 48 }}
       >
         <div
-          className="grid items-center mb-10"
-          style={{ gridTemplateColumns: "1fr auto 1fr", gap: 32 }}
+          className="grid items-center mb-10 grid-cols-1 gap-6 md:grid-cols-[1fr_auto_1fr] md:gap-8"
         >
           {/* NFT side */}
           <div

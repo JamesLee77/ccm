@@ -63,6 +63,11 @@ testnet dev EOA as both deployer and admin (no multisig needed for sandbox).
 | **MockPriceOracle** *(sandbox-only, CCM/USD fixed $0.20)* | `0x467b5f3Deb6750866ae2D5e05705A9Edae13b30e` | [verified](https://sepolia.basescan.org/address/0x467b5f3Deb6750866ae2D5e05705A9Edae13b30e#code) |
 | **CCMSandboxStaking** *(sandbox-only, 5M CCM pool, no eligibility gate)* | `0xAaeF319bc3B653DF68502a5A713989BB29ea8C48` | [verified](https://sepolia.basescan.org/address/0xAaeF319bc3B653DF68502a5A713989BB29ea8C48#code) |
 | ~~CCMSandboxVault v0~~ *(decommissioned)* | ~~`0x69c5eB2BB679E88BAc40525cD20d1Ea84905633D`~~ | first deploy used 1:1 raw atoms (no 1e18 scale); MINTER_ROLE revoked 2026-05-09 |
+| **Oracle-A** *(sandbox, $0.20)* | `0xC04aba12B9ECF3465832dee6b814A0dd6ed0991c` | [verified](https://sepolia.basescan.org/address/0xC04aba12B9ECF3465832dee6b814A0dd6ed0991c#code) |
+| **Oracle-B** *(sandbox, $0.21)* | `0xd82596F1dcAA5aA2dfA688eAde568cdFf82C9427` | [verified](https://sepolia.basescan.org/address/0xd82596F1dcAA5aA2dfA688eAde568cdFf82C9427#code) |
+| **Oracle-C** *(sandbox, $0.19)* | `0xe1Da27b2122A6b875a8E46B8b089FBf1151887eC` | [verified](https://sepolia.basescan.org/address/0xe1Da27b2122A6b875a8E46B8b089FBf1151887eC#code) |
+| **CCMSandboxMedianAggregator** *(sandbox, display-only)* | `0x58CD4De9f68a1982e6AF0258863CeCc7E68beaE6` | [verified](https://sepolia.basescan.org/address/0x58CD4De9f68a1982e6AF0258863CeCc7E68beaE6#code) |
+| **CCMSandboxNodeRegistry** *(sandbox, open registration)* | `0xE9AD5DC60a799Cc037824f2B030E641f4d460136` | [verified](https://sepolia.basescan.org/address/0xE9AD5DC60a799Cc037824f2B030E641f4d460136#code) |
 
 ### Initial state (post-deploy)
 
@@ -136,6 +141,19 @@ Contracts in use (Base Sepolia):
 - CCMSandboxVault            `0xEd62b71e9ff0200CFf02C8F38618Af153C609334`
 - CCMSandboxStaking (new)    `0xAaeF319bc3B653DF68502a5A713989BB29ea8C48`
 - MockPriceOracle (new)      `0x467b5f3Deb6750866ae2D5e05705A9Edae13b30e`
+
+### Network viz infrastructure (deployed 2026-05-13)
+
+Supports the testnet visualization layer at testnet.ccmnetwork.net. None
+of these are referenced by CCMSandboxStaking — they exist only to feed
+the marketing visualization (OracleConsensusPanel + NodeRegistration
+callout).
+
+- 4 oracles total: existing primary (D) + Oracle-A/B/C deployed today.
+  Initial prices A=0.20, B=0.21, C=0.19, D=0.20 → median 0.2025 (display only).
+- Median aggregator reads all 4 via IPriceSource.
+- NodeRegistry is open — anyone can `register(label, endpoint)`. Pre-seeded
+  with the deployer's own registration (label `ccmine-seed-B722`).
 
 ### Notes
 

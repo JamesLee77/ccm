@@ -19,6 +19,11 @@ export default function Footer() {
         <li>CCMSandboxNFT: <a href={`${EXPLORER}/address/${SANDBOX.ccmSandboxNFT}`} target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>{SANDBOX.ccmSandboxNFT}</a></li>
         <li>CCMSandboxVault: <a href={`${EXPLORER}/address/${SANDBOX.ccmSandboxVault}`} target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>{SANDBOX.ccmSandboxVault}</a></li>
         <li>CCMSandboxStaking: <a href={`${EXPLORER}/address/${SANDBOX.ccmSandboxStaking}`} target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>{SANDBOX.ccmSandboxStaking}</a></li>
+        <li>Oracle-A: <a href={`${EXPLORER}/address/${SANDBOX.oracleA}`} target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>{SANDBOX.oracleA}</a></li>
+        <li>Oracle-B: <a href={`${EXPLORER}/address/${SANDBOX.oracleB}`} target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>{SANDBOX.oracleB}</a></li>
+        <li>Oracle-C: <a href={`${EXPLORER}/address/${SANDBOX.oracleC}`} target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>{SANDBOX.oracleC}</a></li>
+        <li>MedianAggregator: <a href={`${EXPLORER}/address/${SANDBOX.medianAggregator}`} target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>{SANDBOX.medianAggregator}</a></li>
+        <li>NodeRegistry: <a href={`${EXPLORER}/address/${SANDBOX.nodeRegistry}`} target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>{SANDBOX.nodeRegistry}</a></li>
       </ul>
       <div style={{ marginTop: 24, display: "flex", gap: 20 }}>
         <a href="https://portal.ccmnetwork.net" target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>{t("footer.mainnet")}</a>

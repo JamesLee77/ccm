@@ -8,24 +8,33 @@ import WrapForm from "../components/playground/WrapForm";
 import StakeForm from "../components/playground/StakeForm";
 import RewardPanel from "../components/playground/RewardPanel";
 import TryMoreGrid from "../components/playground/TryMoreGrid";
+import NodeRegistrationCallout from "../components/playground/NodeRegistrationCallout";
+import HeroBanner from "../components/marketing/HeroBanner";
+import LiveNetworkState from "../components/marketing/LiveNetworkState";
+import MiningNetworkViz from "../components/marketing/MiningNetworkViz";
+import OracleConsensusPanel from "../components/marketing/OracleConsensusPanel";
+import YieldCurvePanel from "../components/marketing/YieldCurvePanel";
+import ActivityFeed from "../components/marketing/ActivityFeed";
 
 export default function Playground() {
   const { t } = useTranslation();
   return (
     <TestnetLayout>
-      <WalletStatusBar />
-      <section style={{ marginTop: 32, marginBottom: 32 }}>
-        <h1 style={{ fontSize: 36, lineHeight: 1.05, margin: 0 }}>{t("hero.headline")}</h1>
-        <p style={{ marginTop: 16, color: "var(--ink-soft)", fontSize: 16, maxWidth: 720, lineHeight: 1.55 }}>
-          {t("hero.lead")}
-        </p>
-      </section>
+      <HeroBanner />
+      <LiveNetworkState />
+      <MiningNetworkViz />
+      <OracleConsensusPanel />
+      <YieldCurvePanel />
+      <ActivityFeed />
+      <NodeRegistrationCallout />
 
+      <WalletStatusBar />
       <section style={{
         border: "1px solid var(--rule)",
         background: "var(--paper-deep)",
         padding: 20,
         marginBottom: 32,
+        marginTop: 32,
       }}>
         <div style={{
           fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase",
@@ -38,12 +47,7 @@ export default function Playground() {
           <li>· {t("needs.network")}</li>
           <li>
             · {t("needs.gas")}{" "}
-            <a
-              href="https://portal.cdp.coinbase.com/products/faucet"
-              target="_blank"
-              rel="noreferrer"
-              style={{ color: "var(--moss)" }}
-            >
+            <a href="https://portal.cdp.coinbase.com/products/faucet" target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>
               {t("needs.faucet")}
             </a>
             .

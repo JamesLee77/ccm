@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!--
+    CCM Network token icon. Uses the brand's lowercase-c gauge metaphor
+    (open at 4/8 o'clock, ~19° half-angle) — the same geometry as the
+    wordmark, scaled to fill a square at cx=128, cy=128, r=84, stroke=24.
+    Brand moss #2dbf63 background + reversed paper #f5f3ec foreground.
+  -->
+  <rect width="256" height="256" rx="40" fill="#2dbf63"/>
+  <path
+    d="M 207.19 99.99 A 84 84 0 1 0 207.19 156.01 L 184.57 148.01 A 60 60 0 1 1 184.57 107.99 Z"
+    fill="#f5f3ec"
+  />
+</svg>

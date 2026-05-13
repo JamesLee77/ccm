@@ -24,44 +24,53 @@ export default function Playground() {
   return (
     <TestnetLayout>
       <HeroBanner />
-      <LiveNetworkState />
-      <MiningNetworkViz />
-      <MiningTimeline />
-      <OracleConsensusPanel />
-      <OraclePriceHistory />
-      <YieldCurvePanel />
-      <ActivityFeed />
-      <NodeRegistrationCallout />
+      <div id="network" style={{ scrollMarginTop: 80 }}>
+        <LiveNetworkState />
+        <MiningNetworkViz />
+        <MiningTimeline />
+      </div>
+      <div id="oracle" style={{ scrollMarginTop: 80 }}>
+        <OracleConsensusPanel />
+        <OraclePriceHistory />
+      </div>
+      <div id="yield" style={{ scrollMarginTop: 80 }}>
+        <YieldCurvePanel />
+      </div>
+      <div id="activity" style={{ scrollMarginTop: 80 }}>
+        <ActivityFeed />
+        <NodeRegistrationCallout />
+      </div>
 
-      <WalletStatusBar />
-      <section style={{
-        border: "1px solid var(--rule)",
-        background: "var(--paper-deep)",
-        padding: 20,
-        marginBottom: 32,
-        marginTop: 32,
-      }}>
-        <div style={{
-          fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase",
-          color: "var(--ink-soft)", marginBottom: 12,
+      <div id="playground" style={{ scrollMarginTop: 80 }}>
+        <WalletStatusBar />
+        <section style={{
+          border: "1px solid var(--rule)",
+          background: "var(--paper-deep)",
+          padding: 20,
+          marginBottom: 32,
+          marginTop: 32,
         }}>
-          {t("needs.title")}
-        </div>
-        <ul style={{ listStyle: "none", padding: 0, margin: 0, fontSize: 14, lineHeight: 1.7, color: "var(--ink)" }}>
-          <li>· {t("needs.wallet")}</li>
-          <li>· {t("needs.network")}</li>
-          <li>
-            · {t("needs.gas")}{" "}
-            <a href="https://portal.cdp.coinbase.com/products/faucet" target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>
-              {t("needs.faucet")}
-            </a>
-            .
-          </li>
-          <li>· {t("needs.time")}</li>
-        </ul>
-      </section>
+          <div style={{
+            fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase",
+            color: "var(--ink-soft)", marginBottom: 12,
+          }}>
+            {t("needs.title")}
+          </div>
+          <ul style={{ listStyle: "none", padding: 0, margin: 0, fontSize: 14, lineHeight: 1.7, color: "var(--ink)" }}>
+            <li>· {t("needs.wallet")}</li>
+            <li>· {t("needs.network")}</li>
+            <li>
+              · {t("needs.gas")}{" "}
+              <a href="https://portal.cdp.coinbase.com/products/faucet" target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>
+                {t("needs.faucet")}
+              </a>
+              .
+            </li>
+            <li>· {t("needs.time")}</li>
+          </ul>
+        </section>
 
-      <StepCard step={1} title={t("step1.title")} subtitle={t("step1.subtitle")}>
+        <StepCard step={1} title={t("step1.title")} subtitle={t("step1.subtitle")}>
         <MintForm />
         <NFTInventory />
       </StepCard>
@@ -74,10 +83,11 @@ export default function Playground() {
       <StepCard step={4} title={t("step4.title")} subtitle={t("step4.subtitle")}>
         <RewardPanel />
       </StepCard>
-      <StepCard step={5} title={t("step5.title")} subtitle={t("step5.subtitle")}>
-        <SwapForm />
-      </StepCard>
-      <TryMoreGrid />
+        <StepCard step={5} title={t("step5.title")} subtitle={t("step5.subtitle")}>
+          <SwapForm />
+        </StepCard>
+        <TryMoreGrid />
+      </div>
     </TestnetLayout>
   );
 }

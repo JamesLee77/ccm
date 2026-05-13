@@ -1,6 +1,13 @@
 {
   "translation": {
     "nav": { "title": "CCM testnet" },
+    "anchorNav": {
+      "network": "Network",
+      "oracle": "Oracle",
+      "yield": "Yield",
+      "activity": "Activity",
+      "playground": "Playground"
+    },
     "hero": {
       "kicker": "CCM Foundation · Testnet · May 2026",
       "headline": "the testnet,",

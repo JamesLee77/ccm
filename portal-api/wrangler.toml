@@ -11,13 +11,13 @@ compatibility_flags = ["nodejs_compat"]
 # ----------------------------------------------------------------------------
 
 [vars]
-ALLOWED_ORIGIN = "https://ccm-portal.pages.dev"
+ALLOWED_ORIGIN = "https://portal.ccmnetwork.net"
 RPC_URL = "https://mainnet.base.org"
 CHAIN_ID = "8453"
 CCM_VESTING_ADDRESS = "0x019B68683a8c31f4A8295215D8Da7f8Ec95582dc"  # Phase 1 mainnet deploy 2026-05-12
 CCM_KYC_REGISTRY_ADDRESS = "0x0000000000000000000000000000000000000000"  # TODO: Phase 2/3 — set after KYC Registry mainnet deploy (Base Sepolia rehearsal: 0x9172D6eaF05587b595f4eE894B4C7917Be652E46)
 CCM_TOKEN_ADDRESS = "0x398b2eB83C59890a01418b8D661e9A36a7c9d23d"  # Phase 1 mainnet deploy 2026-05-12
-APP_BASE_URL = "https://ccm-portal.pages.dev"
+APP_BASE_URL = "https://portal.ccmnetwork.net"
 API_BASE_URL = "https://ccm-portal-api.misterylee.workers.dev"
 RESEND_FROM = "CCM Portal <onboarding@resend.dev>"  # TODO: replace with real ccmnetwork sender once domain is verified
 

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>CCM Token Logo Preview</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro", Helvetica, sans-serif;
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 24px;
+        line-height: 1.5;
+        color: #1a1a1a;
+        background: #fafafa;
+      }
+      h1 { font-size: 22px; margin-bottom: 4px; }
+      h2 { font-size: 16px; margin-top: 32px; border-bottom: 1px solid #ddd; padding-bottom: 6px; }
+      .muted { color: #777; font-size: 13px; }
+      .row { display: flex; align-items: flex-end; gap: 24px; margin: 16px 0; flex-wrap: wrap; }
+      .item { text-align: center; }
+      .item img { display: block; }
+      .item .size { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11px; color: #888; margin-top: 6px; }
+      .bg-checker {
+        background:
+          repeating-conic-gradient(#e7e7e7 0% 25%, transparent 0% 50%) 0 0/16px 16px;
+      }
+      .bg-dark { background: #0c0f10; padding: 16px; }
+      .bg-paper { background: #f5f3ec; padding: 16px; }
+      .links {
+        background: #fff;
+        border: 1px solid #ddd;
+        padding: 12px 16px;
+        font-family: ui-monospace, Menlo, monospace;
+        font-size: 12px;
+        margin: 16px 0;
+      }
+      .links a { color: #2dbf63; text-decoration: none; }
+      .links a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <h1>CCM Token Logo Preview</h1>
+    <p class="muted">Two options side-by-side at five common wallet display sizes (16, 32, 64, 128, 256 px). Backgrounds vary so contrast is checked against light, dark, and transparent.</p>
+
+    <div class="links">
+      SVG: <a href="/frontend/public/ccm-token-mark.svg">ccm-token-mark.svg</a> · <a href="/frontend/public/ccm-token-wordmark.svg">ccm-token-wordmark.svg</a><br>
+      PNG: <a href="/frontend/public/ccm-token-mark.png">ccm-token-mark.png</a> · <a href="/frontend/public/ccm-token-wordmark.png">ccm-token-wordmark.png</a>
+    </div>
+
+    <h2>Option A — <code>ccm-token-mark</code> (single c, gauge)</h2>
+    <div class="row">
+      <div class="item"><img src="/frontend/public/ccm-token-mark.png" width="16" height="16" /><div class="size">16</div></div>
+      <div class="item"><img src="/frontend/public/ccm-token-mark.png" width="32" height="32" /><div class="size">32</div></div>
+      <div class="item"><img src="/frontend/public/ccm-token-mark.png" width="64" height="64" /><div class="size">64</div></div>
+      <div class="item"><img src="/frontend/public/ccm-token-mark.png" width="128" height="128" /><div class="size">128</div></div>
+      <div class="item"><img src="/frontend/public/ccm-token-mark.png" width="256" height="256" /><div class="size">256</div></div>
+    </div>
+
+    <h2>Option B — <code>ccm-token-wordmark</code> (full ccm)</h2>
+    <div class="row">
+      <div class="item"><img src="/frontend/public/ccm-token-wordmark.png" width="16" height="16" /><div class="size">16</div></div>
+      <div class="item"><img src="/frontend/public/ccm-token-wordmark.png" width="32" height="32" /><div class="size">32</div></div>
+      <div class="item"><img src="/frontend/public/ccm-token-wordmark.png" width="64" height="64" /><div class="size">64</div></div>
+      <div class="item"><img src="/frontend/public/ccm-token-wordmark.png" width="128" height="128" /><div class="size">128</div></div>
+      <div class="item"><img src="/frontend/public/ccm-token-wordmark.png" width="256" height="256" /><div class="size">256</div></div>
+    </div>
+
+    <h2>Backgrounds (Option A at 64px)</h2>
+    <div class="row">
+      <div class="item bg-paper"><img src="/frontend/public/ccm-token-mark.png" width="64" height="64" /><div class="size" style="color:#0c0f10;">paper</div></div>
+      <div class="item bg-dark"><img src="/frontend/public/ccm-token-mark.png" width="64" height="64" /><div class="size" style="color:#f5f3ec;">dark</div></div>
+      <div class="item bg-checker"><img src="/frontend/public/ccm-token-mark.png" width="64" height="64" /><div class="size">transparent</div></div>
+    </div>
+
+    <h2>Backgrounds (Option B at 64px)</h2>
+    <div class="row">
+      <div class="item bg-paper"><img src="/frontend/public/ccm-token-wordmark.png" width="64" height="64" /><div class="size" style="color:#0c0f10;">paper</div></div>
+      <div class="item bg-dark"><img src="/frontend/public/ccm-token-wordmark.png" width="64" height="64" /><div class="size" style="color:#f5f3ec;">dark</div></div>
+      <div class="item bg-checker"><img src="/frontend/public/ccm-token-wordmark.png" width="64" height="64" /><div class="size">transparent</div></div>
+    </div>
+
+    <h2>SVG (vector, infinitely scalable) at 256px</h2>
+    <div class="row">
+      <div class="item"><img src="/frontend/public/ccm-token-mark.svg" width="256" height="256" /><div class="size">mark.svg</div></div>
+      <div class="item"><img src="/frontend/public/ccm-token-wordmark.svg" width="256" height="256" /><div class="size">wordmark.svg</div></div>
+    </div>
+  </body>
+</html>

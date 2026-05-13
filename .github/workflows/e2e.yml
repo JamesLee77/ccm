@@ -1,0 +1,141 @@
+name: e2e
+
+on:
+  workflow_dispatch:
+    inputs:
+      skip_onchain:
+        description: "Skip Phase 1 (data-layer hardhat suites)"
+        type: boolean
+        default: false
+      skip_browser:
+        description: "Skip Phase 2 (Playwright browser suite)"
+        type: boolean
+        default: false
+      onchain_suites:
+        description: "Phase 1 suite subset (space-separated: kyc vesting compliance timelock manual-transfer)"
+        type: string
+        default: "kyc vesting compliance"
+  push:
+    branches: [main]
+    paths:
+      - "onchain/contracts/**"
+      - "onchain/scripts/_e2e-*.ts"
+      - "admin/src/**"
+      - "admin/e2e/**"
+      - "admin/playwright.config.ts"
+      - "admin/functions/**"
+      - "portal-api/src/**"
+
+concurrency:
+  # Don't run two e2e jobs against the same testnet contracts in parallel —
+  # they'd contend on nonces, fund the same compliance wallet, etc.
+  group: e2e-baseSepolia
+  cancel-in-progress: false
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # Wallets — set as repository secrets
+      PRIVATE_KEY:                ${{ secrets.PRIVATE_KEY }}
+      ALICE_ADDRESS:              ${{ secrets.ALICE_ADDRESS }}
+      ALICE_PRIVATE_KEY:          ${{ secrets.ALICE_PRIVATE_KEY }}
+      BOB_ADDRESS:                ${{ secrets.BOB_ADDRESS }}
+      BOB_PRIVATE_KEY:            ${{ secrets.BOB_PRIVATE_KEY }}
+      CAROL_ADDRESS:              ${{ secrets.CAROL_ADDRESS }}
+      CAROL_PRIVATE_KEY:          ${{ secrets.CAROL_PRIVATE_KEY }}
+      COMPLIANCE_ADDRESS:         ${{ secrets.COMPLIANCE_ADDRESS }}
+      COMPLIANCE_PRIVATE_KEY:     ${{ secrets.COMPLIANCE_PRIVATE_KEY }}
+      # RPC — required by hardhat config and Playwright (test wallet uses
+      # the same RPC under the hood)
+      BASE_SEPOLIA_RPC_URL:       ${{ secrets.BASE_SEPOLIA_RPC_URL }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: |
+            onchain/package-lock.json
+            admin/package-lock.json
+            portal-api/package-lock.json
+
+      # ── Phase 0: install dependencies (parallel where possible) ──
+      - name: Install onchain deps
+        if: ${{ !inputs.skip_onchain }}
+        working-directory: onchain
+        run: npm ci
+
+      - name: Install admin deps
+        if: ${{ !inputs.skip_browser }}
+        working-directory: admin
+        run: npm ci
+
+      - name: Compile contracts
+        if: ${{ !inputs.skip_onchain }}
+        working-directory: onchain
+        run: npx hardhat compile
+
+      # ── Playwright browser cache ───────────────────────────────────
+      - name: Cache Playwright browsers
+        if: ${{ !inputs.skip_browser }}
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('admin/package-lock.json') }}
+
+      - name: Install Playwright chromium
+        if: ${{ !inputs.skip_browser }}
+        working-directory: admin
+        run: npx playwright install --with-deps chromium
+
+      # ── Phase 1: data-layer ────────────────────────────────────────
+      - name: Run data-layer e2e
+        if: ${{ !inputs.skip_onchain }}
+        working-directory: onchain
+        run: |
+          set -e
+          for s in ${{ inputs.onchain_suites || 'kyc vesting compliance' }}; do
+            case "$s" in
+              kyc)              SCRIPT="scripts/_e2e-kyc-flow.ts" ;;
+              vesting)          SCRIPT="scripts/_e2e-vesting-flow.ts" ;;
+              compliance)       SCRIPT="scripts/_e2e-compliance-persona.ts" ;;
+              timelock)         SCRIPT="scripts/_e2e-timelock-flow.ts" ;;
+              manual-transfer)  SCRIPT="scripts/_e2e-manual-transfer.ts" ;;
+              *) echo "unknown suite $s" && exit 1 ;;
+            esac
+            echo "::group::data-layer · $s"
+            npx hardhat run "$SCRIPT" --network baseSepolia
+            echo "::endgroup::"
+          done
+
+      # ── Phase 2: browser layer ─────────────────────────────────────
+      - name: Run browser e2e
+        if: ${{ !inputs.skip_browser }}
+        working-directory: admin
+        env:
+          PLAYWRIGHT_TEST_KEY:  ${{ env.COMPLIANCE_PRIVATE_KEY }}
+          PLAYWRIGHT_TEST_ADDR: ${{ env.COMPLIANCE_ADDRESS }}
+          PLAYWRIGHT_BENEFICIARY: ${{ env.CAROL_ADDRESS }}
+        run: npm run test:e2e
+
+      - name: Upload Playwright artifacts on failure
+        if: failure() && !inputs.skip_browser
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-trace
+          path: admin/test-results/
+          retention-days: 7
+
+      - name: Job summary
+        if: always()
+        run: |
+          echo "## CCM e2e suite" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Phase 1 (data-layer): ${{ inputs.skip_onchain && 'skipped' || 'ran' }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Phase 2 (browser):    ${{ inputs.skip_browser && 'skipped' || 'ran' }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Status:               ${{ job.status }}" >> "$GITHUB_STEP_SUMMARY"

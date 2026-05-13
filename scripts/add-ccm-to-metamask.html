@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Add CCM to Wallet</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro", Helvetica, sans-serif;
+        max-width: 640px;
+        margin: 48px auto;
+        padding: 24px;
+        line-height: 1.5;
+        color: #1a1a1a;
+        background: #fafafa;
+      }
+      h1 { font-size: 22px; margin-bottom: 4px; }
+      .muted { color: #777; font-size: 13px; }
+      .params {
+        background: #fff;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 24px 0;
+        font-family: ui-monospace, "SF Mono", Menlo, monospace;
+        font-size: 12px;
+        white-space: pre;
+      }
+      .wallet-list { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
+      .wallet-btn {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #fff;
+        border: 1px solid #ddd;
+        padding: 12px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        text-align: left;
+        width: 100%;
+      }
+      .wallet-btn:hover:not(:disabled) { background: #f0f0f0; border-color: #888; }
+      .wallet-btn:disabled { background: #f5f5f5; color: #aaa; cursor: not-allowed; }
+      .wallet-btn img { width: 24px; height: 24px; }
+      .wallet-btn .name { font-weight: 600; }
+      .wallet-btn .rdns { font-size: 11px; color: #888; margin-left: auto; font-family: ui-monospace, Menlo, monospace; }
+      .fallback-btn {
+        background: #2c8b5a;
+        color: #fff;
+        border: 0;
+        padding: 10px 20px;
+        font-size: 13px;
+        cursor: pointer;
+        margin-top: 8px;
+      }
+      .fallback-btn:hover { background: #246b46; }
+      .log {
+        margin-top: 24px;
+        font-family: ui-monospace, "SF Mono", Menlo, monospace;
+        font-size: 12px;
+        white-space: pre-wrap;
+        background: #1a1a1a;
+        color: #d5d5d5;
+        padding: 12px;
+        max-height: 280px;
+        overflow: auto;
+      }
+      .ok { color: #5eba7d; }
+      .err { color: #e07070; }
+      .warn { color: #e0c070; }
+    </style>
+  </head>
+  <body>
+    <h1>Add CCM Network Token to wallet</h1>
+    <p class="muted">
+      Uses EIP-6963 to detect every installed wallet (MetaMask, OKX, Coinbase, Rabby, …)
+      and EIP-747 <code>wallet_watchAsset</code> to pre-fill the token import.
+      Click whichever wallet you want CCM added to.
+    </p>
+
+    <div class="params">type:       ERC20
+address:    0x398b2eB83C59890a01418b8D661e9A36a7c9d23d
+symbol:     CCM
+decimals:   18
+chainId:    8453 (Base mainnet)</div>
+
+    <h3 style="margin: 24px 0 8px 0; font-size: 14px;">Detected wallets</h3>
+    <div class="wallet-list" id="walletList">
+      <div class="muted" id="walletPlaceholder">Detecting … (give it a second; some wallets announce on idle)</div>
+    </div>
+
+    <button class="fallback-btn" id="fallbackBtn">Or use <code>window.ethereum</code> (whatever wallet grabbed it)</button>
+
+    <div class="log" id="log">[waiting for click]</div>
+
+    <script>
+      const log = document.getElementById("log");
+      const walletListEl = document.getElementById("walletList");
+      const placeholderEl = document.getElementById("walletPlaceholder");
+      const fallbackBtn = document.getElementById("fallbackBtn");
+
+      function logln(msg, cls) {
+        const line = document.createElement("div");
+        line.textContent = msg;
+        if (cls) line.className = cls;
+        log.appendChild(line);
+        log.scrollTop = log.scrollHeight;
+      }
+
+      const TOKEN = {
+        address: "0x398b2eB83C59890a01418b8D661e9A36a7c9d23d",
+        symbol: "CCM",
+        decimals: 18,
+      };
+      const BASE_CHAIN_ID = "0x2105";
+
+      const discoveredProviders = new Map(); // uuid -> { info, provider }
+
+      // EIP-6963: listen for provider announcements
+      window.addEventListener("eip6963:announceProvider", (event) => {
+        const { info, provider } = event.detail;
+        if (discoveredProviders.has(info.uuid)) return;
+        discoveredProviders.set(info.uuid, { info, provider });
+        renderWalletList();
+      });
+
+      function renderWalletList() {
+        if (discoveredProviders.size === 0) return;
+        if (placeholderEl) placeholderEl.remove();
+        walletListEl.innerHTML = "";
+        for (const { info, provider } of discoveredProviders.values()) {
+          const btn = document.createElement("button");
+          btn.className = "wallet-btn";
+          btn.innerHTML =
+            (info.icon ? `<img src="${info.icon}" alt="">` : `<div style="width:24px;height:24px;background:#ddd;"></div>`) +
+            `<span class="name">${info.name}</span>` +
+            `<span class="rdns">${info.rdns}</span>`;
+          btn.addEventListener("click", () => addToWallet(provider, info.name));
+          walletListEl.appendChild(btn);
+        }
+      }
+
+      // Trigger discovery
+      window.dispatchEvent(new Event("eip6963:requestProvider"));
+
+      async function addToWallet(provider, label) {
+        logln(`[start] adding CCM via ${label}`);
+        try {
+          const cid = await provider.request({ method: "eth_chainId" });
+          logln("[info] " + label + " chainId: " + cid);
+          if (cid !== BASE_CHAIN_ID) {
+            logln(`[switching] ${label} to Base mainnet …`, "warn");
+            try {
+              await provider.request({
+                method: "wallet_switchEthereumChain",
+                params: [{ chainId: BASE_CHAIN_ID }],
+              });
+              logln("[ok] switched to Base mainnet", "ok");
+            } catch (e) {
+              if (e && e.code === 4902) {
+                logln("[info] " + label + " doesn't have Base yet, adding it …");
+                await provider.request({
+                  method: "wallet_addEthereumChain",
+                  params: [{
+                    chainId: BASE_CHAIN_ID,
+                    chainName: "Base",
+                    nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+                    rpcUrls: ["https://mainnet.base.org"],
+                    blockExplorerUrls: ["https://basescan.org"],
+                  }],
+                });
+                logln("[ok] added Base mainnet to " + label, "ok");
+              } else {
+                throw e;
+              }
+            }
+          }
+          logln("[calling] wallet_watchAsset via " + label + " …");
+          const added = await provider.request({
+            method: "wallet_watchAsset",
+            params: {
+              type: "ERC20",
+              options: TOKEN,
+            },
+          });
+          if (added) {
+            logln(`[ok] CCM added to ${label}. Open the wallet's Assets to confirm.`, "ok");
+          } else {
+            logln(`[err] ${label} declined`, "err");
+          }
+        } catch (e) {
+          logln(`[err] ${label}: ` + (e && e.message ? e.message : e), "err");
+        }
+      }
+
+      fallbackBtn.addEventListener("click", () => {
+        log.textContent = "";
+        if (!window.ethereum) {
+          logln("ERROR: no window.ethereum. Install a wallet extension.", "err");
+          return;
+        }
+        const label = window.ethereum.isMetaMask ? "MetaMask (via window.ethereum)"
+                    : window.ethereum.isOkxWallet ? "OKX (via window.ethereum)"
+                    : "window.ethereum (unknown provider)";
+        addToWallet(window.ethereum, label);
+      });
+
+      // If after 1.5 s no wallets announced via EIP-6963, suggest fallback
+      setTimeout(() => {
+        if (discoveredProviders.size === 0) {
+          if (placeholderEl) {
+            placeholderEl.textContent =
+              "No wallets announced via EIP-6963. Your wallet may be older — use the fallback button below.";
+          }
+        }
+      }, 1500);
+    </script>
+  </body>
+</html>

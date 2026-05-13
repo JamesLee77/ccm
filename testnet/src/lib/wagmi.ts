@@ -1,20 +1,21 @@
-import { http } from "wagmi";
-import { baseSepolia } from "wagmi/chains";
+/**
+ * Single-chain wagmi config: Base Sepolia only. No mainnet path.
+ */
+import { http } from "viem";
+import { baseSepolia } from "viem/chains";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 
-// Per docs/ccm-phase0-architecture.md §3.1: testnet builds register ONLY
-// Base Sepolia. Cross-chain confusion is prevented at build time, not at
-// runtime — there is no code path in this bundle that can talk to mainnet.
-// The mainnet portal lives at portal.ccmnetwork.net with its own bundle.
+export const TESTNET_CHAIN = baseSepolia;
+export const TESTNET_CHAIN_ID = baseSepolia.id; // 84532
 
-const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || "demo-project-id";
+const RPC = import.meta.env.VITE_BASE_SEPOLIA_RPC || "https://sepolia.base.org";
 
-export const config = getDefaultConfig({
-  appName: "CCM Network · Testnet",
-  projectId,
+export const wagmiConfig = getDefaultConfig({
+  appName: "CCM Testnet Playground",
+  projectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || "demo-project-id",
   chains: [baseSepolia],
   transports: {
-    [baseSepolia.id]: http(import.meta.env.VITE_BASE_SEPOLIA_RPC || "https://sepolia.base.org"),
+    [baseSepolia.id]: http(RPC),
   },
   ssr: false,
 });

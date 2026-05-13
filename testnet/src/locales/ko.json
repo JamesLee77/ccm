@@ -1,0 +1,76 @@
+{
+  "translation": {
+    "nav": { "title": "CCM 테스트넷", "lang": "언어" },
+    "hero": {
+      "headline": "Base Sepolia 에서 CCM 을 직접 경험해보세요.",
+      "tagline": "탄소 크레딧 채굴, CCM 으로 wrap, staking, reward.",
+      "warning": "⚠ Base Sepolia 테스트넷 — 모든 토큰은 가치가 없습니다."
+    },
+    "wallet": {
+      "connect": "지갑 연결",
+      "wrongChain": "Base Sepolia 로 전환",
+      "connected": "연결됨"
+    },
+    "step1": {
+      "title": "탄소 크레딧 채굴",
+      "subtitle": "주소당 1시간에 1개. Grade, 빈티지, 톤 수 선택.",
+      "labels": { "grade": "등급", "vintage": "빈티지", "tonnage": "톤 수 (t)" },
+      "mine": "채굴",
+      "cooldown": "다음 채굴까지 {{time}}",
+      "inventory": "보유 NFT",
+      "emptyInventory": "아직 NFT 가 없습니다. 위에서 채굴하세요.",
+      "row": "#{{id}} 등급 {{grade}} · {{vintage}} · {{tonnage}}t"
+    },
+    "step2": {
+      "title": "NFT → CCM Wrap",
+      "subtitle": "1 톤 = 1 CCM. Vault 는 낮은 등급부터 반환 (D→C→B→A).",
+      "selectAll": "전체 선택",
+      "approve": "Vault 승인",
+      "wrap": "선택 wrap",
+      "maxPerTx": "최대 5개 NFT / tx",
+      "balance": "CCM 잔액",
+      "noNfts": "NFT 를 먼저 채굴하세요."
+    },
+    "step3": {
+      "title": "CCM Stake",
+      "subtitle": "Pool 이 마를 때까지 yield 발생. 최대 10%/월, pool 감소에 따라 감쇠.",
+      "amount": "수량",
+      "max": "Max",
+      "approve": "토큰 승인",
+      "stake": "Stake",
+      "approveAndStake": "승인 & Stake",
+      "currentStake": "내 stake",
+      "currentRate": "현재 rate",
+      "noBalance": "먼저 NFT 를 wrap 해서 CCM 을 받으세요."
+    },
+    "step4": {
+      "title": "Reward 수령",
+      "subtitle": "블록마다 reward 가 누적됩니다.",
+      "pending": "Pending reward",
+      "claim": "Claim",
+      "unstake": "Unstake",
+      "unstakeAmount": "Unstake 수량",
+      "poolExhausted": "Pool 고갈. 운영자가 보충해야 합니다."
+    },
+    "tryMore": {
+      "title": "더 해보기 (준비 중)",
+      "lending": "Lending — NFT 담보 USDC 대출",
+      "yield": "Yield farming",
+      "basket": "Index basket — CCM-PRIME / FOREST / TECH",
+      "retire": "Retire to earn"
+    },
+    "footer": {
+      "contracts": "컨트랙트 (Base Sepolia)",
+      "explorer": "BaseScan",
+      "mainnet": "메인넷 포털 방문",
+      "github": "GitHub 소스"
+    },
+    "errors": {
+      "rpcRetry": "네트워크 오류, 재시도 중…",
+      "userRejected": "거래가 취소되었습니다.",
+      "txReverted": "거래 reverted",
+      "txPending": "거래 진행 중…",
+      "txMined": "거래 확정됨"
+    }
+  }
+}

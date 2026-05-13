@@ -1,0 +1,891 @@
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 1 of 39
+CCM NETWORK
+Carbon Credit Measurement
+The Carbon Credit Standard. Verified. Onchain. DeFi-native.
+W H I T E P A P E R
+Version 1.0
+May 2026
+CCM Foundation
+ccm.network · ccm.earth
+
+-- 1 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 2 of 39
+Abstract
+CCM Network는 탄소 크레딧을 위한 개방형 표준·검증·DeFi 네트워크다. PPM(parts per
+million) 이 대 기 중 CO₂ 농 도 의 사 실 상 표 준 단 위 가 된 것 처 럼 , CCM(Carbon Credit
+Measurement)은 검증된 1톤의 CO₂ 감축·제거를 표현하는 보편 단위가 되는 것을 목표로 한다.
+CCM Network의 본질은 Dual Representation 아키텍처에 있다.
+• CCM-NFT (ERC-1155): 검증된 탄소 감축의 source-of-truth. vintage·등급·project
+ID·VVB 서명을 메타데이터로 보유.
+• $CCM 토큰 (ERC-20): NFT의 fungible wrapper. AMM·lending·payment용.
+이 둘은 vault에서 1:1로 wrap/unwrap된다. 그 결과 탄소 크레딧이라는 자산이 처음으로 NFT의
+추적성·고유성과 ERC-20의 유동성·DeFi 합성성을 동시에 갖춘 onchain primitive가 된다.
+이 위에서 CCMine 노드 네트워크가 검증 가능한 감축을 발행하고 , CCM × DeFi 레이어가
+wrap·fractionalize·collateralize·yield·index·retire-to-earn 같은 DeFi 시너지를 만든다.
+기존 탄소 크레딧 시장의 4대 실패 — 불투명성·이중계상·유동성 부족·등급 차별 부재 — 를 onchain
+registry, M-of-N VVB consensus, AMM 유동성, 4단계 등급 시스템으로 해결한다.
+Keywords
+Carbon Credit · Tokenization · DeFi · ERC-1155 · ERC-20 · MRV · DePIN · Voluntary Carbon Market
+
+-- 2 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 3 of 39
+목차 / Contents
+Abstract 2
+1. 문제 정의 — 왜 새로운 탄소 크레딧 표준이 필요한가 5
+2. CCM 단위 — 정의, 등급, 하위 단위8
+3. CCM Network — 아키텍처 11
+4. CCMine — 채굴 메커니즘 14
+5. 검증 — VVB 네트워크와 Oracle 설계 16
+6. $CCM 토큰 — 공급, 분배, 유틸리티 18
+7. CCM × DeFi — NFT/Token Dual Representation 시너지 21
+8. 토큰 경제 — TGE, 스테이킹, 가치 축적 28
+9. 스마트 컨트랙트 — 기술 개요 30
+10. 거버넌스 32
+11. 로드맵 34
+12. 리스크 36
+13. 결론 38
+14. 부록 (용어집·참고문헌·라이선스) 39
+
+-- 3 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 4 of 39
+1. 문제 정의 — 왜 새로운 탄소 크레딧 표준이 필요한가
+1.1 시장 규모와 단절
+자발적 탄소 시장 (VCM)은 2030년까지 $50B, 2050년까지 $250B 규모로 성장할 것으로
+예상된다. 그러나 시장은 다음 4대 실패에 묶여 있다.
+(1) 불투명성
+기존 레지스트리(Verra, Gold Standard, ACR, CAR)는 PDF 기반 사후 보고서에 의존한다.
+발행·이전·소각 이벤트가 실시간으로 공개되지 않으며 , 한 크레딧의 실제 감축량을 제3자가 즉시
+검증할 수 없다.
+(2) 이중계상 (Double Counting)
+같은 감축량이 여러 레지스트리에 동시 등록되거나, 발행국과 구매자가 동시에 자국 NDC 달성에
+계상하는 사례가 보고되고 있다 . 2024 Berkeley 연구는 REDD+ 프로젝트의 약 40%에서
+부풀려진 베이스라인을 발견했다.
+(3) 유동성 부족
+크레딧은 OTC(장외) 거래가 지배적이며, 가격 발견(price discovery)이 어렵다. 동일한 등급의
+크레딧이 같은 시기에 $4~$80 사이에서 거래되는 일이 빈번하다. DeFi와의 단절도 큰 원인이다 —
+탄소 크레딧은 AMM·lending·yield 같은 onchain 유동성 도구에 접근할 수 없었다.
+(4) 등급 차별 부재
+"1 ton 감 축 = 1 credit" 이 라 는 표 면 적 동 질 성 에 도 불 구 하 고 , 영 속 성 · 추 가 성
+·MRV(Measurement, Reporting, Verification) 신뢰도는 천차만별이다. 시장이 이를 가격에
+반영하지 못해, 저품질 크레딧이 시장 신뢰 전체를 훼손한다.
+
+-- 4 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 5 of 39
+1.2 기존 시도와 한계
+지난 5년간 Toucan, KlimaDAO, Moss(MCO2), JustCarbon 등 다수의 onchain 시도가
+있었다. 그러나 다음 한계를 노출했다.
+• Tokenize-only 모델: 기존 Verra/Gold Standard 크레딧을 단순히 토큰화. 원본
+레지스트리의 신뢰도를 그대로 상속받으므로 위 4대 실패를 해결하지 못함.
+• 단일 형태(Mono-form) 한계: 대부분 ERC-20 only 또는 NFT only. 둘 사이의 교환
+메커니즘이 없어 추적성과 유동성을 동시에 확보하지 못함.
+• Bridge 위험: Verra는 2022년 11월 자사 크레딧의 onchain bridging을 금지. Toucan
+의 BCT 풀이 사실상 동결됨.
+• 거버넌스 공백: 토큰 가격 부양에만 초점, 검증 표준에 대한 실질 거버넌스 부재.
+CCM Network 는 tokenize-only 가 아 닌 originating layer, 그 리 고 Dual
+Representation으로 설계된다. 즉 새로 만들어지는 크레딧을 처음부터 onchain에서 발행·검증·
+등급화하면서, NFT와 ERC-20을 1:1로 묶는 wrap 인프라를 제공한다.
+
+-- 5 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 6 of 39
+2. CCM 단위 — 정의, 등급, 하위 단위
+2.1 정의
+1 CCM ≡ 1 metric ton of CO₂-equivalent (CO₂e) that has been verifiably
+removed, avoided, or reduced from the atmosphere, registered onchain
+through the CCM Standard.
+CCM은 단위(unit)이지, 토큰이 아니다. Onchain에서 CCM은 두 형태로 동시 존재한다.
+• CCM-NFT (ERC-1155): 특정 프로젝트·빈티지·등급에 묶인 source-of-truth 자산.
+• $CCM (ERC-20): NFT vault에 lock된 양에 1:1 백킹된 fungible 컨테이너.
+이 dual 구조가 7장의 DeFi 시너지의 기반이다.
+2.2 등급 시스템
+CCM은 4등급으로 분류된다 . 등급은 영속성(permanence), 추가성(additionality), MRV
+신뢰도, 누출(leakage) 위험의 함수다.
+등급 영속성 추가성 MRV 대표 카테고리
+CCM-A 1,000년+ 강함
+Tier-1 (위성+
+센서+VVB)
+DAC, 광물화,
+해양 알칼리화
+CCM-B 100년+ 강함 Tier-1
+바이오차,
+강화풍화,
+건설자재
+CCM-C 40~100년 보통 Tier-2 (위성
++VVB)
+신규조림,
+토양탄소,
+습지복원
+CCM-D <40년 약함/
+Avoidance
+Tier-2 REDD+, 메탄
+
+-- 6 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 7 of 39
+등급 영속성 추가성 MRV 대표 카테고리
+회피, 쿡스토브
+각 등급은 onchain에 메타데이터로 기록되며, 가격은 시장에서 자유롭게 결정된다. 역사적 데이터
+(2024~2025)는 CCM-A:CCM-D 가격 비율이 약 30:1 수준임을 시사한다.
+2.3 하위·상위 단위
+PPM이 ppb·ppt와 ppm·% 사이에서 자유롭게 환산되듯, CCM도 SI 접두어 체계를 따른다.
+단위 표기 값 (CO₂e)
+마이크로CCM μCCM 1g
+밀리CCM mCCM 1kg
+CCM CCM 1ton
+킬로CCM kCCM 1,000ton
+메가CCM MCCM 1,000,000ton
+기가CCM GCCM 1,000,000,000ton
+이 체계는 개인 단위 carbon footprint(예: 항공권 한 장 ≈ 200 mCCM)부터 국가 단위 NDC
+목표(예: 한국 2030 NDC ≈ 290 MCCM 감축)까지 통일된 표현을 가능케 한다.
+2.4 상호운용성
+CCM Standard는 기존 표준과의 매핑 테이블을 명시한다.
+• Verra VCS: 1 VCU = 1 CCM (등급은 검증 후 부여)
+• Gold Standard: 1 GS-VER = 1 CCM
+• ACR: 1 ERT = 1 CCM
+• Article 6.4 (Paris Agreement): 1 A6.4ER = 1 CCM-B 이상
+• ICVCM CCP: CCP-eligible 크레딧은 자동으로 CCM-A 또는 CCM-B 후보
+
+-- 7 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 8 of 39
+표준은 Apache 2.0 라이선스로 공개되며, 누구나 자유롭게 참조 구현할 수 있다.
+
+-- 8 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 9 of 39
+3. CCM Network — 아키텍처
+3.1 8층 스택
+L8 Application 지갑, 시장, ESG 대시보드
+L7 DeFi Primitives Wrap, AMM, Vault, Index, Insurance (7장) ★
+L6 Token Layer $CCM ERC-20, veCCM
+L5 NFT Registry CCM-NFT ERC-1155 (Source-of-truth) ★
+L4 Verification VVB 합의, ZK proof
+L3 Oracle / MRV 위성 · IoT 센서 · LiDAR
+L2 Mining
+(CCMine) Physical / Verification 노드
+L1 Settlement Base / EVM L2
+이전 모델 대비 핵심 변화는 L5 NFT Registry와 L7 DeFi Primitives의 분리·강조다 (★
+표시). NFT 레이어가 source-of-truth, ERC-20 레이어가 유동성, DeFi 레이어가 합성성을
+담당하는 명확한 책임 분리.
+3.2 L1 — Settlement Layer
+CCM Network는 Base (Coinbase L2)를 메인 settlement layer로 채택한다.
+• 이유: EVM 호환, 낮은 가스비(평균 $0.01/tx), Coinbase 통합으로 fiat on/off-ramp,
+OP Stack 기반 long-term roadmap.
+
+-- 9 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 10 of 39
+• Multi-chain 전략: Ethereum L1에는 canonical contract만 배포(고가치 holder용),
+그 외 거래는 Base에서. 추후 Optimism, Arbitrum, Polygon zkEVM에 bridge 확장.
+3.3 L3 — Oracle / MRV Layer
+탄소 감축의 실측은 다음 데이터 소스로부터 oracle network로 유입된다.
+• 위성 데이터: Sentinel-2 (10m 해상도, 5일 주기), Planet Labs, MAXAR
+• LiDAR: 산림 바이오매스 측정용 GEDI 위성 데이터
+• 지상 센서: IoT 기반 토양 탄소·메탄 플럭스·산불 감지
+• 저장소 모니터링: DAC 시설의 CO₂ 격리량 실시간 측정
+데이터는 Chainlink Functions를 통해 onchain으로 푸시되며 , 각 데이터 포인트는 출처 ·
+타임스탬프·서명이 포함된 attested payload로 기록된다.
+3.4 L5 — NFT Registry
+발행(mint)·이전(transfer)·소각(burn) 이벤트를 기록하는 onchain 원장. 이중계상 방지를 위해
+다음 invariant을 보장한다.
+• Uniqueness: 모든 CCM-NFT 인스턴스는 globally unique tokenId를 가진다.
+• Linkage: 발행 시 원본 프로젝트 ID, MRV 데이터 해시, VVB 서명, 등급, 빈티지, tCO₂e
+수량 메타데이터가 immutable하게 기록된다.
+• Retire-once: 소각된 NFT는 동일 tokenId로 재발행 불가.
+• ERC-1155 multi-token: 한 컨트랙트에서 모든 vintage·등급 인스턴스를 표현 (gas
+효율, batch transfer).
+CCM-NFT는 자기충족적 소유 증서다. 사용자는 NFT만 보유해도 ERC-20 $CCM으로 wrap하지
+않고 그 자체로 hold·retire할 수 있다.
+
+-- 10 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 11 of 39
+3.5 L6 — Token Layer
+$CCM (ERC-20)은 NFT vault에 lock된 양에 1:1 백킹되는 fungible 컨테이너다. 사용자는
+wrap을 통해 NFT를 ERC-20 형태로 변환해 AMM·lending·yield 등에 활용할 수 있다. 자세한
+작동은 7장.
+3.6 L7 / L8
+L7 DeFi Primitives는 7장 전체에서 다룬다. L8 Application은 웹 dashboard, 모바일 지갑,
+ESG 보고 SDK, 기업용 buy-and-retire desk, 카본 footprint 계산기를 포함한다.
+
+-- 11 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 12 of 39
+4. CCMine — 채굴 메커니즘
+CCMine은 CCM Network 위에서 작동하는 채굴 노드 제품이다. 비트코인의 채굴자가 PoW
+해시를 통해 BTC를 발행하듯, CCMine 노드는 검증 가능한 탄소 감축 활동을 통해 CCM-NFT를
+mint하고, 그 NFT가 자동으로 ERC-20 $CCM과 1:1 paired된다.
+4.1 채굴 정의
+CCMine 에 서 " 채 굴 (mining)" 은 컴 퓨 팅 해 시 가 아 니 라 Proof of Carbon
+Removal/Reduction (PoCR)이다. 노드 운영자는 다음 중 하나를 수행한다.
+1. Physical Miner: DAC 장비, 광물화 플랜트, 바이오차 가마, 신규조림 부지 등을 운영.
+2. Verification Miner: 위성·IoT 데이터를 receive·process·attest하는 oracle 노드
+운영.
+3. Storage Miner: registry 데이터의 분산 저장(IPFS/Arweave) 제공.
+본 백서에서 "CCMiner"는 1번(Physical)을 주로 의미한다.
+4.2 발행 흐름 (End-to-End)
+1 Physical CCMiner — 감축 활동
+DAC, 광물화 플랜트, 바이오차 가마, 신규조림 등 운영
+↓
+2
+L3 Oracle — 데이터 수집
+위성(Sentinel-2, Planet Labs) · IoT 센서 · LiDAR가 활동
+데이터 수집
+↓
+
+-- 12 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 13 of 39
+3
+L4 VVB Network — 검증 합의
+N개 VVB가 데이터 검토 · 등급 부여, M-of-N 합의 충족 시 mint
+approval
+↓
+4
+L5 NFT Registry — Mint
+ERC-1155 CCM-NFT 발행 (source-of-truth, vintage·
+등급·project ID 메타데이터)
+↓
+5 CCMiner Wallet — Hold or Wrap
+NFT를 직접 hold, 또는 wrap → $CCM ERC-20으로 전환
+↓
+6 L7 DeFi — Activate
+AMM 매도 / Vault 담보 / Index 편입 / Stake yield
+↓
+7 End User
+기업 ESG 구매·소각 또는 투자자 hold
+4.3 CCMine 노드 클라이언트
+CCMine Node는 오픈소스 SW로 다음 기능을 제공한다.
+• Hardware integration: DAC 컨트롤러, 산림 LiDAR, 토양 센서 등과의 표준화된
+어댑터.
+• Data attestation: 측정 데이터에 노드 키로 서명.
+• VVB 라이프사이클: 검증 요청 제출, VVB 응답 수신, mint 트랜잭션 트리거.
+• Wallet & treasury: 노드 운영자가 자기 지갑/treasury를 안전하게 관리.
+
+-- 13 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 14 of 39
+4.4 풀(Pool) 메커니즘
+소규모 운영자는 CCMine Pool에 참여해 발행 변동성을 평탄화할 수 있다. 풀은 다음을 제공한다.
+• 측정 인프라 공유 (위성·VVB 비용 분담)
+• 발행된 NFT를 즉시 wrap → $CCM 분배
+• 풀 운영자가 1~5% 수수료 수취
+• 풀은 CCM Network DAO의 화이트리스트를 받아야 함
+4.5 노드 인센티브
+물리적 CCMiner의 수익은 다음과 같이 결정된다.
+수익 = (시장 $CCM 가격 × 발행량) − 운영비 − VVB·oracle 수수료 − 네트워크 fee 5%
+네트워크 fee 5%는 다음에 분배된다.
+• 60% → veCCM 스테이커
+• 25% → CCM Foundation Treasury
+• 10% → VVB 네트워크 보상
+• 5% → Oracle 노드 보상
+
+-- 14 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 15 of 39
+5. 검증 — VVB 네트워크와 Oracle 설계
+5.1 VVB(Validation and Verification Body) 네트워크
+기존 시장에서 VVB는 ISO 14065 인증을 받은 4Big(DNV, TÜV, SGS, Bureau Veritas) 등
+소수 기관의 과점이다. CCM Network는 이를 다음과 같이 재설계한다.
+• 다층 VVB: Tier-1 (전통 4Big + ISO 14065 인증 신규 진입자), Tier-2 (학술기관·검증
+협동조합).
+• Stake 요구: 각 VVB는 $CCM을 stake해야 검증 권한을 가진다. 잘못된 검증 시 slash.
+• 합의 임계치: 등급별로 다름. CCM-A는 5-of-7 VVB 합의, CCM-D는 3-of-5.
+5.2 ZK-proof 옵션
+민감한 측정 데이터를 onchain에 노출하지 않고도 검증 가능하도록, ZK-SNARK 기반 attestation
+을 옵션으로 지원한다.
+• VVB는 raw data를 받아 검증 후, "이 프로젝트가 N톤 감축을 달성함"이라는 statement에
+대한 ZK proof를 생성.
+• 사용자는 raw data를 보지 못하지만 proof는 검증 가능.
+• 활용 사례: 기업 자체 DAC 데이터, 군사/안보 토지의 산림 데이터.
+5.3 분쟁 처리
+발행된 CCM-NFT에 대해 누구나 dispute를 제기할 수 있다.
+4. dispute proposer가 $CCM을 bond로 예치
+5. CCM Foundation 내 분쟁 패널(랜덤 선정 5인 VVB)이 검토
+6. 결과에 따라 원본 NFT 무효화(burn) + slash 분배, 또는 dispute 기각 + bond 몰수
+
+-- 15 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 16 of 39
+7. 무효 NFT 보유자는 7장의 Insurance Vault에서 일정 비율 보상 가능
+
+-- 16 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 17 of 39
+6. $CCM 토큰 — 공급, 분배, 유틸리티
+6.1 Hard Cap
+총 공 급 량 : 5,000,000,000 $CCM (50 억 ). 영 구 적 으 로 추 가 발 행 불 가 능 하 다
+(ERC20Capped로 contract-level 강제).
+6.2 분배 (Allocation)
+카테고리 비율 수량 비고
+Mining Rewards
+(CCMine 운영자) 40% 2.0B 10년 감속 emission
+Foundation /
+Ecosystem 18% 900M 4년 vesting + 1년
+cliff
+Strategic /
+Partners 10% 500M 4년 vesting + 1년
+cliff
+Liquidity / AMM 9% 450M 즉시 unlock, AMM
+seed
+Treasury Reserve 8% 400M DAO 거버넌스 통제
+Public Sale (TGE) 5% 250M Seed + Series A
+Staking Pool 5% 250M 가격 탄력적 yield
+Team & Advisors 5% 250M 4년 vesting + 1년
+cliff
+Total 100% 5B
+설 계 원 칙 : Mining 40% 는 일 반 DePIN 벤 치 마 크 (Helium 35%, Render 32%) 상 위 에
+위치하면서, Filecoin·Arweave 같은 inflation-heavy 모델보다는 보수적이다. Foundation
+18%는 글로벌 표준 채택(UNFCCC Article 6, ISO TC 207) 운동·VVB 인증·외부 감사 자금을
+확보한다.
+
+-- 17 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 18 of 39
+6.3 Mining Emission Schedule
+CCMine 노드 인센티브용 2.0B는 다음 스케줄로 감속 발행된다 (front-loaded).
+기간 연 emission 일 emission 누적 (mining 비중)
+Year 1~2 300M 822K 600M (30%)
+Year 3~4 250M 685K 1,100M (55%)
+Year 5~7 200M 548K 1,700M (85%)
+Year 8~10 100M 274K 2,000M (100%)
+이 schedule은 초기 2년에 집중 발행하여 CapEx-heavy mining 운영자(DAC, 광물화 플랜트)
+의 onboarding을 가속화한다. 10년 후 mining emission은 종료되며, 그 시점부터 CCMine
+노드 수익은 100% 시장 fee 기반(4.5)이 된다.
+6.4 유틸리티 — 5가지
+8. Settlement currency: CCM 시장에서 결제 단위.
+9. VVB / CCMiner staking: 노드·검증자 자격 증명.
+10. Governance (veCCM): $CCM을 lock하여 거버넌스 vote 가중치.
+11. Fee discount: $CCM으로 결제 시 marketplace fee 50% 할인.
+12. DeFi liquidity primitive: NFT wrap, vault 담보, index basket 구성요소 (7
+장).
+6.5 가치 축적 (Value Accrual)
+토큰 가격은 다음 흐름에서 형성된다.
+• 유틸리티 흐름 (3%): 거래 수수료, staking, governance 기반 demand.
+• 현금흐름 흐름 (97%): veCCM 스테이커에게 분배되는 marketplace fee + DeFi 활동
+fee.
+
+-- 18 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 19 of 39
+연 간 시 장 거 래 량 을 $1B(2030E) 으 로 가 정 하 면 fee = $50M, 그 60% = $30M 이 매 년
+veCCM에게 흐른다. 이는 토큰 시총에 대한 직접적 cash yield로 작용한다.
+
+-- 19 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 20 of 39
+7. CCM × DeFi — NFT/Token Dual
+Representation 시너지
+이 장은 CCM Network의 차별화 핵심이다. 기존 onchain carbon 프로젝트 대부분은 ERC-20
+단일 형태(Toucan BCT, Moss MCO2) 또는 NFT 단일 형태(Kanga, JustCarbon Removal)
+에 머물렀다. CCM Network는 CCM-NFT(추적성)과 $CCM(유동성)을 wrap layer로 묶어,
+양쪽을 동시에 활용 가능한 최초의 carbon DeFi primitive를 제공한다.
+7.1 Dual Representation 원칙
+1 ton CO₂ 감축 (verified)
+↓
+CCM-NFT
+ERC-1155
+추적성 (Source-of-truth)
+vintage · 등급 · project ID · VVB
+서명
+⇄
+Wrap /
+Unwrap
+1:1, non-custodial
+$CCM
+ERC-20
+유동성 (Liquidity)
+AMM · Lending · Yield · Index
+모든 1 CCM은 항상 두 형태 중 하나로 존재한다 . vault에 NFT가 lock되어 있으면 그만큼의
+$CCM이 유통된다. 시스템 전체에서 다음 invariant가 보장된다.
+total_supply($CCM) == sum(NFT in vault) × tCO₂e per NFT
+
+-- 20 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 21 of 39
+7.2 Wrap / Unwrap 메커니즘
+7.2.1 Wrap (NFT → $CCM)
+function wrap(uint256 tokenId, uint256 amount) external {
+ccmNFT.safeTransferFrom(msg.sender, address(vault), tokenId, amount, "");
+ccmToken.mint(msg.sender, amount * 1e18); // 1 NFT = 1 $CCM
+emit Wrapped(msg.sender, tokenId, amount);
+}
+• 사용자가 NFT를 vault에 lock하면 동량의 $CCM이 mint된다.
+• vault는 무신탁(non-custodial)이며, 누구든 contract를 검증할 수 있다.
+7.2.2 Unwrap ($CCM → NFT)
+Unwrap은 세 가지 모드를 지원한다.
+모드 선택 알고리즘 비용 활용 사례
+Standard 가장 오래된 빈티지·
+낮은 등급 (FIFR)
+0% premium 일반 retire용
+Premium 최신 빈티지·고등급
+우선
++1~5% premium ESG 보고용
+Specific 사용자가 tokenId
+지정
+oracle 가격 차액 특정 프로젝트 재구매
+7.2.3 Standard Mode의 자정 효과
+기본값이 "가장 오래된·낮은 등급"부터 unwrap되도록 설계해, 시장에서 자연스럽게 저품질
+크레딧이 먼저 retire되고, 고등급 크레딧은 vault에 누적된다. 이는 시간이 지날수록 $CCM의 평균
+등급이 상승하는 자정작용(self-correcting)을 만든다.
+7.3 Grade-Specific Wrappers
+$CCM 외에 등급별 wrapper가 별도 존재한다.
+
+-- 21 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 22 of 39
+Wrapper 백킹 AMM 풀 용도
+$CCM 모든 등급 mixed $CCM/USDC,
+$CCM/ETH 범용 유동성
+$CCM-A CCM-A NFT only $CCM-A/$CCM,
+$CCM-A/USDC
+DAC·광물화
+프리미엄
+$CCM-B CCM-B NFT only $CCM-B/$CCM 바이오차·강화풍화
+$CCM-C CCM-C NFT only $CCM-C/$CCM 신규조림
+$CCM-D CCM-D NFT only $CCM-D/$CCM REDD+ 등
+이 구조는 등급별 가격 차이를 시장이 자연스럽게 발견할 수 있게 한다.
+7.4 NFT-as-Collateral (CCM Vault Lending)
+대형 CCM-NFT (예: 한 DAC 시설의 1년치 발행분 10,000 ton CCM-A)는 단번에 매도하기
+어렵다. CCM Vault는 NFT를 담보로 $CCM 또는 USDC를 빌릴 수 있게 한다.
+등급 최대 LTV 청산 임계 차입 이자
+CCM-A 70% 80% 3~5%
+CCM-B 60% 75% 5~8%
+CCM-C 50% 70% 8~12%
+CCM-D 30% 55% 12~20%
+청산 시 NFT는 Dutch auction에 부쳐지며, 매각 대금으로 부채 상환 후 잔여는 차주에게 환원된다.
+활용 사례:
+• CCMiner cash flow 평탄화: 발행 즉시 매도 대신 담보 차입 → 가격 상승 후 상환.
+• 기업 ESG 헷지: 미래 retire 의무를 위해 NFT 매입 후, 단기 자금이 필요하면 담보 차입.
+
+-- 22 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 23 of 39
+7.5 Fractionalization (대형 NFT 분할)
+100,000 톤짜리 단일 CCM-NFT를 100,000개의 $CCM-A로 분할(fractionalize)할 수 있다.
+이는:
+• 소액 투자자 접근성: 개인이 premium DAC 크레딧을 분할 보유.
+• AMM 유동성: 큰 NFT는 거래되기 어렵지만 fractional은 AMM에서 즉시 거래 가능.
+재결합(de-fractionalize)은 fractional supply의 90% 이상이 단일 주체에게 모여야 가능
+(Sudoswap·Fractional.art 모델 참조).
+7.6 NFT Yield (Hold-to-Earn)
+CCM-NFT holder 가 NFT 를 staking vault 에 deposit 하 면 marketplace fee 의 일 부를
+$CCM yield로 받는다.
+yield_rate(grade, vintage) = base_rate × grade_multiplier × vintage_factor
+변수 값 예시
+base_rate 4%/년
+grade_multiplier (CCM-A) 2.0×
+grade_multiplier (CCM-D) 0.5×
+vintage_factor (최신) 1.5×
+vintage_factor (5년+ 경과) 0.7×
+이는 wrap하지 않고 NFT를 그대로 보유하는 것에 대한 인센티브로, 시장 자정작용을 강화한다.
+7.7 Retire-to-Earn (REE)
+기업이 ESG 보고를 위해 retire(burn) 시 다음이 발생한다.
+13. NFT burn → 공급 회수 (deflationary).
+14. 등량 $CCM도 burn (vault invariant 유지).
+
+-- 23 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 24 of 39
+15. retire 사용자는 Retirement Certificate NFT를 받음 (non-transferable, ESG
+audit용).
+16. 최소 lock-up 기간(예: 2년) 후 보고서 제출하면 $CCM rebate (DAO 결정 비율,
+0~10%).
+REE는 retire 행위에 인센티브를 주어 시장을 healthier하게 유지한다 — 단순 hodl보다 retire가
+사회적으로 더 유익하기 때문.
+7.8 Insurance Vault
+VVB 검증 실수로 NFT가 무효화될 위험을 헷지하는 보험 풀.
+• $CCM holder가 premium fee (NFT 가치의 0.5~3%/년)를 내면 가입.
+• 보험금은 dispute 결과 무효 판정 시 사용자에게 NFT 가치만큼 $CCM으로 환급.
+• 보험 풀 자금: 가입자 premium + Treasury 일부.
+• Premium은 등급별 차등 (CCM-D가 dispute risk 높아 premium 큼).
+7.9 Index / Basket Tokens
+ETF처럼 구조화된 합성 토큰.
+Index Token 구성 활용
+$CCM-PRIME
+CCM-A + CCM-B 80:20
+가중 프리미엄 ESG 펀드용
+$CCM-2026 2026 vintage NFT만 빈티지 베팅
+$CCM-FOREST 신규조림 + 산림 NFT만 자연 기반 솔루션(NbS)
+$CCM-TECH DAC + 광물화 NFT만 기술 기반 솔루션(TbS)
+각 index token은 fractional 구성 NFT로 백킹되며, 무신탁 rebalancing oracle이 가중치를
+유지한다.
+
+-- 24 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 25 of 39
+7.10 외부 DeFi 합성성 (Composability)
+$CCM이 표준 ERC-20이고 CCM-NFT가 표준 ERC-1155이므로, CCM Network 외부의
+DeFi protocol과 자유롭게 합성된다.
+$CCM (ERC-20) 합성성
+Protocol 사용 사례
+Uniswap V3, V4 $CCM/USDC, $CCM/ETH 풀
+Curve $CCM/USDC stable pool (낮은 슬리피지)
+Balancer weighted multi-asset 풀
+Aave, Compound $CCM 담보 lending
+Yearn, Convex $CCM yield aggregation
+Pendle $CCM yield의 PT/YT 분리
+CCM-NFT (ERC-1155) 합성성
+Protocol 사용 사례
+OpenSea, Blur NFT 거래
+NFTfi, BendDAO NFT 담보 lending (외부 옵션)
+Sudoswap NFT AMM
+Reservoir NFT aggregation
+이 합성성 덕에 CCM은 DeFi ecosystem 전체와 연결된 carbon primitive가 된다. 기존
+carbon 토큰의 가장 큰 약점이 "DeFi와의 단절"이었음을 고려하면, 이는 시장 점유율 측면에서
+결정적 차별화 요소다.
+
+-- 25 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 26 of 39
+7.11 시너지 흐름 종합
+CCMine →	발행 CCM-NFT mint
+↓ 3가지 활용 경로
+Branch 1. CCM-NFT (그대로 hold)
+→ NFT Yield (§7.6) — Hold-to-Earn
+→ 기업 Retire (§7.7) — REE rebate
+Branch 2. Wrap → $CCM (DeFi 활용)
+→ AMM (§7.3) — Uniswap, Curve, Balancer
+→ Vault collateral (§7.4) — USDC 차입
+→ Index basket (§7.9) — $CCM-PRIME 등
+→ veCCM stake — 거버넌스 + cash yield
+→ 외부 DeFi (§7.10) — Aave, Pendle, Yearn
+Branch 3. Insurance (§7.8)
+→ 모든 holder 옵션 (premium 0.5~3%/년)
+이 모든 primitive는 상호 합성 가능하다. 예를 들면:
+• CCMiner가 발행한 NFT를 vault 담보로 USDC를 빌려 운영비 충당
+• 빌린 USDC로 CCM-A index 매입해 ESG 헷지
+• 그 index NFT를 다시 fractionalize해 $CCM-PRIME 유동성 공급
+• 발생한 fee를 veCCM에 stake해 거버넌스 권한 확보
+이 다단 합성이 가능한 carbon 자산은 CCM Network가 처음이다.
+
+-- 26 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 27 of 39
+8. 토큰 경제 — TGE, 스테이킹, 가치 축적
+8.1 TGE 구조
+라운드 가격 수량 모집액 Cliff Vesting
+Seed $0.15 100M $15.0M 6개월 24개월
+linear
+Series A $0.20 150M $30.0M 3개월 18개월
+linear
+Total — 250M $45.0M — —
+전체 cap의 5%만 public 분배되며, 95%는 mining/staking/treasury를 통해 점진적으로
+시장에 진입한다.
+8.2 Staking Pool — 가격 탄력적 Yield
+200M $CCM 한정으로 초기 지원자(Cohort A)에게 제공되는 staking pool.
+Yield 공식
+yield(t) = R₀ × (P_TGE / P_t) × (pool_remaining / pool_initial)
+• R₀ = 10%/월 (초기 yield 캡)
+• P_TGE = $0.20 (TGE 기준가)
+• P_t = 시점 t의 토큰 가격
+• pool_remaining = 남은 staking pool 잔량
+• pool_initial = 200M
+해석
+• 토큰 가격이 TGE보다 낮으면 yield는 캡(10%/월)에 고정.
+• 가격 2× → yield 5%/월.
+
+-- 27 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 28 of 39
+• 가격 10× → yield 1%/월.
+• pool 소진에 따라 추가 자연 감속.
+이 메커니즘은 초기 holder를 보호하면서도 가격 상승 시 자동으로 매도 압력을 줄인다. 200M
+pool은 약 24~36개월 내 자연 sunset된다 (시뮬레이션 기준).
+8.3 가격 시나리오 (2026~2030)
+자체 모델 기준 (Bear/Base/Bull):
+시나리오 Year 1 Year 2 Year 3 Year 5
+Bear $0.15 $0.18 $0.25 $0.40
+Base $0.30 $0.55 $1.20 $3.50
+Bull $0.50 $1.20 $4.00 $15.00
+Base 시나리오는 (i) 자발적 탄소 시장의 6~8× 성장, (ii) CCM Network의 시장 점유율 5%,
+(iii) veCCM staking ratio 30%, (iv) DeFi TVL $200M 가정.
+8.4 디플레이션 메커니즘
+• 사용자가 ESG 보고를 위해 retire할 때마다 NFT + $CCM 양쪽 burn.
+• 마켓 fee의 일부는 buy-back & burn에 사용 (DAO 결정).
+• DeFi vault 청산 시 발생하는 protocol revenue도 일부 burn.
+
+-- 28 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 29 of 39
+9. 스마트 컨트랙트 — 기술 개요
+CCM Network는 다음 컨트랙트 군으로 구성된다.
+9.1 Core Contracts
+Contract 표준 역할
+CCMToken.sol ERC-20
+5B cap, Burnable,
+Pausable, Permit,
+AccessControl
+CCMCreditNFT.sol ERC-1155
+vintage·등급·project
+메타데이터, mint은 VVB
+consensus 시에만
+CCMVesting.sol —
+Linear vesting with cliff,
+Foundation/Strategic/Te
+am/TGE buyer schedule
+CCMStaking.sol — 가격 탄력적 yield staking,
+200M cap 자동 sunset
+CCMTGESale.sol — Multi-tier 라운드
+(Seed/Series A 동시 운영)
+9.2 DeFi Layer Contracts (7장 구현)
+Contract 역할
+CCMWrapper.sol NFT ↔ ERC-20 1:1 wrap/unwrap (7.2)
+CCMGradeWrapper.sol 등급별 wrapper ($CCM-A 등) (7.3)
+CCMVault.sol NFT 담보 lending, 등급별 LTV (7.4)
+CCMFractional.sol 대형 NFT 분할/재결합 (7.5)
+CCMNFTStaking.sol NFT hold-to-earn yield (7.6)
+
+-- 29 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 30 of 39
+Contract 역할
+CCMRetireRebate.sol Retire-to-Earn 프로그램 (7.7)
+CCMInsurance.sol dispute 보험 풀 (7.8)
+CCMIndex.sol Basket index token ($CCM-PRIME 등)
+(7.9)
+9.3 Governance Contracts
+Contract 역할
+CCMVotingEscrow.sol veCCM lock-and-vote (Curve 모델)
+CCMGovernor.sol proposal · vote · timelock
+CCMTimelock.sol 48시간 admin action delay
+9.4 Verification Contracts
+Contract 역할
+CCMVVBRegistry.sol VVB 화이트리스트, stake, slash
+CCMOracleAggregator.sol Chainlink Functions + 커스텀 attestor
+CCMDispute.sol 분쟁 제기·심사·결과 집행
+9.5 보안 정책
+• 모든 컨트랙트 non-upgradeable (사용자 신뢰 우선).
+• 외부 감사 1개 이상 필수 (Trail of Bits, OpenZeppelin, Quantstamp 중).
+• TGE 후 Immunefi bug bounty 등록 (최대 보상 $500K).
+• Slither, Mythril 정적 분석 통과 필수.
+• 모든 admin role은 multisig (3-of-5 Gnosis Safe) + 48시간 timelock.
+
+-- 30 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 31 of 39
+10. 거버넌스
+10.1 veCCM 모델
+$CCM holder는 다음 lock 기간을 선택해 veCCM을 생성한다.
+Lock 기간 veCCM 가중치
+4년 1.0×
+2년 0.5×
+1년 0.25×
+6개월 0.1×
+veCCM은 transfer 불가, governance vote 시 사용된다.
+10.2 Vote 대상
+• CCM Standard 개정 (등급 임계치, MRV 요구)
+• VVB 화이트리스트 추가/제거
+• Treasury 지출
+• Marketplace fee rate 및 분배 비율
+• Buy-back & burn 비율
+• Vault LTV·청산 파라미터
+• 새 mining 카테고리 승인
+• Index token 구성 비율
+10.3 Foundation 역할
+CCM Foundation은 비영리 재단으로 다음을 담당한다.
+
+-- 31 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 32 of 39
+• 표준 문서 유지 관리 및 학술·국제기구 연락
+• VVB 네트워크 인증 관리
+• Treasury 운영 (DAO vote 결과 집행)
+• Bug bounty, 외부 감사 발주
+Foundation은 직접 토큰을 발행하거나 VVB로 활동하지 않는다 (이해상충 방지).
+10.4 점진적 탈중앙화
+• Year 0 (TGE): Foundation multisig 주도, 주요 결정에 community
+vote(advisory).
+• Year 1: Treasury 지출 vote가 binding.
+• Year 2: 표준 개정도 vote.
+• Year 3+: 모든 admin 역할 DAO로 이관.
+
+-- 32 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 33 of 39
+11. 로드맵
+Phase 0 — Foundation (완료)
+• CCM Standard v1.0 초안
+• Smart contract 핵심 5종 초안
+• Whitepaper v1.0
+Phase 1 — Mainnet (2026 Q3)
+• Smart contract 외부 감사
+• Base mainnet 배포 (Core 5 contracts)
+• TGE (Seed + Series A)
+• AMM 유동성 조성 ($CCM/USDC, $CCM/ETH)
+• Foundation 설립
+Phase 2 — Mining + DeFi 시작 (2026 Q4)
+• 첫 CCMine pilot 노드 5개 (DAC 1, 광물화 1, 바이오차 1, 신규조림 2)
+• VVB 네트워크 5개 기관 onboarding
+• Oracle integration (Sentinel-2 + 1개 IoT 파트너)
+• 첫 CCM-A · CCM-C NFT 발행
+• DeFi Layer Phase A: CCMWrapper, GradeWrapper, NFTStaking 배포
+Phase 3 — DeFi 본격 가동 (2027 H1)
+• CCMVault lending 가동 (등급별 LTV)
+• CCMFractional, CCMIndex 배포 ($CCM-PRIME 출시)
+• CCMInsurance 풀 가동
+
+-- 33 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 34 of 39
+• veCCM governance launch
+• 외부 DeFi 통합: Curve 풀, Aave 상장
+Phase 4 — Scale (2027 H2 ~ 2028)
+• 노드 100+, VVB 20+
+• 다국어 지원 (영·한·일·중·EU)
+• Multi-chain 확장 (Optimism, Arbitrum)
+• Dispute layer mainnet
+• $CCM-FOREST, $CCM-TECH 등 추가 index 출시
+Phase 5 — Standard Adoption (2028+)
+• 정부·국제기구와 표준 합의 추진 (UNFCCC Article 6, ISO TC 207)
+• Native A6.4ER ↔ CCM 양방향 bridge
+• 1,000+ enterprise ESG 구매자 확보
+
+-- 34 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 35 of 39
+12. 리스크
+12.1 규제 리스크
+• 일부 국가에서 carbon credit token이 증권으로 분류될 수 있음. CCM Network는 Base
+를 활용하면서도 미국 SEC howey test 평가에 대비해 Foundation은 ADGM(아부다비)
+또는 BVI 같은 카본·디지털 자산 친화 관할권에 설립.
+• 대응: 외부 법무 자문, 라운드별 KYC, 미국·중국 등 sensitive 시장에서는 retail 판매 제한.
+12.2 검증 리스크
+• VVB의 부정·실수가 무효 NFT를 발행할 수 있음.
+• 대응: stake 기반 slashing, M-of-N 합의, 분쟁 메커니즘, ZK-proof 옵션, dispute
+bond, CCMInsurance 보상.
+12.3 시장 리스크
+• 토큰 가격 변동성, 자발적 탄소 시장 자체의 신뢰 위기.
+• 대응: 등급 시스템으로 저품질 분리, retire 비율 모니터링, buy-back & burn, Standard
+unwrap의 자정작용.
+12.4 기술 리스크
+• 스마트 컨트랙트 버그, oracle manipulation, vault 익스플로잇.
+• 대응: 다중 감사, Immunefi bounty, Chainlink TWAP, non-upgradeable, DeFi
+layer는 검증된 모델(Aave, Curve, Sudoswap) 차용.
+
+-- 35 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 36 of 39
+12.5 DeFi-specific 리스크
+• Vault 대규모 청산 시 NFT 가격 하락 → 추가 청산 cascade.
+• 대응: 등급별 LTV 보수적 설정, 청산 Dutch auction 천천히 진행, Insurance Vault.
+• Index basket의 oracle 조작 위험.
+• 대응: TWAP·다중 oracle, basket 구성 변경에 timelock.
+12.6 채택 리스크
+• 기업·정부가 기존 Verra/Gold Standard에 lock-in되어 CCM 채택이 늦어질 수 있음.
+• 대응: 상호운용 매핑, ICVCM CCP 정합, 학술기관과의 공동 백서, pilot 기업 인센티브.
+
+-- 36 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 37 of 39
+13. 결론
+CCM Network는 탄소 크레딧을 위한 새로운 표준·검증·DeFi 인프라다. 단위·표준·토큰의 trinity
+위에서, CCMine 노드 네트워크가 검증 가능한 감축을 NFT로 발행하고, NFT/Token Dual
+Representation이 추적성과 유동성을 동시에 제공한다.
+기존 시장의 4대 실패 — 불투명성·이중계상·유동성 부족·등급 차별 부재 — 를 onchain registry,
+multi-VVB consensus + ZK-proof, DeFi 합 성 성 기 반 유 동 성 , 4 단 계 등 급 시 스 템 으 로
+해결한다.
+특 히 CCM × DeFi 시 너 지 (7 장 ) 는 carbon credit 이 처 음 으 로
+AMM·lending·index·insurance·yield 같은 DeFi primitive와 직접 합성되는 경로를 연다.
+이는 carbon이 더 이상 격리된 ESG 자산이 아닌, DeFi ecosystem의 한 축이 된다는 것을
+의미한다.
+CCM이 PPM처럼 일상적 단위가 되는 날, 모든 항공권·소비재·기업 보고서에 검증된 CCM 수치가
+따라붙고, 그 수치는 onchain DeFi에서 유동적으로 거래·헷지·구조화될 것이다. CCM Network
+는 그 날을 향한 인프라다.
+
+-- 37 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 38 of 39
+14. 부록
+A. 용어집
+• CCM: Carbon Credit Measurement, 1톤 CO₂e의 검증된 감축량.
+• CCM-NFT: ERC-1155 vintage·등급 메타데이터를 가진 source-of-truth 자산.
+• $CCM: ERC-20 fungible wrapper 토큰.
+• CCMine: CCM Network 위에서 작동하는 채굴 노드 제품.
+• CCMiner: CCMine 노드 운영자(개인 또는 기관).
+• VVB: Validation and Verification Body.
+• PoCR: Proof of Carbon Removal/Reduction.
+• veCCM: vote-escrowed CCM.
+• MRV: Measurement, Reporting, Verification.
+• ICVCM CCP: Integrity Council for the Voluntary Carbon Market — Core
+Carbon Principles.
+• FIFR: First-In-First-Retired (standard unwrap의 NFT 선택 알고리즘).
+• REE: Retire-to-Earn 프로그램.
+• TbS / NbS: Technology-based / Nature-based Solutions.
+B. 참고문헌
+17. IPCC. (2023). Climate Change 2023: Synthesis Report. Geneva.
+18. ICVCM. (2023). Core Carbon Principles. London.
+19. Verra. (2024). VCS Standard v4.7. Washington DC.
+20. West, T. et al. (2023). "Action needed to make carbon offsets from forest
+conservation work for climate change mitigation". Science, 381 (6660).
+21. McKinsey. (2024). Voluntary carbon market: 2030 outlook.
+22. Anders, F. et al. (2024). "Onchain carbon credits: A taxonomy". Nature
+Climate Change, 14.
+23. World Bank. (2024). State and Trends of Carbon Pricing 2024.
+24. UNFCCC. (2024). Article 6.4 Mechanism Methodology Standards.
+
+-- 38 of 39 --
+
+CCM Network Whitepaper · v1.0
+© 2026 CCM Foundation · Page 39 of 39
+25. Buterin, V. & Weyl, G. (2022). "Decentralized Society: Finding Web3's
+Soul" (Soulbound NFT 개념).
+26. Egorov, M. (2020). Curve Finance Whitepaper (veCRV 모델 — veCCM 참조).
+C. 라이선스
+본 백서는 Creative Commons Attribution 4.0 (CC BY 4.0) 라이선스로 공개된다.
+누구나 자유롭게 인용·번역·재배포할 수 있다.
+CCM Standard 자체(별도 문서)는 Apache License 2.0으로 공개된다.
+스마트 컨트랙트 소스코드는 MIT License로 공개된다.
+Disclaimer
+본 백서는 정보 제공 목적이며,
+어떠한 투자 권유나 증권 발행 제안도 아니다. $CCM
+토큰 구매에 따른 위험은 12
+장에
+명시된다.
+각 관할권의 규제를 확인하라.
+— CCM Foundation, May 2026
+
+-- 39 of 39 --
+

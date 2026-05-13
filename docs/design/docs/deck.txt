@@ -1,0 +1,401 @@
+W H I T E P A P E R · V E R S I O N 1 . 0
+CCM NETWORK
+Carbon Credit Measurement
+The Carbon Credit Standard. Verified. Onchain. DeFi-native.
+CCM Foundation
+ccm.network · ccm.earth · May 2026
+
+-- 1 of 16 --
+
+T H E P R O B L E M
+탄소 크레딧 시장의 4 대 실패
+01 불투명성
+PDF 기반 사후 보고 . 발행 · 이전 · 소각이 실시간 검증 불가 .
+02 이중계상
+REDD+ 프로젝트의 약 40% 에서 부풀려진 베이스라인 (Berkeley 2024).
+03 유동성 부족
+동일 등급 크레딧이 $4 ~ $80 에서 거래 . DeFi 와 단절 .
+04 등급 차별 부재
+영속성 · 추가성 ·MRV 가 다른데 가격에 반영 안 됨 .
+02 / 16	C C M N E T W O R K
+
+-- 2 of 16 --
+
+O P P O R T U N I T Y
+Voluntary Carbon Market 2030
+$50B2030E 자발적 탄소 시장 규모
+(McKinsey, 2024)
+2024 2026 2028 2030 2050
+0
+50
+100
+150
+200
+250
+300
+2 8
+25
+50
+250
+USD Billions
+25× growth by 2030, 125× by 2050 — but the market is broken.
+03 / 16	C C M N E T W O R K
+
+-- 3 of 16 --
+
+O U R V I S I O N
+PPM 처럼 , CCM 이 표준이 된다
+PPMparts per million
+대기 중 CO₂ 농도의 표준 단위
+420 ppm = 현재 대기 중 CO₂
+측정 ·
+과학 ·
+정책의 공용어
+→
+CCMCarbon Credit Measurement
+검증된 1 톤 CO₂ 감축의 표준 단위
+1 CCM = 1 ton CO₂e verified
+측정 ·
+검증 ·
+시장의 공용어
+04 / 16	C C M N E T W O R K
+
+-- 4 of 16 --
+
+B R A N D A R C H I T E C T U R E
+Trinity: Network · Unit · Token
+N E T W O R K
+CCM
+Network재단 ·
+표준 ·
+거버넌스
+VVB·Oracle·Registry 를
+관장하는 글로벌 표준 네트워크
+U N I T
+CCM
+1 ton CO₂e verified
+PPM 처럼 누구나 사용 가능한
+검증된 탄소 감축 단위
+T O K E N
+$CCM
+ERC-20 Wrapper Token
+AMM·Lending·DeFi 에서
+자유롭게 합성되는 fungible 자산
+Bitcoin
+이 Network + bitcoin + $BTC
+로 구성되듯 , CCM
+도 세 layer
+가 함께 작동한다 .
+05 / 16	C C M N E T W O R K
+
+-- 5 of 16 --
+
+A R C H I T E C T U R E
+8 층 스택 아키텍처
+L8 Application 지갑 , 시장 , ESG 대시보드
+L7 DeFi Primitives Wrap, AMM, Vault, Index, Insurance ★
+L6 Token Layer $CCM ERC-20, veCCM
+L5 NFT Registry CCM-NFT ERC-1155 ★
+L4 Verification VVB 합의 , ZK proof
+L3 Oracle / MRV 위성 · IoT · LiDAR
+L2 Mining (CCMine) Physical / Verification 노드
+L1 Settlement Base / EVM L2
+핵 심 분 리
+L5 NFT
+=
+추적성
+L6 Token
+=
+유동성
+L7 DeFi
+=
+합성성
+06 / 16	C C M N E T W O R K
+
+-- 6 of 16 --
+
+C O R E I N N O V A T I O N
+Dual Representation — NFT × ERC-20
+1 ton CO₂ verified
+↓
+CCM-NFT (ERC-1155)
+추적성 (Source-of-truth)
+vintage, 등급 , project ID,
+VVB 서명 , MRV 데이터
+✓ 자기충족 소유 증서
+✓ 직접 hold·retire 가능
+✓ NFTfi·OpenSea 합성성
+$CCM (ERC-20)
+유동성 (Liquidity)
+fungible, 1:1 paired,
+표준 ERC-20
+✓ AMM (Uniswap, Curve)
+✓ Lending (Aave, Compound)
+✓ Yield (Yearn, Pendle)
+⇆
+Wrap / Unwrap
+non-custodial
+Invariant: total_supply($CCM ) = sum (N FT in vault) × tCO ₂e per N FT
+07 / 16	C C M N E T W O R K
+
+-- 7 of 16 --
+
+M I N I N G
+CCMine — Proof of Carbon Removal
+1
+감축 활동
+DAC, 광물화 ,
+신규조림 운영
+→
+2
+Oracle 측정
+위성 ·IoT·LiDAR
+데이터 수집
+→
+3
+VVB 검증
+M-of-N 합의 ,
+등급 부여
+→
+4
+NFT Mint
+CCM-NFT
+발행
+→
+5
+Wrap / Sell
+$CCM 전환 ,
+DeFi 활용
+Mining 유형
+Physical Miner
+DAC, 광물화 , 바이오차 , 신규조림
+Verification Miner
+위성 ·IoT 데이터 attestor 노드
+Storage Miner
+registry 분산 저장 (IPFS/Arweave)
+08 / 16	C C M N E T W O R K
+
+-- 8 of 16 --
+
+K E Y D I F F E R E N T I A T O R
+CCM × DeFi — 8 가지 Primitive
+§ 7 . 2
+Wrap / Unwrap
+NFT ⇆ $CCM 1:1 변환 ,
+FIFR 자정작용
+§ 7 . 3
+Grade Wrappers
+$CCM-A/B/C/D 별도
+등급별 가격 발견
+§ 7 . 4
+Vault Lending
+NFT 담보 USDC 차입
+LTV 등급별 30~70%
+§ 7 . 5
+Fractionalization
+10K 톤 NFT 를
+10K 개 fractional 로
+§ 7 . 6
+NFT Yield
+Hold-to-Earn,
+등급 · 빈티지별 차등
+§ 7 . 7
+Retire-to-Earn
+ESG retire 시
+$CCM rebate 0~10%
+§ 7 . 8
+Insurance Vault
+VVB 검증 실패 시
+자동 보상
+§ 7 . 9
+Index Baskets
+$CCM-PRIME, $CCM-FOREST,
+$CCM-TECH ETF
+기존 carbon	
+토큰의 DeFi	
+단절을 해결하는 최초의 carbon DeFi primitive	
+세트
+09 / 16	C C M N E T W O R K
+
+-- 9 of 16 --
+
+E C O S Y S T E M
+외부 DeFi 합성성 — Composability
+$CCM (ERC-20) 합성성 CCM-NFT (ERC-1155) 합성성
+Uniswap V3/V4 $CCM/USDC, $CCM/ETH 풀
+Curve $CCM/USDC stable pool
+Balancer Weighted multi-asset basket
+Aave / Compound $CCM 담보 lending
+Yearn / Pendle Yield aggregation, PT/YT
+OpenSea / Blur NFT 거래 (P2P)
+NFTfi / BendDAO NFT 담보 lending
+Sudoswap NFT AMM 풀
+Reservoir NFT aggregator API
+Foundation / Manifold Curated · Creator tools
+표준 ERC-20 + ERC-1155 →	
+별도 통합 작업 없이 즉시 12
+개 protocol
+과 합성 가능
+10 / 16	C C M N E T W O R K
+
+-- 10 of 16 --
+
+T O K E N O M I C S
+$CCM Allocation — 5B Hard Cap
+40%
+18%
+10%
+9%
+8%
+5%
+5%
+5%
+Mining (CCMine)
+Foundation
+Strategic
+Liquidity
+Treasury
+Public TGE
+Staking
+Team
+Detailed Breakdown
+Category % Tokens Notes
+Mining Rewards 40% 2.0B 10 년 감속 emission
+Foundation 18% 900M 4y vest + 1y cliff
+Strategic 10% 500M 4y vest + 1y cliff
+Liquidity / AMM 9% 450M TGE 즉시 unlock
+Treasury 8% 400M DAO 통제
+Public TGE 5% 250M Seed + Series A
+Staking Pool 5% 250M 가격 탄력 yield
+Team & Advisors 5% 250M 4y vest + 1y cliff
+11 / 16	C C M N E T W O R K
+
+-- 11 of 16 --
+
+T O K E N E C O N O M I C S
+TGE Pricing & Staking Pool
+$0.15
+Seed Round
+$0.20
+Series A
+$45M
+Total Raise
+250M
+Public (5%)
+TGE Round Structure
+Round Price Tokens Raise Cliff Vesting
+Seed $0.15 100M $15.0M 6 months 24 mo linear
+Series A $0.20 150M $30.0M 3 months 18 mo linear
+Total — 250M $45.0M — —
+Staking Pool — Price-Elastic Yield
+yield(t) = R₀ × (P_TG E / P_t) × (pool_left / pool_init)
+P_t = TGE → 10% / month (cap)
+P_t = 2× TGE → 5% / month
+P_t = 10× TGE → 1% / month
+Pool 소진 → 자동 sunset
+12 / 16	C C M N E T W O R K
+
+-- 12 of 16 --
+
+M O D E L
+$CCM Price Trajectory (2026~2030)
+TGE Y1 Y2 Y3 Y5
+0.1
+1
+10
+100
+Price (USD)
+Bear Base Bull
+B u l l
+$15.00
+VCM 8× growth
+10% market share
+DeFi TVL $500M
+B a s e
+$3.50
+VCM 6× growth
+5% market share
+DeFi TVL $200M
+B e a r
+$0.40
+느린 채택
+규제 마찰
+DeFi
+분리
+Y5 = Bull 75× / Base 17.5× / Bear 2× from TGE · log scale chart
+13 / 16	C C M N E T W O R K
+
+-- 13 of 16 --
+
+E X E C U T I O N
+Roadmap — Phase 0 to 5
+0
+DONE
+P h a s e 0
+Foundation
+Standard·Contract·
+Whitepaper
+1
+26 Q3
+P h a s e 1
+Mainnet
+Audit·TGE·
+AMM Liquidity
+2
+26 Q4
+P h a s e 2
+Mining +
+DeFi
+5 Pilot Nodes
+Wrapper, Yield
+3
+27 H1
+P h a s e 3
+DeFi Full
+Vault, Index,
+Insurance, veCCM
+4
+27-28
+P h a s e 4
+Scale
+100+ nodes,
+Multi-chain
+5
+28+
+P h a s e 5
+Standard
+UNFCCC Article 6
+adoption
+14 / 16	C C M N E T W O R K
+
+-- 14 of 16 --
+
+W H Y C C M W I N S
+vs. 기존 onchain Carbon 프로젝트
+Toucan (BCT) Moss (MCO2) KlimaDAO CCM Network
+Originate vs Tokenize Tokenize Tokenize Tokenize ✓ Originate
+NFT × ERC-20 Dual ✗ ERC-20 only ✗ ERC-20 only ✗ ERC-20 only ✓ Both, 1:1 wrap
+등급 차별화 단일 풀	✗ 단일	✗ ✗ ✓ A/B/C/D 등급
+DeFi Native (Vault, Index) Limited ✗ Partial ✓ 8 primitives
+검증 거버넌스 External (Verra) External External ✓ Multi-VVB DAO
+Bridge 위험 ✓ 동결됨 (Verra ban) ✓ ✓ ✗ Originate, no bridge
+CCM =	
+첫 번째 Originate × NFT/Token Dual × DeFi-native	
+카본 인프라
+15 / 16	C C M N E T W O R K
+
+-- 15 of 16 --
+
+CCM 이 PPM 처럼
+일상의 단위가 되는 날 .
+그 날을 향한 인프라 — CCM Network.
+W H I T E P A P E R
+ccm.network/wp
+G I T H U B
+github.com/ccm-network
+F O U N D A T I O N
+foundation@ccm.network
+CCM Foundation · May 2026 · Whitepaper v1.0
+
+-- 16 of 16 --
+

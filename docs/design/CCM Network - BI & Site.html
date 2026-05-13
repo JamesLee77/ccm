@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>CCM Network — BI & Site</title>
+<meta name="viewport" content="width=1480" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; background: #f0eee9;
+    font-family: 'Inter', -apple-system, sans-serif; }
+  * { box-sizing: border-box; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="brand/bi-system.jsx"></script>
+<script type="text/babel" src="brand/guideline.jsx"></script>
+<script type="text/babel" src="brand/landing-earth.jsx"></script>
+<script type="text/babel" src="brand/landing-sci.jsx"></script>
+<script type="text/babel" src="brand/landing-defi.jsx"></script>
+
+<script type="text/babel">
+const { DesignCanvas, DCSection, DCArtboard, DCPostIt } = window;
+
+const App = () => (
+  <DesignCanvas>
+    <DCSection
+      id="overview"
+      title="CCM Network — BI & Site"
+      subtitle="Earth-forward identity system + three landing site directions for the Foundation's mainnet launch."
+    >
+      <DCPostIt>
+        Read the BI System artboard first — it sets the tokens, type, and voice
+        used in the lead Earth landing. The Scientific and DeFi artboards explore
+        alternate personalities for the same content. Click any artboard's expand
+        icon for fullscreen.
+      </DCPostIt>
+    </DCSection>
+
+    <DCSection
+      id="bi"
+      title="01 · Brand Identity System"
+      subtitle="Logo, color, type, motifs, voice. The foundation everything else inherits."
+    >
+      <DCArtboard id="bi-system" label="BI System · full spec" width={1280} height={2400}>
+        <BISystemPage />
+      </DCArtboard>
+      <DCArtboard id="guideline" label="Brand guideline · 1-page" width={1280} height={1000}>
+        <BrandGuideline />
+      </DCArtboard>
+    </DCSection>
+
+    <DCSection
+      id="landing"
+      title="02 · Sites — Earth (front) + DeFi (app)"
+      subtitle="Decision: Earth is the public front (ccmnetwork.net) and DeFi-native is the app surface (app.ccmnetwork.net). Both inherit the BI system above; only the DeFi page applies the dark counterpart of the same tokens. Scrollable & interactive — drag the wrap slider on Earth, hover the primitive grid on DeFi."
+    >
+      <DCArtboard id="earth" label="Front · Earth · ccmnetwork.net" width={1280} height={920}>
+        <LandingEarth />
+      </DCArtboard>
+      <DCArtboard id="defi" label="App · DeFi-native · app.ccmnetwork.net" width={1280} height={920}>
+        <LandingDefi />
+      </DCArtboard>
+    </DCSection>
+
+    <DCSection
+      id="notes"
+      title="03 · Direction & next steps"
+      subtitle=""
+    >
+      <DCPostIt>
+        <strong>One identity, two surfaces.</strong> The Earth BI system above
+        is canonical. Front-of-house (Earth) speaks to ESG buyers, regulators,
+        and crypto-curious; the app (DeFi) is the working surface for
+        wallet-connected users — same wordmark, same Fraunces / Plex Mono,
+        dark inversion of the paper/ink/moss palette.
+      </DCPostIt>
+      <DCPostIt>
+        <strong>Next deliverables to scope:</strong> (1) Whitepaper / Docs site
+        IA, (2) App dashboard wireframes — wallet, mint, wrap, vault, retire,
+        (3) Pitch deck refresh in Earth tokens, (4) Logo file pack (SVG, PNG,
+        favicon, app icon, social).
+      </DCPostIt>
+    </DCSection>
+  </DesignCanvas>
+);
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

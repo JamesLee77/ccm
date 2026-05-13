@@ -1,0 +1,9 @@
+# Cloudflare Pages project config
+# Used by wrangler pages deploy. Most fields below can also be set via the dashboard.
+
+name = "ccm-testnet"
+compatibility_date = "2026-04-01"
+pages_build_output_dir = "./dist"
+
+# SPA: all unmatched routes fall back to index.html so React Router takes over.
+# Cloudflare Pages auto-handles this when _redirects or _routes.json is present.

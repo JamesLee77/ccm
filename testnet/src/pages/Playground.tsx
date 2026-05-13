@@ -6,6 +6,7 @@ import MintForm from "../components/playground/MintForm";
 import NFTInventory from "../components/playground/NFTInventory";
 import WrapForm from "../components/playground/WrapForm";
 import StakeForm from "../components/playground/StakeForm";
+import RewardPanel from "../components/playground/RewardPanel";
 
 export default function Playground() {
   const { t } = useTranslation();
@@ -28,7 +29,7 @@ export default function Playground() {
         <StakeForm />
       </StepCard>
       <StepCard step={4} title={t("step4.title")} subtitle={t("step4.subtitle")}>
-        (RewardPanel — Task 10)
+        <RewardPanel />
       </StepCard>
     </TestnetLayout>
   );

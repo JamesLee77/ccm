@@ -604,16 +604,32 @@ addresses in lib/contracts.ts (Task 3)."
 
 **Files:**
 - Delete: `testnet/src/pages/Home.tsx`, `testnet/src/pages/Demo.tsx`, `testnet/src/pages/About.tsx`
+- Delete (legacy demo card components, dependent on the old richer contracts.ts shape):
+  `testnet/src/components/ClaimCard.tsx`, `testnet/src/components/FractionalizeCard.tsx`,
+  `testnet/src/components/GradeWrapperCard.tsx`, `testnet/src/components/IndexBasketCard.tsx`,
+  `testnet/src/components/InsuranceCard.tsx`, `testnet/src/components/LendingCard.tsx`,
+  `testnet/src/components/NFTSandbox.tsx`, `testnet/src/components/RebateCard.tsx`,
+  `testnet/src/components/WrapCard.tsx`, `testnet/src/components/YieldCard.tsx`
 - Modify: `testnet/src/App.tsx`, `testnet/src/main.tsx`, `testnet/index.html`, `testnet/package.json`
 - Create: `testnet/src/lib/wagmi.ts`, `testnet/src/lib/contracts.ts`, `testnet/src/lib/i18n.ts`
 - Create: `testnet/src/locales/en.json`, `testnet/src/locales/ko.json`
 - Create: `testnet/src/pages/Playground.tsx` (placeholder)
 
-- [ ] **Step 1: Remove legacy pages**
+- [ ] **Step 1: Remove legacy pages and legacy demo card components**
 
 ```bash
 cd /Users/hyunsuklee/Developer/ccm/testnet && \
-  rm src/pages/Home.tsx src/pages/Demo.tsx src/pages/About.tsx
+  rm src/pages/Home.tsx src/pages/Demo.tsx src/pages/About.tsx \
+     src/components/ClaimCard.tsx \
+     src/components/FractionalizeCard.tsx \
+     src/components/GradeWrapperCard.tsx \
+     src/components/IndexBasketCard.tsx \
+     src/components/InsuranceCard.tsx \
+     src/components/LendingCard.tsx \
+     src/components/NFTSandbox.tsx \
+     src/components/RebateCard.tsx \
+     src/components/WrapCard.tsx \
+     src/components/YieldCard.tsx
 ```
 
 - [ ] **Step 2: Inspect existing package.json dependencies**

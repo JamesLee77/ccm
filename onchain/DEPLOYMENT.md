@@ -60,6 +60,8 @@ testnet dev EOA as both deployer and admin (no multisig needed for sandbox).
 | ↳ CCM-FOREST (0A/30B/60C/10D) | `0x3bD1A48345F5D11EFe7C458daB4584474b3Db9d8` | [verified](https://sepolia.basescan.org/address/0x3bD1A48345F5D11EFe7C458daB4584474b3Db9d8#code) |
 | ↳ CCM-TECH (70A/30B/0C/0D) | `0x886320E5fbc3Ba482d6148D2e15B941C6a201FBf` | [verified](https://sepolia.basescan.org/address/0x886320E5fbc3Ba482d6148D2e15B941C6a201FBf#code) |
 | **CCMSandboxRebate** *(sandbox-only, §7.9 Retire-to-Earn)* | `0x11213DBc93999b95b5d5a6fdC8a0ddE7e01c5fbD` | [verified](https://sepolia.basescan.org/address/0x11213DBc93999b95b5d5a6fdC8a0ddE7e01c5fbD#code) |
+| **MockPriceOracle** *(sandbox-only, CCM/USD fixed $0.20)* | `0x467b5f3Deb6750866ae2D5e05705A9Edae13b30e` | [verified](https://sepolia.basescan.org/address/0x467b5f3Deb6750866ae2D5e05705A9Edae13b30e#code) |
+| **CCMSandboxStaking** *(sandbox-only, 5M CCM pool, no eligibility gate)* | `0xAaeF319bc3B653DF68502a5A713989BB29ea8C48` | [verified](https://sepolia.basescan.org/address/0xAaeF319bc3B653DF68502a5A713989BB29ea8C48#code) |
 | ~~CCMSandboxVault v0~~ *(decommissioned)* | ~~`0x69c5eB2BB679E88BAc40525cD20d1Ea84905633D`~~ | first deploy used 1:1 raw atoms (no 1e18 scale); MINTER_ROLE revoked 2026-05-09 |
 
 ### Initial state (post-deploy)
@@ -107,6 +109,15 @@ CCMSandboxNFT *(testnet-only)*:
 - Constructor refuses chainId 8453 (mainnet)
 - Smoke-tested: mint id 0 grade A 2026 50t at tx `0x5a6e02fdc70b8ee89bdd16999e9a266cab00b1c95864b983aa020a2c91e6f06a`, retire 20 at tx `0x3936c230b6e7dede5253bbd7f8edb7a8cef36c1eb42112b19d6d5f9b47ff8f20`
 - 19 hardhat unit tests passing on this contract; full suite **193 passing**
+
+CCMSandboxStaking *(testnet-only)*:
+- `ccm`: `0x5641d6A2a6AD2B835b37489c72D2Bd716903CEFD` (sandbox token)
+- `priceOracle`: `0x467b5f3Deb6750866ae2D5e05705A9Edae13b30e` (fixed $0.20)
+- `P0_TGE`: `200000000000000000` (0.20 USD in 1e18)
+- `POOL_INIT`: `5000000000000000000000000` (5,000,000 CCM)
+- `poolRemaining`: 5,000,000 CCM (full, fresh deploy)
+- Funded at tx: `0x0eedcd397a7ed034760f47b8238b13de3a9d4621bdb2217db93b526d8483b1e9`
+- For the testnet.ccmnetwork.net playground — no eligibility whitelist; anyone can stake
 
 ### Notes
 

@@ -17,7 +17,7 @@ export default function MintForm() {
   const { data: cooldownUntil, refetch: refetchCd } = useReadContract({
     address: SANDBOX.ccmSandboxNFT,
     abi: CCMSandboxNFTAbi,
-    functionName: "mintCooldown",
+    functionName: "nextMintAt",
     args: address ? [address] : undefined,
     query: { enabled: !!address },
   });
@@ -39,7 +39,7 @@ export default function MintForm() {
       address: SANDBOX.ccmSandboxNFT,
       abi: CCMSandboxNFTAbi,
       functionName: "mint",
-      args: [grade, vintage, tonnage, PROJECT_ID],
+      args: [grade, vintage, BigInt(tonnage), PROJECT_ID],
     });
   }
 

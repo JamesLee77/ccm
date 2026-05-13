@@ -36,8 +36,9 @@ export const nodeRegisteredEvent = parseAbiItem(
   "event NodeRegistered(address indexed owner, uint256 indexed nodeId, string label, string endpoint)",
 );
 
-/** Block window for log scans — last ~55 hours at 2s/block. */
-export const SCAN_WINDOW = 100_000n;
+/** Block window for log scans. Public Base Sepolia RPC caps getLogs at
+ *  2000 blocks per query, so we use exactly that. ~1.1 hours at 2s/block. */
+export const SCAN_WINDOW = 2000n;
 
 export async function getScanRange(): Promise<{ from: bigint; to: bigint }> {
   const latest = await publicClient.getBlockNumber();
@@ -89,13 +90,15 @@ export function usePolling<T>(fn: () => Promise<T>, intervalMs: number, deps: un
   return { data, isLoading, error };
 }
 
-/** Cumulative CCM minted across all NFTs (sum of TransferSingle.value where from=0x0). */
+/** Cumulative CCM minted across the testnet — sum of ERC20 Transfer
+ *  events from 0x0 on the CCMToken. The Vault mints CCM when users
+ *  wrap NFTs (1 tonne → 1 CCM, scaled to 18 decimals). */
 export function useCumulativeMinted(): Loader<bigint> {
   return usePolling(async () => {
     const { from, to } = await getScanRange();
     const logs = await publicClient.getLogs({
-      address: SANDBOX.ccmSandboxNFT,
-      event: transferSingleEvent,
+      address: SANDBOX.ccmToken,
+      event: transferEvent,
       args: { from: "0x0000000000000000000000000000000000000000" as Address },
       fromBlock: from,
       toBlock: to,

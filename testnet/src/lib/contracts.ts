@@ -32,23 +32,26 @@ export const CCMTokenAbi = [
 ] as const;
 
 export const CCMSandboxNFTAbi = [
-  { type: "function", name: "mint", inputs: [{ name: "grade", type: "uint8" }, { name: "vintage", type: "uint16" }, { name: "tonnage", type: "uint16" }, { name: "projectId", type: "bytes32" }], outputs: [{ type: "uint256" }], stateMutability: "nonpayable" },
+  { type: "function", name: "mint", inputs: [{ name: "grade", type: "uint8" }, { name: "vintage", type: "uint16" }, { name: "tonnage", type: "uint256" }, { name: "projectId", type: "bytes32" }], outputs: [{ type: "uint256" }], stateMutability: "nonpayable" },
   { type: "function", name: "meta", inputs: [{ type: "uint256" }], outputs: [
     { name: "grade", type: "uint8" },
     { name: "vintage", type: "uint16" },
-    { name: "tonnage", type: "uint16" },
+    { name: "tonnage", type: "uint256" },
     { name: "projectId", type: "bytes32" },
     { name: "minter", type: "address" },
+    { name: "mintedAt", type: "uint64" },
   ], stateMutability: "view" },
   { type: "function", name: "balanceOf", inputs: [{ type: "address" }, { type: "uint256" }], outputs: [{ type: "uint256" }], stateMutability: "view" },
-  { type: "function", name: "mintCooldown", inputs: [{ type: "address" }], outputs: [{ type: "uint256" }], stateMutability: "view" },
+  { type: "function", name: "nextMintAt", inputs: [{ type: "address" }], outputs: [{ type: "uint256" }], stateMutability: "view" },
+  { type: "function", name: "cooldownRemaining", inputs: [{ type: "address" }], outputs: [{ type: "uint256" }], stateMutability: "view" },
   { type: "function", name: "isApprovedForAll", inputs: [{ type: "address" }, { type: "address" }], outputs: [{ type: "bool" }], stateMutability: "view" },
   { type: "function", name: "setApprovalForAll", inputs: [{ type: "address" }, { type: "bool" }], outputs: [], stateMutability: "nonpayable" },
 ] as const;
 
 export const CCMSandboxVaultAbi = [
-  { type: "function", name: "wrap", inputs: [{ name: "nftIds", type: "uint256[]" }, { name: "amounts", type: "uint256[]" }], outputs: [], stateMutability: "nonpayable" },
-  { type: "function", name: "reserves", inputs: [], outputs: [{ type: "uint256" }], stateMutability: "view" },
+  { type: "function", name: "wrap", inputs: [{ name: "id", type: "uint256" }, { name: "tonnage", type: "uint256" }], outputs: [], stateMutability: "nonpayable" },
+  { type: "function", name: "unwrap", inputs: [{ name: "ccmAmount", type: "uint256" }], outputs: [], stateMutability: "nonpayable" },
+  { type: "function", name: "totalWrapped", inputs: [], outputs: [{ type: "uint256" }], stateMutability: "view" },
 ] as const;
 
 export const CCMSandboxStakingAbi = [

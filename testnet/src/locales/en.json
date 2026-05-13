@@ -39,11 +39,10 @@
     },
     "step2": {
       "title": "Wrap NFT → CCM",
-      "subtitle": "Convert your carbon credit NFT into the fungible CCM token. The Vault locks the NFT as a reserve and credits you 1 CCM per tonne. You approve the Vault once, then can wrap up to 5 NFTs per transaction. Lower grades are returned first when CCM is unwrapped (D→C→B→A).",
-      "selectAll": "Select all",
+      "subtitle": "Convert your carbon credit NFT into the fungible CCM token. The Vault locks the NFT as a reserve and credits you 1 CCM per tonne. You approve the Vault once, then click Wrap on any NFT you own to wrap its full tonnage in a single transaction. Lower grades are returned first when CCM is unwrapped (D→C→B→A).",
       "approve": "Approve vault",
-      "wrap": "Wrap selected",
-      "maxPerTx": "Max 5 NFTs per transaction",
+      "approveHint": "Approve the Vault once before wrapping. This is a one-time per-account setup.",
+      "wrap": "Wrap",
       "balance": "Your CCM balance",
       "noNfts": "Mine some NFTs first."
     },
@@ -84,8 +83,8 @@
     "live": {
       "title": "Live · Network State",
       "nodes": "Active CCMine nodes",
-      "miners": "Unique miners (24h)",
-      "minted": "Mints (24h)",
+      "miners": "Unique miners (recent)",
+      "minted": "Mints (recent)",
       "staked": "CCM staked",
       "poolRemaining": "Reward pool remaining"
     },

@@ -1655,7 +1655,7 @@ export default function CooldownTimer({ untilTimestamp }: { untilTimestamp: bigi
 Write `/Users/hyunsuklee/Developer/ccm/testnet/src/components/playground/MintForm.tsx`:
 
 ```typescript
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { keccak256, toBytes } from "viem";
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
@@ -1687,9 +1687,9 @@ export default function MintForm() {
   const disabled = !isConnected || isPending || confirming || onCooldown;
 
   // After a successful mint, refetch cooldown
-  if (isSuccess && cooldownUntil && Number(cooldownUntil) <= now) {
-    void refetchCd();
-  }
+  useEffect(() => {
+    if (isSuccess) void refetchCd();
+  }, [isSuccess, refetchCd]);
 
   function onMine() {
     writeContract({

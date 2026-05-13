@@ -2294,12 +2294,12 @@ CCMSandboxStaking.currentYieldRateBps()."
 - Create: `testnet/src/components/playground/RewardPanel.tsx`
 - Modify: `testnet/src/pages/Playground.tsx`
 
-- [ ] **Step 1: Write RewardPanel**
+- [x] **Step 1: Write RewardPanel**
 
 Write `/Users/hyunsuklee/Developer/ccm/testnet/src/components/playground/RewardPanel.tsx`:
 
 ```typescript
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { formatUnits, parseUnits } from "viem";
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
@@ -2341,8 +2341,22 @@ export default function RewardPanel() {
   const { writeContract: writeUnstake, data: unstakeHash, isPending: unstaking } = useWriteContract();
   const { isSuccess: unstakeOk, isLoading: unstakeConfirm } = useWaitForTransactionReceipt({ hash: unstakeHash });
 
-  if (claimOk) { void refetchPending(); void refetchPosition(); }
-  if (unstakeOk) { void refetchPending(); void refetchPosition(); }
+  // After claim mines, refetch
+  useEffect(() => {
+    if (claimOk) {
+      void refetchPending();
+      void refetchPosition();
+    }
+  }, [claimOk, refetchPending, refetchPosition]);
+
+  // After unstake mines, refetch and clear input
+  useEffect(() => {
+    if (unstakeOk) {
+      void refetchPending();
+      void refetchPosition();
+      setUnstakeAmt("");
+    }
+  }, [unstakeOk, refetchPending, refetchPosition]);
 
   if (!isConnected) return <div style={{ color: "var(--ink-soft)", fontSize: 13 }}>{t("wallet.connect")}</div>;
 
@@ -2408,7 +2422,7 @@ export default function RewardPanel() {
 }
 ```
 
-- [ ] **Step 2: Wire RewardPanel into Step 4 card**
+- [x] **Step 2: Wire RewardPanel into Step 4 card**
 
 Update `/Users/hyunsuklee/Developer/ccm/testnet/src/pages/Playground.tsx`:
 
@@ -2420,7 +2434,7 @@ import RewardPanel from "../components/playground/RewardPanel";
 </StepCard>
 ```
 
-- [ ] **Step 3: Build and visual smoke**
+- [x] **Step 3: Build and visual smoke**
 
 ```bash
 cd /Users/hyunsuklee/Developer/ccm/testnet && \
@@ -2429,7 +2443,7 @@ cd /Users/hyunsuklee/Developer/ccm/testnet && \
 
 Visual: After staking in Step 3, Step 4 shows pending reward number that increments every 5 sec. Claim button transfers reward. Unstake input + button returns principal.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /Users/hyunsuklee/Developer/ccm && \

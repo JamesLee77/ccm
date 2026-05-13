@@ -27,8 +27,13 @@ CARBON_ORACLE_ADDRESS = "0xF75cAf1ED356158C6FEF1D9DB00048197431FB60"
 CARBON_ORACLE_RPC = "https://sepolia.base.org"
 
 # Sandbox NFT (Sepolia) — keeper auto-mints one carbon-credit batch per
-# hourly cron tick so the testnet mining timeline keeps producing records.
+# cron tick so the testnet mining timeline keeps producing records.
 CCM_SANDBOX_NFT_ADDRESS = "0xbC3EAc7514F82A868807b81b165D2121495380E9"
+
+# Sandbox MockPriceOracles (Sepolia, keeper-owned 2026-05-13 redeploy) —
+# keeper walks each price by ±2% per cron tick so the Oracle Price
+# History timeline accumulates fresh PriceUpdated events.
+ORACLE_ADDRESSES = "0xE1Cb2811C7B34D581a918343E7bB52fb6925D84e,0x3F7F998e8d0AeC3087A9E2A9703B006088972b73,0x5ec883B4b5c1D12e638533f2EF496f550A4e8cC0,0xBc6f5B6365b56d6284c0E3C467EEf37120b0192d"
 
 [[d1_databases]]
 binding = "DB"
@@ -37,7 +42,7 @@ database_id = "dbd8f008-99a2-48cc-afac-6144fec3f29b"
 migrations_dir = "migrations"
 
 [triggers]
-crons = ["0 * * * *"]
+crons = ["*/30 * * * *"]
 
 [dev]
 port = 8787

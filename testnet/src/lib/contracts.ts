@@ -10,12 +10,13 @@ export const SANDBOX = {
   ccmSandboxNFT:      "0xbC3EAc7514F82A868807b81b165D2121495380E9" as Address,
   ccmSandboxVault:    "0xEd62b71e9ff0200CFf02C8F38618Af153C609334" as Address,
   ccmSandboxStaking:  "0xAaeF319bc3B653DF68502a5A713989BB29ea8C48" as Address,
-  mockPriceOracle:    "0x467b5f3Deb6750866ae2D5e05705A9Edae13b30e" as Address,
-  // New (Task 3)
-  oracleA:            "0xC04aba12B9ECF3465832dee6b814A0dd6ed0991c" as Address,
-  oracleB:            "0xd82596F1dcAA5aA2dfA688eAde568cdFf82C9427" as Address,
-  oracleC:            "0xe1Da27b2122A6b875a8E46B8b089FBf1151887eC" as Address,
-  medianAggregator:   "0x58CD4De9f68a1982e6AF0258863CeCc7E68beaE6" as Address,
+  // 2026-05-13 redeploy — keeper-owned so the Worker cron can call setPrice
+  // and emit a continuous PriceUpdated history for the timeline viz.
+  mockPriceOracle:    "0xBc6f5B6365b56d6284c0E3C467EEf37120b0192d" as Address,
+  oracleA:            "0xE1Cb2811C7B34D581a918343E7bB52fb6925D84e" as Address,
+  oracleB:            "0x3F7F998e8d0AeC3087A9E2A9703B006088972b73" as Address,
+  oracleC:            "0x5ec883B4b5c1D12e638533f2EF496f550A4e8cC0" as Address,
+  medianAggregator:   "0xbC754F5c57567F66d0E647a9b0a97a694f05063C" as Address,
   nodeRegistry:       "0xE9AD5DC60a799Cc037824f2B030E641f4d460136" as Address,
   // DEX (Sepolia rehearsal)
   mockSandboxUSDC:    "0x7486aa4D7af928c6dDA963a0aDf6080A2e76B07A" as Address,

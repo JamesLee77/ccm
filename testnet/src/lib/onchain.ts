@@ -38,6 +38,9 @@ export const nodeRegisteredEvent = parseAbiItem(
 export const mintedEvent = parseAbiItem(
   "event Minted(address indexed to, uint256 indexed id, uint8 grade, uint16 vintage, uint256 tonnage, bytes32 projectId)",
 );
+export const priceUpdatedEvent = parseAbiItem(
+  "event PriceUpdated(uint256 oldPrice, uint256 newPrice)",
+);
 
 /** Block window for log scans. Public Base Sepolia RPC caps getLogs at
  *  2000 blocks per query, so we use exactly that. ~1.1 hours at 2s/block. */

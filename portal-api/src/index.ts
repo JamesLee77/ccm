@@ -10,6 +10,7 @@ import { runScheduled } from "./scheduled";
 import { syncFromChain } from "./holders";
 import { fetchAndStore as fetchCarbonPrice, getLatest as getLatestCarbonPrice } from "./carbonPrice";
 import { runSandboxMint } from "./sandboxMint";
+import { runOracleUpdate } from "./oracleUpdate";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -78,6 +79,7 @@ export default {
         syncFromChain(env, now),
         fetchCarbonPrice(env),
         runSandboxMint(env).catch((e) => console.error("sandboxMint:", e)),
+        runOracleUpdate(env).catch((e) => console.error("oracleUpdate:", e)),
       ]),
     );
   },

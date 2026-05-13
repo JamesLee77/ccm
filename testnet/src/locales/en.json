@@ -121,6 +121,12 @@
       "grade": "Grade",
       "tx": "tx"
     },
+    "oracleHistory": {
+      "title": "Oracle · Price History",
+      "subtitle": "Each of the four oracles publishes a fresh CCM/USD price every 30 minutes, walking ±2% within a $0.15–$0.25 band. The PriceUpdated events below feed the median consensus shown above.",
+      "empty": "No price updates in the scan window — keeper will publish the next batch within 30 minutes.",
+      "tx": "tx"
+    },
     "oracle": {
       "title": "Oracle · Consensus",
       "subtitle": "Four independent price oracles publish CCM/USD. A read-only median aggregator computes the consensus that drives the staking yield decay calculation.",

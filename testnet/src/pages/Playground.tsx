@@ -7,6 +7,7 @@ import NFTInventory from "../components/playground/NFTInventory";
 import WrapForm from "../components/playground/WrapForm";
 import StakeForm from "../components/playground/StakeForm";
 import RewardPanel from "../components/playground/RewardPanel";
+import TryMoreGrid from "../components/playground/TryMoreGrid";
 
 export default function Playground() {
   const { t } = useTranslation();
@@ -31,6 +32,7 @@ export default function Playground() {
       <StepCard step={4} title={t("step4.title")} subtitle={t("step4.subtitle")}>
         <RewardPanel />
       </StepCard>
+      <TryMoreGrid />
     </TestnetLayout>
   );
 }

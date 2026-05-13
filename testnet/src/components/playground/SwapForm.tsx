@@ -215,7 +215,7 @@ export default function SwapForm() {
 
   return (
     <div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: 12, alignItems: "end" }}>
+      <div className="r-swap">
         <div>
           <label style={labelStyle}>{t("step5.from")} — {symIn}</label>
           <input

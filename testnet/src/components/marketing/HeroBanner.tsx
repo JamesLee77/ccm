@@ -32,7 +32,7 @@ export default function HeroBanner() {
   });
 
   return (
-    <section style={{ marginTop: 24, marginBottom: 64, display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 48, alignItems: "start" }}>
+    <section className="r-hero" style={{ marginTop: 24, marginBottom: 64 }}>
       <div>
         <div style={{ fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ink-soft)", marginBottom: 24 }}>
           {t("hero.kicker")}

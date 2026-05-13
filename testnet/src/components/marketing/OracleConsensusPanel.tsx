@@ -34,7 +34,7 @@ export default function OracleConsensusPanel() {
       <p style={{ fontSize: 15, color: "var(--ink-soft)", lineHeight: 1.6, margin: "0 0 24px 0", maxWidth: 720 }}>
         {t("oracle.subtitle")}
       </p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr) 1.2fr", gap: 1, background: "var(--rule)", border: "1px solid var(--rule)" }}>
+      <div className="r-oracle">
         {labels.map((label, i) => (
           <div key={label} style={{ background: "var(--paper-deep)", padding: "20px 20px" }}>
             <div style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--ink-soft)" }}>

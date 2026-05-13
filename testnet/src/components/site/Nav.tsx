@@ -6,11 +6,7 @@ import CarbonPriceBadge from "../marketing/CarbonPriceBadge";
 export default function Nav() {
   const { t } = useTranslation();
   return (
-    <header style={{
-      display: "flex", alignItems: "center", justifyContent: "space-between",
-      padding: "16px 24px", borderBottom: "1px solid var(--rule)",
-      background: "var(--paper)",
-    }}>
+    <header className="r-nav">
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <Wordmark size={28} />
         <span style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--ink-soft)" }}>

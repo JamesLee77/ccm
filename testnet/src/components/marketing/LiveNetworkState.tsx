@@ -52,7 +52,7 @@ export default function LiveNetworkState() {
           {t("live.title")}
         </span>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: `repeat(${cells.length}, 1fr)`, gap: 1, background: "var(--rule)", border: "1px solid var(--rule)" }}>
+      <div className="r-live5">
         {cells.map((c) => (
           <div key={c.id} style={{ background: "var(--paper-deep)", padding: "20px 24px" }}>
             <div style={{ fontSize: 28, fontFamily: "JetBrains Mono, ui-monospace, monospace", letterSpacing: "-0.02em", lineHeight: 1.1 }}>

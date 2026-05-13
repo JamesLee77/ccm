@@ -22,7 +22,7 @@ export default function MiningNetworkViz() {
   });
 
   return (
-    <section style={{ marginBottom: 64, display: "grid", gridTemplateColumns: "320px 1fr", gap: 48, alignItems: "center" }}>
+    <section className="r-mining" style={{ marginBottom: 64 }}>
       <div style={{ width: 320, height: 320, position: "relative" }} aria-hidden="true">
         <svg width={320} height={320} viewBox={`-${VIEW / 2} -${VIEW / 2} ${VIEW} ${VIEW}`} style={{ overflow: "visible" }}>
           <g className="mn-spin-slow" style={{ transformOrigin: "center" }}>

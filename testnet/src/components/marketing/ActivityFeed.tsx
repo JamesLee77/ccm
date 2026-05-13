@@ -84,7 +84,7 @@ export default function ActivityFeed() {
         ) : (
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
             {feed.data.map((row, i) => (
-              <li key={`${row.txHash}-${i}`} style={{ padding: "12px 24px", borderTop: i === 0 ? "none" : "1px solid var(--rule)", display: "grid", gridTemplateColumns: "80px 1fr 1fr 80px", gap: 16, alignItems: "center", fontSize: 13 }}>
+              <li key={`${row.txHash}-${i}`} className="r-feed-row" style={{ padding: "12px 24px", borderTop: i === 0 ? "none" : "1px solid var(--rule)", fontSize: 13 }}>
                 <span style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--moss)" }}>{labelFor(row.kind)}</span>
                 <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", color: "var(--ink-soft)" }}>{truncAddr(row.who)}</span>
                 <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace" }}>{row.detail}</span>

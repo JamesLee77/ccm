@@ -50,7 +50,7 @@ export default function YieldCurvePanel() {
       <p style={{ fontSize: 15, color: "var(--ink-soft)", lineHeight: 1.6, margin: "0 0 24px 0", maxWidth: 720 }}>
         {t("yieldCurve.subtitle")}
       </p>
-      <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr 1fr", gap: 1, background: "var(--rule)", border: "1px solid var(--rule)" }}>
+      <div className="r-yield">
         <div style={{ background: "var(--paper-deep)", padding: "24px 28px" }}>
           <div style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--moss)" }}>
             {t("yieldCurve.current")}

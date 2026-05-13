@@ -81,6 +81,14 @@
       "mainnet": "Visit the live portal",
       "github": "Source on GitHub"
     },
+    "live": {
+      "title": "Live · Network State",
+      "nodes": "Active CCMine nodes",
+      "miners": "Unique miners (24h)",
+      "minted": "Mints (24h)",
+      "staked": "CCM staked",
+      "poolRemaining": "Reward pool remaining"
+    },
     "errors": {
       "rpcRetry": "Network error, retrying…",
       "userRejected": "Transaction cancelled.",

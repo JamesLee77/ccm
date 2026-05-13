@@ -121,6 +121,19 @@
       "register": "Node",
       "tx": "tx"
     },
+    "node": {
+      "title": "Run a CCMine node",
+      "subtitle": "Register your address on the open node registry. Your label appears in the live activity feed and counts toward the network state metric. No fee, no whitelist — sandbox.",
+      "label": "Node label",
+      "endpoint": "Endpoint (optional)",
+      "labelPlaceholder": "e.g. seoul-node-01",
+      "endpointPlaceholder": "https://your-node.example",
+      "register": "Register",
+      "update": "Update",
+      "unregister": "Unregister",
+      "registered": "Registered as",
+      "connect": "Connect a wallet to register your node."
+    },
     "errors": {
       "rpcRetry": "Network error, retrying…",
       "userRejected": "Transaction cancelled.",

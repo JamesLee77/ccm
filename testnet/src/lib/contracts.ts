@@ -9,8 +9,14 @@ export const SANDBOX = {
   ccmToken:           "0x5641d6A2a6AD2B835b37489c72D2Bd716903CEFD" as Address,
   ccmSandboxNFT:      "0xbC3EAc7514F82A868807b81b165D2121495380E9" as Address,
   ccmSandboxVault:    "0xEd62b71e9ff0200CFf02C8F38618Af153C609334" as Address,
-  ccmSandboxStaking:  "0xAaeF319bc3B653DF68502a5A713989BB29ea8C48" as Address,    // Task 2 output
-  mockPriceOracle:    "0x467b5f3Deb6750866ae2D5e05705A9Edae13b30e"  as Address,    // Task 2 output
+  ccmSandboxStaking:  "0xAaeF319bc3B653DF68502a5A713989BB29ea8C48" as Address,
+  mockPriceOracle:    "0x467b5f3Deb6750866ae2D5e05705A9Edae13b30e" as Address,
+  // New (Task 3)
+  oracleA:            "0xC04aba12B9ECF3465832dee6b814A0dd6ed0991c" as Address,
+  oracleB:            "0xd82596F1dcAA5aA2dfA688eAde568cdFf82C9427" as Address,
+  oracleC:            "0xe1Da27b2122A6b875a8E46B8b089FBf1151887eC" as Address,
+  medianAggregator:   "0x58CD4De9f68a1982e6AF0258863CeCc7E68beaE6" as Address,
+  nodeRegistry:       "0xE9AD5DC60a799Cc037824f2B030E641f4d460136" as Address,
 };
 
 export const EXPLORER = "https://sepolia.basescan.org";
@@ -58,4 +64,64 @@ export const CCMSandboxStakingAbi = [
   { type: "function", name: "totalStaked", inputs: [], outputs: [{ type: "uint256" }], stateMutability: "view" },
   { type: "function", name: "poolRemaining", inputs: [], outputs: [{ type: "uint256" }], stateMutability: "view" },
   { type: "function", name: "poolUsedPct", inputs: [], outputs: [{ type: "uint256" }], stateMutability: "view" },
+] as const;
+
+export const MockPriceOracleAbi = [
+  { type: "function", name: "getPrice", inputs: [], outputs: [{ type: "uint256" }], stateMutability: "view" },
+  { type: "function", name: "price", inputs: [], outputs: [{ type: "uint256" }], stateMutability: "view" },
+] as const;
+
+export const CCMSandboxMedianAggregatorAbi = [
+  { type: "function", name: "getPrice", inputs: [], outputs: [{ type: "uint256" }], stateMutability: "view" },
+  {
+    type: "function",
+    name: "sourcePrices",
+    inputs: [],
+    outputs: [{ type: "uint256[4]" }],
+    stateMutability: "view",
+  },
+  { type: "function", name: "sources", inputs: [{ type: "uint256" }], outputs: [{ type: "address" }], stateMutability: "view" },
+  { type: "function", name: "name", inputs: [], outputs: [{ type: "string" }], stateMutability: "pure" },
+] as const;
+
+export const CCMSandboxNodeRegistryAbi = [
+  { type: "function", name: "register", inputs: [{ name: "label", type: "string" }, { name: "endpoint", type: "string" }], outputs: [{ type: "uint256" }], stateMutability: "nonpayable" },
+  { type: "function", name: "update", inputs: [{ name: "label", type: "string" }, { name: "endpoint", type: "string" }], outputs: [], stateMutability: "nonpayable" },
+  { type: "function", name: "unregister", inputs: [], outputs: [], stateMutability: "nonpayable" },
+  { type: "function", name: "count", inputs: [], outputs: [{ type: "uint256" }], stateMutability: "view" },
+  { type: "function", name: "totalEver", inputs: [], outputs: [{ type: "uint256" }], stateMutability: "view" },
+  { type: "function", name: "nodeOf", inputs: [{ type: "address" }], outputs: [
+    { components: [
+      { name: "owner", type: "address" },
+      { name: "label", type: "string" },
+      { name: "endpoint", type: "string" },
+      { name: "registeredAt", type: "uint64" },
+      { name: "active", type: "bool" },
+    ], type: "tuple" },
+  ], stateMutability: "view" },
+  { type: "function", name: "recent", inputs: [{ type: "uint256" }], outputs: [
+    { components: [
+      { name: "owner", type: "address" },
+      { name: "label", type: "string" },
+      { name: "endpoint", type: "string" },
+      { name: "registeredAt", type: "uint64" },
+      { name: "active", type: "bool" },
+    ], type: "tuple[]" },
+  ], stateMutability: "view" },
+  { type: "event", name: "NodeRegistered", inputs: [
+    { indexed: true, name: "owner", type: "address" },
+    { indexed: true, name: "nodeId", type: "uint256" },
+    { name: "label", type: "string" },
+    { name: "endpoint", type: "string" },
+  ] },
+  { type: "event", name: "NodeUpdated", inputs: [
+    { indexed: true, name: "owner", type: "address" },
+    { indexed: true, name: "nodeId", type: "uint256" },
+    { name: "label", type: "string" },
+    { name: "endpoint", type: "string" },
+  ] },
+  { type: "event", name: "NodeUnregistered", inputs: [
+    { indexed: true, name: "owner", type: "address" },
+    { indexed: true, name: "nodeId", type: "uint256" },
+  ] },
 ] as const;

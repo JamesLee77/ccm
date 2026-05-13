@@ -1,7 +1,6 @@
 import { useTranslation } from "react-i18next";
 import Wordmark from "../brand/Wordmark";
 import ThemeToggle from "./ThemeToggle";
-import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Nav() {
   const { t } = useTranslation();
@@ -18,7 +17,6 @@ export default function Nav() {
         </span>
       </div>
       <div style={{ display: "flex", gap: 8 }}>
-        <LanguageSwitcher />
         <ThemeToggle />
       </div>
     </header>

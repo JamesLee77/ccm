@@ -16,7 +16,40 @@ export default function Playground() {
       <WalletStatusBar />
       <section style={{ marginTop: 32, marginBottom: 32 }}>
         <h1 style={{ fontSize: 36, lineHeight: 1.05, margin: 0 }}>{t("hero.headline")}</h1>
-        <p style={{ marginTop: 16, color: "var(--ink-soft)", fontSize: 16 }}>{t("hero.tagline")}</p>
+        <p style={{ marginTop: 16, color: "var(--ink-soft)", fontSize: 16, maxWidth: 720, lineHeight: 1.55 }}>
+          {t("hero.lead")}
+        </p>
+      </section>
+
+      <section style={{
+        border: "1px solid var(--rule)",
+        background: "var(--paper-deep)",
+        padding: 20,
+        marginBottom: 32,
+      }}>
+        <div style={{
+          fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase",
+          color: "var(--ink-soft)", marginBottom: 12,
+        }}>
+          {t("needs.title")}
+        </div>
+        <ul style={{ listStyle: "none", padding: 0, margin: 0, fontSize: 14, lineHeight: 1.7, color: "var(--ink)" }}>
+          <li>· {t("needs.wallet")}</li>
+          <li>· {t("needs.network")}</li>
+          <li>
+            · {t("needs.gas")}{" "}
+            <a
+              href="https://portal.cdp.coinbase.com/products/faucet"
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: "var(--moss)" }}
+            >
+              {t("needs.faucet")}
+            </a>
+            .
+          </li>
+          <li>· {t("needs.time")}</li>
+        </ul>
       </section>
 
       <StepCard step={1} title={t("step1.title")} subtitle={t("step1.subtitle")}>

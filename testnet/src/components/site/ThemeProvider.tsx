@@ -7,7 +7,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window === "undefined") return "light";
     const stored = window.localStorage.getItem("ccm-testnet-theme");
-    return stored === "dark" || stored === "light" ? stored : "light";
+    return stored === "dark" || stored === "light" ? stored : "dark";
   });
   useEffect(() => {
     document.documentElement.dataset.theme = theme;

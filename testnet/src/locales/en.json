@@ -1,10 +1,18 @@
 {
   "translation": {
-    "nav": { "title": "CCM testnet", "lang": "Language" },
+    "nav": { "title": "CCM testnet" },
     "hero": {
-      "headline": "Experience CCM on Base Sepolia.",
-      "tagline": "Mine carbon credits, wrap to CCM, stake, earn.",
+      "headline": "Try CCM Network on Base Sepolia.",
+      "lead": "CCM Network is a carbon credit economy on Base. This playground walks you through the full lifecycle in about five minutes — mint a carbon credit NFT, wrap it into the CCM token, stake CCM to earn yield from a 5M-token reward pool, and claim your rewards. Everything runs on Base Sepolia testnet, so tokens have no real value, but the mechanics mirror the live mainnet contracts.",
       "warning": "⚠ Base Sepolia testnet — tokens have no real value."
+    },
+    "needs": {
+      "title": "What you'll need",
+      "wallet": "A wallet that supports Base Sepolia (MetaMask, Rainbow, Coinbase Wallet, etc.)",
+      "network": "Switch your wallet to the Base Sepolia network (chain ID 84532).",
+      "gas": "A small amount of Sepolia ETH for gas.",
+      "faucet": "Get Sepolia ETH from the Coinbase faucet",
+      "time": "About 5 minutes."
     },
     "wallet": {
       "connect": "Connect Wallet",
@@ -13,7 +21,7 @@
     },
     "step1": {
       "title": "Mine a Carbon Credit",
-      "subtitle": "1 NFT per address per hour. Pick grade, vintage, tonnage.",
+      "subtitle": "Mint an ERC-1155 NFT that represents a tonne of CO₂ offset. Pick the grade (A is highest quality), vintage year, and tonnage. The mint contract limits you to one NFT per address per hour to keep things fair.",
       "labels": { "grade": "Grade", "vintage": "Vintage", "tonnage": "Tonnage (t)" },
       "mine": "Mine",
       "cooldown": "Mine again in {{time}}",
@@ -23,7 +31,7 @@
     },
     "step2": {
       "title": "Wrap NFT → CCM",
-      "subtitle": "1 tonne = 1 CCM. Vault returns lower grades first (D→C→B→A).",
+      "subtitle": "Convert your carbon credit NFT into the fungible CCM token. The Vault locks the NFT as a reserve and credits you 1 CCM per tonne. You approve the Vault once, then can wrap up to 5 NFTs per transaction. Lower grades are returned first when CCM is unwrapped (D→C→B→A).",
       "selectAll": "Select all",
       "approve": "Approve vault",
       "wrap": "Wrap selected",
@@ -33,7 +41,7 @@
     },
     "step3": {
       "title": "Stake CCM",
-      "subtitle": "Earn yield while pool lasts. Up to 10%/month, decays as pool drains.",
+      "subtitle": "Stake your CCM into the sandbox staking contract to earn yield from a 5,000,000 CCM reward pool. The rate starts at 10% per month when the pool is fresh and decays as the pool drains and as the CCM/USD price drifts from $0.20. Approve the token once, then stake any amount.",
       "amount": "Amount",
       "max": "Max",
       "approve": "Approve token",
@@ -45,7 +53,7 @@
     },
     "step4": {
       "title": "Claim Reward",
-      "subtitle": "Reward accrues every block.",
+      "subtitle": "Reward accrues every block — the page polls the staking contract every five seconds so you can watch it grow. Claim transfers the pending CCM to your wallet. Unstaking any amount returns the principal and harvests pending reward in the same transaction.",
       "pending": "Pending reward",
       "claim": "Claim",
       "unstake": "Unstake",

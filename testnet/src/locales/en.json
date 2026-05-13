@@ -100,6 +100,15 @@
       "median": "Median (consensus)",
       "source": "Source"
     },
+    "yieldCurve": {
+      "title": "Yield · Decay",
+      "subtitle": "Staking yield rate decays with pool usage and CCM/USD price. R0 = 10 %/month at fresh pool and P = $0.20.",
+      "current": "Current rate",
+      "r0": "Max R0",
+      "pool": "Pool factor",
+      "price": "Price factor",
+      "perMonth": "/mo"
+    },
     "errors": {
       "rpcRetry": "Network error, retrying…",
       "userRejected": "Transaction cancelled.",

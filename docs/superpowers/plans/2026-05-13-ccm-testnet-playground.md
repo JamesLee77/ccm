@@ -2115,12 +2115,12 @@ the selected NFTs (≤5 per tx)."
 - Create: `testnet/src/components/playground/StakeForm.tsx`
 - Modify: `testnet/src/pages/Playground.tsx`
 
-- [ ] **Step 1: Write StakeForm**
+- [x] **Step 1: Write StakeForm**
 
 Write `/Users/hyunsuklee/Developer/ccm/testnet/src/components/playground/StakeForm.tsx`:
 
 ```typescript
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { formatUnits, parseUnits, maxUint256 } from "viem";
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
@@ -2166,8 +2166,18 @@ export default function StakeForm() {
   const { writeContract: writeStake, data: stakeHash, isPending: staking } = useWriteContract();
   const { isSuccess: stakeOk, isLoading: stakeConfirm } = useWaitForTransactionReceipt({ hash: stakeHash });
 
-  if (approveOk) void refetchAllowance();
-  if (stakeOk) void refetchPosition();
+  // After approve mines, refetch allowance
+  useEffect(() => {
+    if (approveOk) void refetchAllowance();
+  }, [approveOk, refetchAllowance]);
+
+  // After stake mines, refetch position and clear input
+  useEffect(() => {
+    if (stakeOk) {
+      void refetchPosition();
+      setAmount("");
+    }
+  }, [stakeOk, refetchPosition]);
 
   const wantAmount = amount ? parseUnits(amount, 18) : 0n;
   const hasAllowance = !!allowance && (allowance as bigint) >= wantAmount && wantAmount > 0n;
@@ -2243,7 +2253,7 @@ export default function StakeForm() {
 }
 ```
 
-- [ ] **Step 2: Wire StakeForm into Step 3 card**
+- [x] **Step 2: Wire StakeForm into Step 3 card**
 
 Update `/Users/hyunsuklee/Developer/ccm/testnet/src/pages/Playground.tsx`:
 
@@ -2255,7 +2265,7 @@ import StakeForm from "../components/playground/StakeForm";
 </StepCard>
 ```
 
-- [ ] **Step 3: Build and visual smoke**
+- [x] **Step 3: Build and visual smoke**
 
 ```bash
 cd /Users/hyunsuklee/Developer/ccm/testnet && \
@@ -2264,7 +2274,7 @@ cd /Users/hyunsuklee/Developer/ccm/testnet && \
 
 Visual: With CCM balance from Step 2, Step 3 shows amount input + Max + Approve (or Stake if already approved). Current rate shows in %/mo.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /Users/hyunsuklee/Developer/ccm && \

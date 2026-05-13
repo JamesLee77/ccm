@@ -89,6 +89,11 @@
       "staked": "CCM staked",
       "poolRemaining": "Reward pool remaining"
     },
+    "mining": {
+      "title": "Mining · Network",
+      "subtitle": "Carbon credit mints flowing from miners into the sandbox NFT contract. Hub counter is the total CCM minted across the testnet.",
+      "hubLabel": "Minted"
+    },
     "errors": {
       "rpcRetry": "Network error, retrying…",
       "userRejected": "Transaction cancelled.",

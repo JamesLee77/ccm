@@ -119,6 +119,24 @@ CCMSandboxStaking *(testnet-only)*:
 - Funded at tx: `0x0eedcd397a7ed034760f47b8238b13de3a9d4621bdb2217db93b526d8483b1e9`
 - For the testnet.ccmnetwork.net playground — no eligibility whitelist; anyone can stake
 
+### testnet.ccmnetwork.net playground (deployed 2026-05-13)
+
+The marketing-mirror previously served by ccm-testnet Pages was replaced
+by the new playground SPA (testnet/) implementing the 4-step
+mine → wrap → stake → claim flow from spec
+`docs/superpowers/specs/2026-05-13-ccm-testnet-playground-design.md`.
+
+Hosting: Cloudflare Pages project `ccm-testnet` (production branch `main`).
+
+Backend: chain-only. No portal-api dependency.
+
+Contracts in use (Base Sepolia):
+- CCMToken (sandbox)         `0x5641d6A2a6AD2B835b37489c72D2Bd716903CEFD`
+- CCMSandboxNFT              `0xbC3EAc7514F82A868807b81b165D2121495380E9`
+- CCMSandboxVault            `0xEd62b71e9ff0200CFf02C8F38618Af153C609334`
+- CCMSandboxStaking (new)    `0xAaeF319bc3B653DF68502a5A713989BB29ea8C48`
+- MockPriceOracle (new)      `0x467b5f3Deb6750866ae2D5e05705A9Edae13b30e`
+
 ### Notes
 
 - Same script as czero proven on its CZM testnet (deploy-presale.ts) but

@@ -1742,7 +1742,7 @@ export default function MintForm() {
             ? "…"
             : t("step1.mine")}
       </button>
-      {onCooldown && cooldownUntil && <CooldownTimer untilTimestamp={cooldownUntil as bigint} />}
+      {onCooldown && cooldownUntil ? <CooldownTimer untilTimestamp={cooldownUntil as bigint} /> : null}
     </div>
   );
 }
@@ -1763,8 +1763,6 @@ import { SANDBOX, CCMSandboxNFTAbi } from "../../lib/contracts";
 const transferSingleEvent = parseAbiItem(
   "event TransferSingle(address indexed operator, address indexed from, address indexed to, uint256 id, uint256 value)",
 );
-
-type MetaRow = { id: bigint; grade: number; vintage: number; tonnage: number };
 
 export default function NFTInventory() {
   const { t } = useTranslation();

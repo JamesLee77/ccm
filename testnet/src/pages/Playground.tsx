@@ -4,6 +4,7 @@ import WalletStatusBar from "../components/wallet/WalletStatusBar";
 import StepCard from "../components/playground/StepCard";
 import MintForm from "../components/playground/MintForm";
 import NFTInventory from "../components/playground/NFTInventory";
+import WrapForm from "../components/playground/WrapForm";
 
 export default function Playground() {
   const { t } = useTranslation();
@@ -20,7 +21,7 @@ export default function Playground() {
         <NFTInventory />
       </StepCard>
       <StepCard step={2} title={t("step2.title")} subtitle={t("step2.subtitle")}>
-        (WrapForm — Task 8)
+        <WrapForm />
       </StepCard>
       <StepCard step={3} title={t("step3.title")} subtitle={t("step3.subtitle")}>
         (StakeForm — Task 9)

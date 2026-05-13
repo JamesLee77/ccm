@@ -13,7 +13,7 @@ import * as fs from "fs";
 dotenv.config({ path: path.resolve(__dirname, "..", "..", ".env") });
 
 const RPC = process.env.BASE_SEPOLIA_RPC ?? "https://sepolia.base.org";
-const NFT_ADDR = "0xbC3EAc7514F82A868807b81b165D2121495380E9";
+const NFT_ADDR = "0x9a7c5581460C69347D71733050e080869f6A3b9E";
 const KEEPER_FILE = path.resolve(__dirname, "..", "..", ".carbon-oracle-keeper.json");
 
 const NFT_ABI = [

@@ -7,8 +7,9 @@ import type { Address } from "viem";
  */
 export const SANDBOX = {
   ccmToken:           "0x5641d6A2a6AD2B835b37489c72D2Bd716903CEFD" as Address,
-  ccmSandboxNFT:      "0xbC3EAc7514F82A868807b81b165D2121495380E9" as Address,
-  ccmSandboxVault:    "0xEd62b71e9ff0200CFf02C8F38618Af153C609334" as Address,
+  // 2026-05-13 redeploy — NFT cooldown 1h → 5min, new Vault wired
+  ccmSandboxNFT:      "0x9a7c5581460C69347D71733050e080869f6A3b9E" as Address,
+  ccmSandboxVault:    "0x9b2c71de1D9BAC2E6e2824Deef30085Cbe774E58" as Address,
   ccmSandboxStaking:  "0xAaeF319bc3B653DF68502a5A713989BB29ea8C48" as Address,
   // 2026-05-13 redeploy — keeper-owned so the Worker cron can call setPrice
   // and emit a continuous PriceUpdated history for the timeline viz.

@@ -20,7 +20,7 @@ import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
  *   - Constructor refuses chain ID 8453 (Base mainnet) — mainnet deploy
  *     is impossible from the deploy script (extra belt-and-braces in the
  *     constructor itself in case the script is bypassed).
- *   - Per-address mint cooldown (1h) and per-mint tonnage cap (1,000 t)
+ *   - Per-address mint cooldown (5 min) and per-mint tonnage cap (1,000 t)
  *     bound the sandbox state.
  *   - Anyone holding a balance can retire (burn) under their own custody.
  */
@@ -54,7 +54,7 @@ contract CCMSandboxNFT is ERC1155, ERC1155Supply {
     /// @notice Cumulative tonnage retired (burned) through this contract.
     uint256 public retiredTotal;
 
-    uint256 public constant MINT_COOLDOWN = 1 hours;
+    uint256 public constant MINT_COOLDOWN = 5 minutes;
     uint256 public constant MAX_TONNAGE = 1_000;
     uint16 public constant MIN_VINTAGE = 2020;
     uint16 public constant MAX_VINTAGE = 2030;

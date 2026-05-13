@@ -28,7 +28,7 @@ CARBON_ORACLE_RPC = "https://sepolia.base.org"
 
 # Sandbox NFT (Sepolia) — keeper auto-mints one carbon-credit batch per
 # cron tick so the testnet mining timeline keeps producing records.
-CCM_SANDBOX_NFT_ADDRESS = "0xbC3EAc7514F82A868807b81b165D2121495380E9"
+CCM_SANDBOX_NFT_ADDRESS = "0x9a7c5581460C69347D71733050e080869f6A3b9E"
 
 # Sandbox MockPriceOracles (Sepolia, keeper-owned 2026-05-13 redeploy) —
 # keeper walks each price by ±2% per cron tick so the Oracle Price

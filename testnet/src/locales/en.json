@@ -36,7 +36,7 @@
     },
     "step1": {
       "title": "Mine a Carbon Credit",
-      "subtitle": "Mint an ERC-1155 NFT that represents a tonne of CO₂ offset. Pick the grade (A is highest quality), vintage year, and tonnage. The mint contract limits you to one NFT per address per hour to keep things fair.",
+      "subtitle": "Mint an ERC-1155 NFT that represents a tonne of CO₂ offset. Pick the grade (A is highest quality), vintage year, and tonnage. The mint contract limits you to one NFT per address every 5 minutes to keep things fair.",
       "labels": { "grade": "Grade", "vintage": "Vintage", "tonnage": "Tonnage (t)" },
       "mine": "Mine",
       "cooldown": "Mine again in {{time}}",

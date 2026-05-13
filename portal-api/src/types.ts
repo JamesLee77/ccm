@@ -15,6 +15,7 @@ export interface Env {
   CARBON_KEEPER_PRIVATE_KEY?: string;  // secret — Worker hot wallet for oracle push (sepolia)
   CARBON_ORACLE_ADDRESS?: string;      // contract address to push to (sepolia)
   CARBON_ORACLE_RPC?: string;          // RPC for the oracle network (defaults to sepolia public RPC)
+  CCM_SANDBOX_NFT_ADDRESS?: string;    // CCMSandboxNFT (sepolia) — keeper auto-mints hourly
 }
 
 export interface SessionPayload {

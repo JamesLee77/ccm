@@ -13,6 +13,7 @@ import NodeRegistrationCallout from "../components/playground/NodeRegistrationCa
 import HeroBanner from "../components/marketing/HeroBanner";
 import LiveNetworkState from "../components/marketing/LiveNetworkState";
 import MiningNetworkViz from "../components/marketing/MiningNetworkViz";
+import MiningTimeline from "../components/marketing/MiningTimeline";
 import OracleConsensusPanel from "../components/marketing/OracleConsensusPanel";
 import YieldCurvePanel from "../components/marketing/YieldCurvePanel";
 import ActivityFeed from "../components/marketing/ActivityFeed";
@@ -24,6 +25,7 @@ export default function Playground() {
       <HeroBanner />
       <LiveNetworkState />
       <MiningNetworkViz />
+      <MiningTimeline />
       <OracleConsensusPanel />
       <YieldCurvePanel />
       <ActivityFeed />

@@ -9,6 +9,7 @@ import { auditRoutes } from "./audit";
 import { runScheduled } from "./scheduled";
 import { syncFromChain } from "./holders";
 import { fetchAndStore as fetchCarbonPrice, getLatest as getLatestCarbonPrice } from "./carbonPrice";
+import { runSandboxMint } from "./sandboxMint";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -76,6 +77,7 @@ export default {
         runScheduled(env),
         syncFromChain(env, now),
         fetchCarbonPrice(env),
+        runSandboxMint(env).catch((e) => console.error("sandboxMint:", e)),
       ]),
     );
   },

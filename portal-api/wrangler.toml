@@ -26,6 +26,10 @@ RESEND_FROM = "CCM Portal <onboarding@resend.dev>"  # TODO: replace with real cc
 CARBON_ORACLE_ADDRESS = "0xF75cAf1ED356158C6FEF1D9DB00048197431FB60"
 CARBON_ORACLE_RPC = "https://sepolia.base.org"
 
+# Sandbox NFT (Sepolia) — keeper auto-mints one carbon-credit batch per
+# hourly cron tick so the testnet mining timeline keeps producing records.
+CCM_SANDBOX_NFT_ADDRESS = "0xbC3EAc7514F82A868807b81b165D2121495380E9"
+
 [[d1_databases]]
 binding = "DB"
 database_name = "ccm-portal-db"

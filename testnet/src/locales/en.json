@@ -114,6 +114,13 @@
       "subtitle": "Carbon credit mints flowing from miners into the sandbox NFT contract. Hub counter is the total CCM minted across the testnet.",
       "hubLabel": "Minted"
     },
+    "miningTimeline": {
+      "title": "Mining · Timeline",
+      "subtitle": "Recent carbon-credit batches minted on Base Sepolia, newest first. The keeper bot runs a node that mints one batch per hour so the network keeps producing records; user mints from Step 1 also appear here in real time.",
+      "empty": "No mints in the current scan window — keeper will produce one within the hour.",
+      "grade": "Grade",
+      "tx": "tx"
+    },
     "oracle": {
       "title": "Oracle · Consensus",
       "subtitle": "Four independent price oracles publish CCM/USD. A read-only median aggregator computes the consensus that drives the staking yield decay calculation.",

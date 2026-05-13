@@ -118,6 +118,27 @@ export function useCumulativeMinted(): Loader<bigint> {
   }, 15000, []);
 }
 
+/** Total NFT tonnage minted in the scan window — sum of `tonnage` across
+ *  Minted events on CCMSandboxNFT. Counts the raw carbon-credit batches
+ *  produced by miners (keeper bot + users), not the wrapped CCM token. */
+export function useCumulativeTonnage(): Loader<bigint> {
+  return usePolling(async () => {
+    const { from, to } = await getScanRange();
+    const logs = await publicClient.getLogs({
+      address: SANDBOX.ccmSandboxNFT,
+      event: mintedEvent,
+      fromBlock: from,
+      toBlock: to,
+    });
+    let total = 0n;
+    for (const log of logs) {
+      const args = (log as Log & { args: { tonnage: bigint } }).args;
+      if (args?.tonnage) total += args.tonnage;
+    }
+    return total;
+  }, 15000, []);
+}
+
 /** Number of distinct `to` addresses across NFT mint events in the scan window. */
 export function useActiveMiners(): Loader<number> {
   return usePolling(async () => {

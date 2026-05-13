@@ -118,8 +118,8 @@
     },
     "mining": {
       "title": "Mining · Network",
-      "subtitle": "Carbon credit mints flowing from miners into the sandbox NFT contract. Hub counter is the total CCM minted across the testnet.",
-      "hubLabel": "Minted"
+      "subtitle": "Carbon credit batches flowing from miners into the sandbox NFT contract. Hub counter is the total tonnage (tCO₂e) minted in the recent on-chain scan window.",
+      "hubLabel": "Tonnage"
     },
     "miningTimeline": {
       "title": "Mining · Timeline",

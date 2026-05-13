@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { formatUnits } from "viem";
-import { useCumulativeMinted } from "../../lib/onchain";
+import { useCumulativeTonnage } from "../../lib/onchain";
 
 const RADIUS = 88;
 const HUB_R = 28;
@@ -8,13 +7,12 @@ const VIEW = 240;
 
 function formatHubNumber(v: bigint | undefined): string {
   if (v === undefined) return "0";
-  const n = Number(formatUnits(v, 18));
-  return n.toLocaleString(undefined, { maximumFractionDigits: 0 });
+  return Number(v).toLocaleString();
 }
 
 export default function MiningNetworkViz() {
   const { t } = useTranslation();
-  const minted = useCumulativeMinted();
+  const minted = useCumulativeTonnage();
   const count = 7;
   const satellites = Array.from({ length: count }).map((_, i) => {
     const a = (i / count) * Math.PI * 2 - Math.PI / 2;
@@ -41,7 +39,7 @@ export default function MiningNetworkViz() {
             {t("mining.hubLabel").toUpperCase()}
           </text>
           <text x={0} y={9} textAnchor="middle" fontFamily="JetBrains Mono, ui-monospace, monospace" fontSize={9} fontWeight={500} letterSpacing={0.5} fill="var(--paper)">
-            {formatHubNumber(minted.data)}
+            {formatHubNumber(minted.data)}t
           </text>
         </svg>
         <style>{`

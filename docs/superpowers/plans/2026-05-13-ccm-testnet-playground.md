@@ -1032,6 +1032,8 @@ Subsequent tasks add real step cards, components, and contract wiring."
 - Modify: `testnet/src/pages/Playground.tsx` to use `TestnetLayout`
 - Modify: `testnet/src/index.css` to import design tokens
 - Reference: `frontend/src/components/brand/{Wordmark,wordmark-paths}.{tsx,ts}`
+- Delete: `testnet/src/components/site/{TestnetNav,TestnetFooter,primitives,RainbowKitThemed}.tsx` (legacy, replaced by Nav/Footer/ThemeProvider)
+- Delete: `testnet/src/components/{Layout,ChainGate,TestnetBanner,CopyableAddress}.tsx` (top-level orphans replaced by new site/ design)
 
 - [ ] **Step 1: Copy Wordmark from frontend**
 

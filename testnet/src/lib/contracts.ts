@@ -22,6 +22,7 @@ export const SANDBOX = {
   uniV3PoolCcmUsdc:   "0xc3A371C8dEb03bb553610C8B43c76356390616FE" as Address,
   uniV3SwapRouter02:  "0x94cC0AaC535CCDB3C01d6787D6413C739ae12bc4" as Address,
   uniV3Quoter:        "0xC5290058841028F1614F3A6F0F5816cAd0df5E27" as Address,
+  starterPack:        "0x2B249E9d89Ad560888700b0c3ed5D2dBFB0Db29e" as Address,
 };
 
 /** Uniswap V3 fee tier for CCM/sUSDC pool. */
@@ -135,6 +136,13 @@ export const CCMSandboxNodeRegistryAbi = [
     { indexed: true, name: "owner", type: "address" },
     { indexed: true, name: "nodeId", type: "uint256" },
   ] },
+] as const;
+
+export const CCMSandboxStarterPackAbi = [
+  { type: "function", name: "claim", inputs: [], outputs: [], stateMutability: "nonpayable" },
+  { type: "function", name: "cooldownRemaining", inputs: [{ type: "address" }], outputs: [{ type: "uint256" }], stateMutability: "view" },
+  { type: "function", name: "CCM_AMOUNT", inputs: [], outputs: [{ type: "uint256" }], stateMutability: "view" },
+  { type: "function", name: "SUSDC_AMOUNT", inputs: [], outputs: [{ type: "uint256" }], stateMutability: "view" },
 ] as const;
 
 export const MockSandboxUSDCAbi = [

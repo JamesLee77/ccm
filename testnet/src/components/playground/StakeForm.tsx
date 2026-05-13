@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { formatUnits, parseUnits, maxUint256 } from "viem";
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { SANDBOX, CCMTokenAbi, CCMSandboxStakingAbi } from "../../lib/contracts";
+import { pingActivityFeed } from "../../lib/activityBus";
 
 export default function StakeForm() {
   const { t } = useTranslation();
@@ -54,6 +55,7 @@ export default function StakeForm() {
     if (stakeOk) {
       void refetchPosition();
       setAmount("");
+      pingActivityFeed();
     }
   }, [stakeOk, refetchPosition]);
 

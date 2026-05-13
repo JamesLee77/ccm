@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { useAccount, useChainId, useSwitchChain } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { TESTNET_CHAIN_ID } from "../../lib/wagmi";
+import StarterPackButton from "../playground/StarterPackButton";
 
 export default function WalletStatusBar() {
   const { t } = useTranslation();
@@ -10,6 +11,7 @@ export default function WalletStatusBar() {
   const { switchChain } = useSwitchChain();
 
   const wrongChain = isConnected && chainId !== TESTNET_CHAIN_ID;
+  const goodChain = isConnected && !wrongChain;
 
   return (
     <div style={{
@@ -26,7 +28,8 @@ export default function WalletStatusBar() {
             ? t("wallet.wrongChain")
             : `${t("wallet.connected")} · ${address?.slice(0,6)}…${address?.slice(-4)}`}
       </div>
-      <div>
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        {goodChain && <StarterPackButton />}
         {wrongChain ? (
           <button
             onClick={() => switchChain({ chainId: TESTNET_CHAIN_ID })}

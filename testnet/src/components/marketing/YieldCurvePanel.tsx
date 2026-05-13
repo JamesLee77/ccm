@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { formatUnits } from "viem";
 import { useReadContract } from "wagmi";
 import { SANDBOX, CCMSandboxStakingAbi, MockPriceOracleAbi } from "../../lib/contracts";
+import Tip from "../site/Tip";
 
 // Constants from CCMSandboxStaking — mirrored here so we can show
 // decomposition without an extra view call.
@@ -61,7 +62,7 @@ export default function YieldCurvePanel() {
         </div>
         <div style={{ background: "var(--paper-deep)", padding: "24px 24px" }}>
           <div style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--ink-soft)" }}>
-            {t("yieldCurve.r0")}
+            {t("yieldCurve.r0")}<Tip text="Max rate (R0) when pool is fresh and CCM price equals TGE reference ($0.20). Currently 10%/month, fixed at deploy." />
           </div>
           <div style={{ fontSize: 22, fontFamily: "JetBrains Mono, ui-monospace, monospace", marginTop: 6 }}>
             {(Number(R0_BPS) / 100).toFixed(0)}%
@@ -69,7 +70,7 @@ export default function YieldCurvePanel() {
         </div>
         <div style={{ background: "var(--paper-deep)", padding: "24px 24px" }}>
           <div style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--ink-soft)" }}>
-            {t("yieldCurve.pool")}
+            {t("yieldCurve.pool")}<Tip text="poolRemaining / POOL_INIT — decays toward 0 as the staking reward pool drains. Multiplies into yield." />
           </div>
           <div style={{ fontSize: 22, fontFamily: "JetBrains Mono, ui-monospace, monospace", marginTop: 6 }}>
             {poolFactor !== undefined ? pct(poolFactor) : "—"}
@@ -80,7 +81,7 @@ export default function YieldCurvePanel() {
         </div>
         <div style={{ background: "var(--paper-deep)", padding: "24px 24px" }}>
           <div style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--ink-soft)" }}>
-            {t("yieldCurve.price")}
+            {t("yieldCurve.price")}<Tip text="P0_TGE / current CCM price — capped at 1.0. When CCM rises above $0.20, this factor shrinks below 1, lowering yield." />
           </div>
           <div style={{ fontSize: 22, fontFamily: "JetBrains Mono, ui-monospace, monospace", marginTop: 6 }}>
             {priceFactor !== undefined ? pct(priceFactor) : "—"}

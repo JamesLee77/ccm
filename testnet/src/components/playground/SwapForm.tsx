@@ -16,6 +16,7 @@ import {
   QuoterAbi,
 } from "../../lib/contracts";
 import { publicClient } from "../../lib/onchain";
+import { pingActivityFeed } from "../../lib/activityBus";
 
 const SLIPPAGE_BPS = 50; // 0.5%
 
@@ -136,6 +137,7 @@ export default function SwapForm() {
       void refetchUsdcBal();
       setAmountInStr("");
       setQuoted(undefined);
+      pingActivityFeed();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [swapOk]);

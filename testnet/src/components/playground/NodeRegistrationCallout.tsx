@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAccount, useReadContract, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import { SANDBOX, CCMSandboxNodeRegistryAbi } from "../../lib/contracts";
+import { pingActivityFeed } from "../../lib/activityBus";
 
 type Node = { owner: `0x${string}`; label: string; endpoint: string; registeredAt: bigint; active: boolean };
 
@@ -32,7 +33,10 @@ export default function NodeRegistrationCallout() {
   const { isLoading: confirming, isSuccess } = useWaitForTransactionReceipt({ hash: txHash });
 
   useEffect(() => {
-    if (isSuccess) void refetch();
+    if (isSuccess) {
+      void refetch();
+      pingActivityFeed();
+    }
   }, [isSuccess, refetch]);
 
   function onRegisterOrUpdate() {

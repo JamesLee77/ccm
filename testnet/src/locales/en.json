@@ -67,6 +67,11 @@
       "unstakeAmount": "Unstake amount",
       "poolExhausted": "Pool exhausted. Operator must refill."
     },
+    "starter": {
+      "claim": "Get Starter Pack (50 CCM + 100 sUSDC)",
+      "cooldown": "Next claim in {{time}}",
+      "info": "Skip Steps 1–2 if you just want to try Stake or Swap. Mints 50 CCM + 100 sUSDC in one transaction. 1h cooldown per wallet."
+    },
     "step5": {
       "title": "Swap CCM ⇄ sUSDC",
       "subtitle": "A Uniswap V3 0.3% pool on Base Sepolia seeded at $0.20 per CCM. Swap your CCM for sandbox USDC or vice versa. Sandbox USDC is freely faucetable (100 sUSDC/hour). Real on-chain swaps — slippage and price discovery as on mainnet.",

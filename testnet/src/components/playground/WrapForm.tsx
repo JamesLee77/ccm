@@ -4,6 +4,7 @@ import { formatUnits, type Address } from "viem";
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { SANDBOX, CCMSandboxNFTAbi, CCMSandboxVaultAbi, CCMTokenAbi } from "../../lib/contracts";
 import { publicClient, transferSingleEvent, getScanRange } from "../../lib/onchain";
+import { pingActivityFeed } from "../../lib/activityBus";
 
 const GRADE_LABEL = ["A", "B", "C", "D"] as const;
 
@@ -106,6 +107,7 @@ export default function WrapForm() {
       void refetchCcm();
       setActiveId(null);
       if (address) void refreshInventory(address);
+      pingActivityFeed();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wrapOk]);

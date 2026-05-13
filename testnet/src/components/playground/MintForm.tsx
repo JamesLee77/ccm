@@ -4,6 +4,8 @@ import { keccak256, toBytes } from "viem";
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { SANDBOX, CCMSandboxNFTAbi } from "../../lib/contracts";
 import CooldownTimer from "./CooldownTimer";
+import Tip from "../site/Tip";
+import { pingActivityFeed } from "../../lib/activityBus";
 
 const PROJECT_ID = keccak256(toBytes("ccm-testnet-playground"));
 
@@ -29,9 +31,12 @@ export default function MintForm() {
   const onCooldown = !!cooldownUntil && Number(cooldownUntil) > now;
   const disabled = !isConnected || isPending || confirming || onCooldown;
 
-  // After a successful mint, refetch cooldown
+  // After a successful mint, refetch cooldown + ping activity feed
   useEffect(() => {
-    if (isSuccess) void refetchCd();
+    if (isSuccess) {
+      void refetchCd();
+      pingActivityFeed();
+    }
   }, [isSuccess, refetchCd]);
 
   function onMine() {
@@ -50,6 +55,7 @@ export default function MintForm() {
     <div style={{ display: "flex", gap: 16, alignItems: "end", flexWrap: "wrap" }}>
       <label style={labelStyle}>
         {t("step1.labels.grade")}
+        <Tip text="A=highest quality (engineered removal like DAC/biochar) · B=high (afforestation) · C=medium (avoidance) · D=baseline (REDD+). Lower grades unwrap first from the vault." />
         <select value={grade} onChange={(e) => setGrade(Number(e.target.value))} style={inputStyle}>
           <option value={0}>A</option>
           <option value={1}>B</option>
@@ -59,10 +65,12 @@ export default function MintForm() {
       </label>
       <label style={labelStyle}>
         {t("step1.labels.vintage")}
+        <Tip text="Year the carbon credit was issued. Older vintages typically lower market value as standards improve." />
         <input type="number" min={2020} max={2030} value={vintage} onChange={(e) => setVintage(Number(e.target.value))} style={{ ...inputStyle, width: 90 }} />
       </label>
       <label style={labelStyle}>
         {t("step1.labels.tonnage")}
+        <Tip text="Tonnes of CO₂e this NFT represents. ERC-1155 amount = tonnage (so 50t = 50 fungible units of NFT id, each wraps to 1 CCM)." />
         <input type="number" min={1} max={1000} value={tonnage} onChange={(e) => setTonnage(Number(e.target.value))} style={{ ...inputStyle, width: 90 }} />
       </label>
       <button

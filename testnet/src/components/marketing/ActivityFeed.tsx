@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { formatUnits, type Address, type Hex } from "viem";
 import { SANDBOX, EXPLORER } from "../../lib/contracts";
@@ -11,6 +12,7 @@ import {
   unstakedEvent,
   nodeRegisteredEvent,
 } from "../../lib/onchain";
+import { onActivityPing } from "../../lib/activityBus";
 
 type FeedRow = {
   blockNumber: bigint;
@@ -59,7 +61,11 @@ async function loadFeed(): Promise<FeedRow[]> {
 
 export default function ActivityFeed() {
   const { t } = useTranslation();
-  const feed = usePolling(loadFeed, 15000, []);
+  const [pingCounter, setPingCounter] = useState(0);
+  useEffect(() => {
+    return onActivityPing(() => setPingCounter((n) => n + 1));
+  }, []);
+  const feed = usePolling(loadFeed, 15000, [pingCounter]);
   const labelFor = (k: FeedRow["kind"]): string => t(`feed.${k}`);
 
   return (

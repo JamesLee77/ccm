@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { formatUnits, parseUnits } from "viem";
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { SANDBOX, CCMSandboxStakingAbi } from "../../lib/contracts";
+import { pingActivityFeed } from "../../lib/activityBus";
 
 export default function RewardPanel() {
   const { t } = useTranslation();
@@ -45,6 +46,7 @@ export default function RewardPanel() {
     if (claimOk) {
       void refetchPending();
       void refetchPosition();
+      pingActivityFeed();
     }
   }, [claimOk, refetchPending, refetchPosition]);
 
@@ -54,6 +56,7 @@ export default function RewardPanel() {
       void refetchPending();
       void refetchPosition();
       setUnstakeAmt("");
+      pingActivityFeed();
     }
   }, [unstakeOk, refetchPending, refetchPosition]);
 
@@ -61,7 +64,11 @@ export default function RewardPanel() {
 
   const pendingNum = pending ? formatUnits(pending as bigint, 18) : "0";
   const stakedAmt = position ? (position as readonly [bigint, bigint])[0] : 0n;
+  const lastAccruedAt = position ? Number((position as readonly [bigint, bigint])[1]) : 0;
   const poolExhausted = poolRem !== undefined && (poolRem as bigint) === 0n;
+
+  const now = Math.floor(Date.now() / 1000);
+  const elapsed = stakedAmt > 0n && lastAccruedAt > 0 ? Math.max(0, now - lastAccruedAt) : 0;
 
   function onClaim() {
     writeClaim({
@@ -90,9 +97,20 @@ export default function RewardPanel() {
           {t("step4.poolExhausted")}
         </div>
       )}
-      <div style={{ fontSize: 14, marginBottom: 12 }}>
+      <div style={{ fontSize: 14, marginBottom: 4 }}>
         {t("step4.pending")}: <strong style={{ fontFamily: "ui-monospace, monospace" }}>{pendingNum} CCM</strong>
       </div>
+      {stakedAmt > 0n && (
+        <div style={{ fontSize: 11, color: "var(--ink-soft)", marginBottom: 12, fontFamily: "JetBrains Mono, ui-monospace, monospace" }}>
+          accruing for {elapsed}s · refreshed every 5s
+          <span style={{
+            display: "inline-block", width: 6, height: 6, borderRadius: "50%",
+            background: "var(--moss)", marginLeft: 8,
+            animation: "rwp-pulse 1.6s ease-in-out infinite",
+          }} />
+          <style>{`@keyframes rwp-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.4)} }`}</style>
+        </div>
+      )}
       <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
         <button
           onClick={onClaim}

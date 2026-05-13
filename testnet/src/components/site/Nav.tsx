@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import Wordmark from "../brand/Wordmark";
 import ThemeToggle from "./ThemeToggle";
+import CarbonPriceBadge from "../marketing/CarbonPriceBadge";
 
 export default function Nav() {
   const { t } = useTranslation();
@@ -16,7 +17,8 @@ export default function Nav() {
           {t("nav.title")}
         </span>
       </div>
-      <div style={{ display: "flex", gap: 8 }}>
+      <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+        <CarbonPriceBadge />
         <ThemeToggle />
       </div>
     </header>

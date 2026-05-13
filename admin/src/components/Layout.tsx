@@ -2,6 +2,7 @@ import { Outlet, Link, NavLink, useLocation } from "react-router-dom";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Wordmark from "./brand/Wordmark";
 import ThemeToggle from "./site/ThemeToggle";
+import CarbonPriceBadge from "./marketing/CarbonPriceBadge";
 import SafeBadge from "./site/SafeBadge";
 import PersonaBadge from "./site/PersonaBadge";
 import E2eModeBadge from "./site/E2eModeBadge";
@@ -85,6 +86,7 @@ export default function Layout() {
               showBalance={false}
               accountStatus={{ smallScreen: "avatar", largeScreen: "address" }}
             />
+            <CarbonPriceBadge />
             <ThemeToggle />
           </div>
         </div>

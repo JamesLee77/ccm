@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Wordmark from "../brand/Wordmark";
 import ThemeToggle from "./ThemeToggle";
+import CarbonPriceBadge from "../marketing/CarbonPriceBadge";
 import { IS_MAINNET } from "../../lib/env";
 
 type NavItem = { id: string; to: string };
@@ -92,6 +93,7 @@ export default function PortalNav() {
             />
           </div>
 
+          <span className="hidden md:inline-flex"><CarbonPriceBadge /></span>
           <ThemeToggle />
 
           {/* Mobile hamburger */}

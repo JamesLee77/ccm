@@ -8,6 +8,7 @@ import { adminRoutes } from "./admin";
 import { auditRoutes } from "./audit";
 import { runScheduled } from "./scheduled";
 import { syncFromChain } from "./holders";
+import { fetchAndStore as fetchCarbonPrice, getLatest as getLatestCarbonPrice } from "./carbonPrice";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -25,9 +26,20 @@ const ADMIN_ORIGINS = new Set([
   "https://admin-testnet.ccmnetwork.net",
   "http://localhost:5173", // local dev
 ]);
+// Public-read endpoints (e.g. /api/carbon-price) are accessible to all
+// CCM web properties, not just the auth/admin domains.
+const PUBLIC_ORIGINS = new Set([
+  "https://ccmnetwork.net",
+  "https://www.ccmnetwork.net",
+  "https://testnet.ccmnetwork.net",
+]);
 
 app.use("*", async (c, next) => {
-  const allowed = new Set([...PORTAL_ORIGINS(c.env.ALLOWED_ORIGIN), ...ADMIN_ORIGINS]);
+  const allowed = new Set([
+    ...PORTAL_ORIGINS(c.env.ALLOWED_ORIGIN),
+    ...ADMIN_ORIGINS,
+    ...PUBLIC_ORIGINS,
+  ]);
   const corsMw = cors({
     origin: (origin) => (origin && allowed.has(origin) ? origin : null),
     credentials: true,
@@ -38,6 +50,15 @@ app.use("*", async (c, next) => {
 });
 
 app.get("/health", (c) => c.json({ ok: true, service: "ccm-portal-api" }));
+
+// Public carbon-credit reference price feed. Single source of truth used by
+// ccmnetwork.net, testnet, portal, admin. No auth, 5-min edge cache.
+app.get("/api/carbon-price", async (c) => {
+  const result = await getLatestCarbonPrice(c.env);
+  c.header("Cache-Control", "public, max-age=300, stale-while-revalidate=600");
+  return c.json(result, result.ok ? 200 : 503);
+});
+
 app.route("/api/auth", authRoutes);
 app.route("/api/me", meRoutes);
 app.route("/api/me/email", emailRoutes);
@@ -53,6 +74,7 @@ export default {
       Promise.all([
         runScheduled(env),
         syncFromChain(env, now),
+        fetchCarbonPrice(env),
       ]),
     );
   },

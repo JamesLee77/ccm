@@ -128,6 +128,13 @@ adminRoutes.post("/sync", async (c) => {
 // Recent sync run log
 //   GET /api/admin/sync/runs?limit=20
 // ============================================================================
+adminRoutes.post("/carbon-price/refresh", async (c) => {
+  const { fetchAndStore } = await import("./carbonPrice");
+  const result = await fetchAndStore(c.env);
+  if (!result) return c.json({ ok: false, error: "fetch_failed_see_logs" }, 502);
+  return c.json({ ok: true, ...result });
+});
+
 adminRoutes.get("/sync/runs", async (c) => {
   const limit = Math.min(Math.max(parseInt(c.req.query("limit") ?? "20"), 1), 200);
   const runs = await listSyncRuns(c.env.DB, limit);

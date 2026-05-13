@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Wordmark from "../brand/Wordmark";
 import ThemeToggle from "./ThemeToggle";
+import CarbonPriceBadge from "../marketing/CarbonPriceBadge";
 
 type NavItem = {
   id: string;
@@ -113,6 +114,7 @@ export default function SiteNav() {
             {t(APP_ITEM.id)}
           </a>
 
+          <span className="hidden md:inline-flex"><CarbonPriceBadge /></span>
           <ThemeToggle />
 
           {/* Mobile hamburger (< md) */}

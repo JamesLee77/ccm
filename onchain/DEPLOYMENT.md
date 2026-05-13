@@ -155,6 +155,11 @@ callout).
 - NodeRegistry is open — anyone can `register(label, endpoint)`. Pre-seeded
   with the deployer's own registration (label `ccmine-seed-B722`).
 
+Frontend deployed 2026-05-13: testnet.ccmnetwork.net production now serves
+the 7-component visualization layer (HeroBanner + LiveNetworkState +
+MiningNetworkViz + OracleConsensusPanel + YieldCurvePanel + ActivityFeed
++ NodeRegistrationCallout) above the existing 4-step playground.
+
 ### Notes
 
 - Same script as czero proven on its CZM testnet (deploy-presale.ts) but

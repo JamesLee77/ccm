@@ -59,6 +59,7 @@ app.get("/api/carbon-price", async (c) => {
   return c.json(result, result.ok ? 200 : 503);
 });
 
+
 app.route("/api/auth", authRoutes);
 app.route("/api/me", meRoutes);
 app.route("/api/me/email", emailRoutes);

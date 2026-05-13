@@ -85,6 +85,17 @@ export async function fetchAndStore(env: Env): Promise<{ price_usd: number; fetc
     .bind(SOURCE_ID, price_usd, null, source_last_updated_at, fetched_at, JSON.stringify(payload))
     .run();
 
+  // Best-effort on-chain push. Failures are non-fatal — the off-chain
+  // D1 row is the primary record; on-chain is for downstream contracts.
+  if (env.CARBON_KEEPER_PRIVATE_KEY && env.CARBON_ORACLE_ADDRESS) {
+    try {
+      const { pushPriceOnChain } = await import("./carbonOracleChain");
+      await pushPriceOnChain(env, price_usd, SOURCE_ID);
+    } catch (e) {
+      console.error("carbonPrice: on-chain push failed (non-fatal)", e instanceof Error ? e.message : String(e));
+    }
+  }
+
   return { price_usd, fetched_at };
 }
 

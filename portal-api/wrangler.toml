@@ -21,6 +21,11 @@ APP_BASE_URL = "https://portal.ccmnetwork.net"
 API_BASE_URL = "https://ccm-portal-api.misterylee.workers.dev"
 RESEND_FROM = "CCM Portal <onboarding@resend.dev>"  # TODO: replace with real ccmnetwork sender once domain is verified
 
+# CarbonPriceOracle (Sepolia rehearsal stack) — keeper Worker pushes hourly price on-chain.
+# Keeper private key is a Worker secret: CARBON_KEEPER_PRIVATE_KEY.
+CARBON_ORACLE_ADDRESS = "0xF75cAf1ED356158C6FEF1D9DB00048197431FB60"
+CARBON_ORACLE_RPC = "https://sepolia.base.org"
+
 [[d1_databases]]
 binding = "DB"
 database_name = "ccm-portal-db"

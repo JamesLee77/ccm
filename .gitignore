@@ -20,3 +20,7 @@ docs/design/design_handoff_ccm_network/
 .phase2-rehearsal-keys.json
 .phase2-rehearsal-state.json
 onchain/scripts/_phase2-*.ts
+
+# Carbon oracle keeper wallet (Sepolia hot key for Worker — rotate periodically)
+.carbon-oracle-keeper.json
+onchain/scripts/_carbon-*.ts

@@ -1,1 +1,17 @@
 .DS_Store
+
+# Environment variables — ROOT secrets (PRIVATE_KEY, MAINNET_PRIVATE_KEY, RESEND_KEY etc.)
+.env
+.env.*
+!.env.example
+
+# Cloudflare wrangler local state
+.wrangler/
+
+# Spurious root package-lock (no root package.json — this should be deleted, not committed)
+/package-lock.json
+
+# Sensitive / unreviewed design assets — left untracked for explicit operator decision
+# (Korean legal agreement drafts, source design archive)
+docs/design/ccm.zip
+docs/design/design_handoff_ccm_network/

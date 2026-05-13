@@ -45,16 +45,15 @@ async function loadMints(): Promise<Row[]> {
     b.blockNumber! > a.blockNumber! ? 1 : b.blockNumber! < a.blockNumber! ? -1 : 0,
   );
   const top = logs.slice(0, MAX_ROWS);
-
-  // Resolve block timestamps in parallel (small N).
-  const blocks = await Promise.all(
-    top.map((l) => publicClient.getBlock({ blockNumber: l.blockNumber! })),
-  );
-
-  return top.map((l, i) => {
+  // Approximate timestamps from block height (Base Sepolia ~2 s/block) so we
+  // don't fan out N parallel eth_getBlockByNumber calls (public RPC rate-
+  // limits them and Promise.all would reject the whole loader on one fail).
+  const nowSec = Math.floor(Date.now() / 1000);
+  return top.map((l) => {
     const args = (l as unknown as {
       args: { to: Address; id: bigint; grade: number; vintage: number; tonnage: bigint };
     }).args;
+    const blocksAgo = Number(to - l.blockNumber!);
     return {
       blockNumber: l.blockNumber!,
       txHash: l.transactionHash!,
@@ -63,7 +62,7 @@ async function loadMints(): Promise<Row[]> {
       grade: Number(args.grade),
       vintage: Number(args.vintage),
       tonnage: args.tonnage,
-      timestamp: Number(blocks[i].timestamp),
+      timestamp: nowSec - blocksAgo * 2,
     };
   });
 }

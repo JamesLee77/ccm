@@ -81,8 +81,14 @@ async function loadFeed(): Promise<FeedRow[]> {
   }
   pending.sort((a, b) => (b.block > a.block ? 1 : b.block < a.block ? -1 : 0));
   const top = pending.slice(0, MAX_LOAD);
-  const blocks = await Promise.all(top.map((p) => publicClient.getBlock({ blockNumber: p.block })));
-  return top.map((p, i) => ({ ...p.row, timestamp: Number(blocks[i].timestamp) }));
+  // Approximate timestamps from block height (Base Sepolia ~2 s/block) — see
+  // OraclePriceHistory for the rationale. Avoids fan-out of N parallel
+  // eth_getBlockByNumber that public RPC rate-limits.
+  const nowSec = Math.floor(Date.now() / 1000);
+  return top.map((p) => {
+    const blocksAgo = Number(to - p.block);
+    return { ...p.row, timestamp: nowSec - blocksAgo * 2 };
+  });
 }
 
 // --- Chart -----------------------------------------------------------------

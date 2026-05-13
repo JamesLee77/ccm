@@ -1,41 +1,39 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { createPublicClient, http, parseAbiItem } from "viem";
-import { baseSepolia } from "viem/chains";
-import { useAccount, useReadContract } from "wagmi";
 import { SANDBOX, CCMSandboxNFTAbi } from "../../lib/contracts";
+import { useAccount, useReadContract } from "wagmi";
+import { publicClient, transferSingleEvent, SCAN_WINDOW } from "../../lib/onchain";
 
-const transferSingleEvent = parseAbiItem(
-  "event TransferSingle(address indexed operator, address indexed from, address indexed to, uint256 id, uint256 value)",
-);
+// Base Sepolia public RPC caps eth_getLogs at 2000 blocks per query, so we
+// can only show NFTs minted in the last ~1.1h here. The user's full
+// inventory remains queryable via balanceOf — this list is just the
+// recently-minted batches discoverable without an indexer.
 
 export default function NFTInventory() {
   const { t } = useTranslation();
   const { address } = useAccount();
   const [ids, setIds] = useState<bigint[]>([]);
 
-  // Discover user's NFT ids via TransferSingle logs (from=0 → to=user).
-  // For testnet UX, scan from a recent block. The sandbox was deployed
-  // around block ~22000000 on Sepolia. Adjust if too slow.
   useEffect(() => {
     if (!address) { setIds([]); return; }
     let cancelled = false;
     (async () => {
-      const client = createPublicClient({ chain: baseSepolia, transport: http(
-        import.meta.env.VITE_BASE_SEPOLIA_RPC || "https://sepolia.base.org"
-      ) });
-      const latest = await client.getBlockNumber();
-      const fromBlock = latest > 1_000_000n ? latest - 100_000n : 0n; // last ~100k blocks ≈ 2 days
-      const logs = await client.getLogs({
-        address: SANDBOX.ccmSandboxNFT,
-        event: transferSingleEvent,
-        args: { to: address },
-        fromBlock,
-        toBlock: latest,
-      });
-      if (cancelled) return;
-      const uniq = Array.from(new Set(logs.map((l) => l.args.id!)));
-      setIds(uniq);
+      try {
+        const latest = await publicClient.getBlockNumber();
+        const fromBlock = latest > SCAN_WINDOW ? latest - SCAN_WINDOW : 0n;
+        const logs = await publicClient.getLogs({
+          address: SANDBOX.ccmSandboxNFT,
+          event: transferSingleEvent,
+          args: { to: address },
+          fromBlock,
+          toBlock: latest,
+        });
+        if (cancelled) return;
+        const uniq = Array.from(new Set(logs.map((l) => l.args.id!)));
+        setIds(uniq);
+      } catch (e) {
+        console.warn("NFTInventory getLogs:", e);
+      }
     })();
     return () => { cancelled = true; };
   }, [address]);

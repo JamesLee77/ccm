@@ -59,18 +59,20 @@ async function loadHistory(): Promise<Row[]> {
     b.blockNumber! > a.blockNumber! ? 1 : b.blockNumber! < a.blockNumber! ? -1 : 0,
   );
   const top = flat.slice(0, MAX_LOAD);
-  const blocks = await Promise.all(
-    top.map((l) => publicClient.getBlock({ blockNumber: l.blockNumber! })),
-  );
-  return top.map((l, i) => {
+  // Approximate timestamps from block height (Base Sepolia ~2 s/block) so we
+  // don't fan out N parallel eth_getBlockByNumber calls — the public RPC
+  // rate-limits those and a single failure rejects the whole loader.
+  const nowSec = Math.floor(Date.now() / 1000);
+  return top.map((l) => {
     const args = (l as unknown as { args: { oldPrice: bigint; newPrice: bigint } }).args;
+    const blocksAgo = Number(to - l.blockNumber!);
     return {
       blockNumber: l.blockNumber!,
       txHash: l.transactionHash!,
       oracleAddr: l.address as Address,
       oldPrice: args.oldPrice,
       newPrice: args.newPrice,
-      timestamp: Number(blocks[i].timestamp),
+      timestamp: nowSec - blocksAgo * 2,
     };
   });
 }

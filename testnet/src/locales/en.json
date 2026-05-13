@@ -67,6 +67,22 @@
       "unstakeAmount": "Unstake amount",
       "poolExhausted": "Pool exhausted. Operator must refill."
     },
+    "step5": {
+      "title": "Swap CCM ⇄ sUSDC",
+      "subtitle": "A Uniswap V3 0.3% pool on Base Sepolia seeded at $0.20 per CCM. Swap your CCM for sandbox USDC or vice versa. Sandbox USDC is freely faucetable (100 sUSDC/hour). Real on-chain swaps — slippage and price discovery as on mainnet.",
+      "from": "From",
+      "to": "To",
+      "amountIn": "Amount in",
+      "estimatedOut": "Estimated out",
+      "swap": "Swap",
+      "approve": "Approve",
+      "flip": "Flip direction",
+      "balance": "Balance",
+      "faucet": "Faucet 100 sUSDC",
+      "faucetCooldown": "Next faucet in {{time}}",
+      "noQuote": "—",
+      "slippage": "Min received (0.5% slippage)"
+    },
     "tryMore": {
       "title": "Try more (coming soon)",
       "lending": "Lending — borrow USDC against NFT",

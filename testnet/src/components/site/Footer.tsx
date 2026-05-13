@@ -24,6 +24,8 @@ export default function Footer() {
         <li>Oracle-C: <a href={`${EXPLORER}/address/${SANDBOX.oracleC}`} target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>{SANDBOX.oracleC}</a></li>
         <li>MedianAggregator: <a href={`${EXPLORER}/address/${SANDBOX.medianAggregator}`} target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>{SANDBOX.medianAggregator}</a></li>
         <li>NodeRegistry: <a href={`${EXPLORER}/address/${SANDBOX.nodeRegistry}`} target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>{SANDBOX.nodeRegistry}</a></li>
+        <li>MockSandboxUSDC (sUSDC): <a href={`${EXPLORER}/address/${SANDBOX.mockSandboxUSDC}`} target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>{SANDBOX.mockSandboxUSDC}</a></li>
+        <li>Uniswap V3 CCM/sUSDC pool: <a href={`${EXPLORER}/address/${SANDBOX.uniV3PoolCcmUsdc}`} target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>{SANDBOX.uniV3PoolCcmUsdc}</a></li>
       </ul>
       <div style={{ marginTop: 24, display: "flex", gap: 20 }}>
         <a href="https://portal.ccmnetwork.net" target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>{t("footer.mainnet")}</a>

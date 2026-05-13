@@ -24,3 +24,7 @@ onchain/scripts/_phase2-*.ts
 # Carbon oracle keeper wallet (Sepolia hot key for Worker — rotate periodically)
 .carbon-oracle-keeper.json
 onchain/scripts/_carbon-*.ts
+
+# DEX seeding throwaway scripts (Sepolia Uniswap V3 setup)
+onchain/scripts/_dex-*.ts
+.dex-rehearsal-state.json

@@ -2,12 +2,14 @@ import type { ReactNode } from "react";
 
 export default function StepCard({
   step,
+  totalSteps = 5,
   title,
   subtitle,
   status,
   children,
 }: {
   step: number;
+  totalSteps?: number;
   title: string;
   subtitle?: string;
   status?: ReactNode;
@@ -28,7 +30,7 @@ export default function StepCard({
             fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase",
             color: "var(--ink-soft)",
           }}>
-            Step {step} / 4
+            Step {step} / {totalSteps}
           </span>
           <h2 style={{ fontSize: 22, fontWeight: 600, margin: 0 }}>{title}</h2>
         </div>

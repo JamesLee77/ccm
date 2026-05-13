@@ -7,6 +7,7 @@ import NFTInventory from "../components/playground/NFTInventory";
 import WrapForm from "../components/playground/WrapForm";
 import StakeForm from "../components/playground/StakeForm";
 import RewardPanel from "../components/playground/RewardPanel";
+import SwapForm from "../components/playground/SwapForm";
 import TryMoreGrid from "../components/playground/TryMoreGrid";
 import NodeRegistrationCallout from "../components/playground/NodeRegistrationCallout";
 import HeroBanner from "../components/marketing/HeroBanner";
@@ -68,6 +69,9 @@ export default function Playground() {
       </StepCard>
       <StepCard step={4} title={t("step4.title")} subtitle={t("step4.subtitle")}>
         <RewardPanel />
+      </StepCard>
+      <StepCard step={5} title={t("step5.title")} subtitle={t("step5.subtitle")}>
+        <SwapForm />
       </StepCard>
       <TryMoreGrid />
     </TestnetLayout>

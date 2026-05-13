@@ -2,9 +2,17 @@
   "translation": {
     "nav": { "title": "CCM testnet" },
     "hero": {
-      "headline": "Try CCM Network on Base Sepolia.",
-      "lead": "CCM Network is a carbon credit economy on Base. This playground walks you through the full lifecycle in about five minutes — mint a carbon credit NFT, wrap it into the CCM token, stake CCM to earn yield from a 5M-token reward pool, and claim your rewards. Everything runs on Base Sepolia testnet, so tokens have no real value, but the mechanics mirror the live mainnet contracts.",
-      "warning": "⚠ Base Sepolia testnet — tokens have no real value."
+      "kicker": "CCM Foundation · Testnet · May 2026",
+      "headline": "the testnet,",
+      "headlineAccent": "running live.",
+      "lead": "CCM Network is a carbon credit economy on Base. This page shows the entire sandbox operating in real time on Base Sepolia — open node registry, multi-oracle price consensus, NFT mints flowing into the on-chain vault, CCM staked into a finite reward pool. Every number below is fetched from the chain, not simulated.",
+      "warning": "⚠ Base Sepolia testnet — tokens have no real value.",
+      "cumulative": "CCM Network · cumulative",
+      "minted": "CCM minted",
+      "retired": "CCM staked",
+      "liveReadout": "Sandbox · live readout",
+      "rate": "Current yield rate",
+      "ratePerMonth": "/mo"
     },
     "needs": {
       "title": "What you'll need",

@@ -73,11 +73,14 @@ export default {
   fetch: app.fetch,
   async scheduled(_controller: ScheduledController, env: Env, ctx: ExecutionContext) {
     const now = Math.floor(Date.now() / 1000);
+    // Each cron task is wrapped in its own .catch so a transient failure in
+    // one (e.g. mainnet RPC rate-limit on the vesting notifier) cannot
+    // short-circuit the others (e.g. the Sepolia oracle/mint keeper).
     ctx.waitUntil(
       Promise.all([
-        runScheduled(env),
-        syncFromChain(env, now),
-        fetchCarbonPrice(env),
+        runScheduled(env).catch((e) => console.error("scheduled:", e)),
+        syncFromChain(env, now).catch((e) => console.error("syncFromChain:", e)),
+        fetchCarbonPrice(env).catch((e) => console.error("carbonPrice:", e)),
         runSandboxMint(env).catch((e) => console.error("sandboxMint:", e)),
         runOracleUpdate(env).catch((e) => console.error("oracleUpdate:", e)),
       ]),

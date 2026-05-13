@@ -31,6 +31,13 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       chainId: 31337,
+      // Interval mining ensures tx.wait(2) resolves in dry-run / fork scripts.
+      // Auto-mine is also on so each tx gets its own block; the 1000ms interval
+      // then mines the 2nd confirmation block without requiring another tx.
+      mining: {
+        auto: true,
+        interval: 1000,
+      },
     },
     baseSepolia: {
       url: BASE_SEPOLIA_RPC,

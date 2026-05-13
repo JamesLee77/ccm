@@ -1,7 +1,11 @@
 /**
- * One-off: seed the OraclePriceHistory timeline by triggering the first
- * round of setPrice() walks on the 4 keeper-owned oracles right away.
- * Mirrors portal-api/src/oracleUpdate.ts (±2%, clamped $0.15-$0.25).
+ * One-off: seed the OraclePriceHistory timeline by triggering setPrice()
+ * walks on the 4 keeper-owned oracles right away. Mirrors
+ * portal-api/src/oracleUpdate.ts (per-index profile + mean reversion).
+ *
+ * Set ITER=N to run multiple ticks in a row (default 1). Useful for
+ * fast-forwarding the prices toward their anchors so the 4 chart lines
+ * visibly separate without waiting hours of cron ticks.
  */
 import { ethers } from "ethers";
 import * as dotenv from "dotenv";
@@ -26,11 +30,21 @@ const ABI = [
 
 const MIN = ethers.parseUnits("0.15", 18);
 const MAX = ethers.parseUnits("0.25", 18);
-const DELTA_BPS = 200n;
 
-function nextPrice(cur: bigint): bigint {
-  const delta = BigInt(Math.floor(Math.random() * Number(DELTA_BPS * 2n + 1n))) - DELTA_BPS;
-  let n = cur + (cur * delta) / 10000n;
+// Must mirror PROFILES in portal-api/src/oracleUpdate.ts (same index order).
+type Profile = { label: string; anchor: bigint; volBps: number; dragBps: number };
+const PROFILES: Profile[] = [
+  { label: "A", anchor: ethers.parseUnits("0.18", 18), volBps: 200, dragBps: 2000 },
+  { label: "B", anchor: ethers.parseUnits("0.22", 18), volBps: 300, dragBps: 2000 },
+  { label: "C", anchor: ethers.parseUnits("0.20", 18), volBps: 400, dragBps: 2000 },
+  { label: "D", anchor: ethers.parseUnits("0.20", 18), volBps: 150, dragBps: 2000 },
+];
+
+function nextPrice(cur: bigint, p: Profile): bigint {
+  const drag = ((p.anchor - cur) * BigInt(p.dragBps)) / 10000n;
+  const zBps = BigInt(Math.floor(Math.random() * 20001) - 10000);
+  const noise = (cur * BigInt(p.volBps) * zBps) / 100_000_000n;
+  let n = cur + drag + noise;
   if (n < MIN) n = MIN;
   if (n > MAX) n = MAX;
   return n;
@@ -42,18 +56,27 @@ async function main() {
   const wallet = new ethers.Wallet(keeper.privateKey, provider);
   const net = await provider.getNetwork();
   if (net.chainId !== 84532n) throw new Error("not Sepolia");
-  console.log("Keeper:", wallet.address);
+  const iterations = Math.max(1, Number(process.env.ITER ?? "1"));
+  console.log("Keeper:", wallet.address, "· iterations:", iterations);
 
-  for (const [i, addr] of ORACLES.entries()) {
-    const label = ["A", "B", "C", "D"][i];
-    const c = new ethers.Contract(addr, ABI, wallet);
-    const cur = await c.getPrice();
-    const nxt = nextPrice(cur);
-    const tx = await c.setPrice(nxt);
-    await tx.wait(1);
-    console.log(
-      `Oracle-${label} @ ${addr}: $${ethers.formatUnits(cur, 18)} -> $${ethers.formatUnits(nxt, 18)} tx ${tx.hash}`,
-    );
+  const contracts = ORACLES.map((addr) => new ethers.Contract(addr, ABI, wallet));
+
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+  for (let iter = 0; iter < iterations; iter++) {
+    console.log(`\n=== Iteration ${iter + 1}/${iterations} ===`);
+    for (const [i, c] of contracts.entries()) {
+      const profile = PROFILES[i] ?? PROFILES[PROFILES.length - 1];
+      const cur = await c.getPrice();
+      const nxt = nextPrice(cur, profile);
+      const tx = await c.setPrice(nxt);
+      await tx.wait(1);
+      console.log(
+        `Oracle-${profile.label} @ ${ORACLES[i]}: $${ethers.formatUnits(cur, 18)} -> $${ethers.formatUnits(nxt, 18)} tx ${tx.hash}`,
+      );
+      await sleep(1500);
+    }
+    if (iter + 1 < iterations) await sleep(3000);
   }
 }
 

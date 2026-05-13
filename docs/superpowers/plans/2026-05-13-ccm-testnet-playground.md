@@ -1972,8 +1972,17 @@ export default function WrapForm() {
   const { isSuccess: wrapOk, isLoading: wrapConfirm } = useWaitForTransactionReceipt({ hash: wrapHash });
 
   // After approval mines, refetch
-  if (approveOk) void refetchApproval();
-  if (wrapOk) { void refetchCcm(); }
+  useEffect(() => {
+    if (approveOk) void refetchApproval();
+  }, [approveOk, refetchApproval]);
+
+  // After wrap mines, refetch CCM balance and reset selection
+  useEffect(() => {
+    if (wrapOk) {
+      void refetchCcm();
+      setSelected(new Set());
+    }
+  }, [wrapOk, refetchCcm]);
 
   function toggle(id: string) {
     setSelected(prev => {

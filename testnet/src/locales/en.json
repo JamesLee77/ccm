@@ -109,6 +109,18 @@
       "price": "Price factor",
       "perMonth": "/mo"
     },
+    "feed": {
+      "title": "Live · Activity",
+      "subtitle": "Last 10 on-chain events across mints, wraps, stakes, claims, and node registrations.",
+      "empty": "Waiting for first activity…",
+      "mint": "Mint",
+      "wrap": "Wrap",
+      "stake": "Stake",
+      "claim": "Claim",
+      "unstake": "Unstake",
+      "register": "Node",
+      "tx": "tx"
+    },
     "errors": {
       "rpcRetry": "Network error, retrying…",
       "userRejected": "Transaction cancelled.",

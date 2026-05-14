@@ -75,14 +75,19 @@ export default {
     const now = Math.floor(Date.now() / 1000);
     // Each cron task is wrapped in its own .catch so a transient failure in
     // one (e.g. mainnet RPC rate-limit on the vesting notifier) cannot
-    // short-circuit the others (e.g. the Sepolia oracle/mint keeper).
+    // short-circuit the others. Tasks that don't sign on-chain txs run in
+    // parallel; tasks that share the Sepolia keeper wallet are serialized
+    // below so they don't fight over the same nonce.
+    const keeperChain = (async () => {
+      await fetchCarbonPrice(env).catch((e) => console.error("carbonPrice:", e));
+      await runOracleUpdate(env).catch((e) => console.error("oracleUpdate:", e));
+      await runSandboxMint(env).catch((e) => console.error("sandboxMint:", e));
+    })();
     ctx.waitUntil(
       Promise.all([
         runScheduled(env).catch((e) => console.error("scheduled:", e)),
         syncFromChain(env, now).catch((e) => console.error("syncFromChain:", e)),
-        fetchCarbonPrice(env).catch((e) => console.error("carbonPrice:", e)),
-        runSandboxMint(env).catch((e) => console.error("sandboxMint:", e)),
-        runOracleUpdate(env).catch((e) => console.error("oracleUpdate:", e)),
+        keeperChain,
       ]),
     );
   },

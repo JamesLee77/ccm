@@ -31,6 +31,7 @@ import {
   type Hex,
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
+import { nonceManager } from "viem/nonce";
 import { baseSepolia } from "viem/chains";
 import type { Env } from "./types";
 
@@ -90,7 +91,12 @@ export async function runOracleUpdate(env: Env): Promise<Hex[]> {
   const keeperKey = env.CARBON_KEEPER_PRIVATE_KEY.startsWith("0x")
     ? (env.CARBON_KEEPER_PRIVATE_KEY as Hex)
     : (`0x${env.CARBON_KEEPER_PRIVATE_KEY}` as Hex);
-  const account = privateKeyToAccount(keeperKey);
+  // Attach viem's default nonceManager so the 4 sequential setPrice txs
+  // get strictly increasing nonces from a local counter, instead of each
+  // call re-querying eth_getTransactionCount('pending') from the public
+  // RPC (which lags and intermittently returns the same nonce twice,
+  // causing one of the 4 txs to drop as underpriced).
+  const account = privateKeyToAccount(keeperKey, { nonceManager });
   const transport = http(rpc);
   const publicClient = createPublicClient({ chain: baseSepolia, transport });
   const walletClient = createWalletClient({ account, chain: baseSepolia, transport });

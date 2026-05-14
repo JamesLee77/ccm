@@ -8,6 +8,7 @@
  */
 import { createWalletClient, http, parseUnits, type Address, type Hex } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
+import { nonceManager } from "viem/nonce";
 import { baseSepolia } from "viem/chains";
 import type { Env } from "./types";
 
@@ -44,7 +45,8 @@ export async function pushPriceOnChain(env: Env, priceUsd: number, source: strin
     ? (env.CARBON_KEEPER_PRIVATE_KEY as Hex)
     : (`0x${env.CARBON_KEEPER_PRIVATE_KEY}` as Hex);
 
-  const account = privateKeyToAccount(keeperKey);
+  // Shared nonceManager singleton — see oracleUpdate.ts for the full reason.
+  const account = privateKeyToAccount(keeperKey, { nonceManager });
   const client = createWalletClient({
     account,
     chain: baseSepolia,

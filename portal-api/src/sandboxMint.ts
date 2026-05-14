@@ -19,6 +19,7 @@ import {
   type Hex,
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
+import { nonceManager } from "viem/nonce";
 import { baseSepolia } from "viem/chains";
 import type { Env } from "./types";
 
@@ -74,7 +75,10 @@ export async function runSandboxMint(env: Env): Promise<Hex | null> {
     ? (env.CARBON_KEEPER_PRIVATE_KEY as Hex)
     : (`0x${env.CARBON_KEEPER_PRIVATE_KEY}` as Hex);
 
-  const account = privateKeyToAccount(keeperKey);
+  // Shared nonceManager singleton — across keeper modules within one Worker
+  // invocation, this maintains a sequential nonce counter that doesn't rely
+  // on the public RPC reflecting freshly-submitted txs in its pending pool.
+  const account = privateKeyToAccount(keeperKey, { nonceManager });
   const transport = http(rpc);
   const publicClient = createPublicClient({ chain: baseSepolia, transport });
 

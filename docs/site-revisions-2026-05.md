@@ -3,6 +3,25 @@
 Working log of revisions to the marketing/spec site at **ccmnetwork.net**.
 Project (Cloudflare Pages): `ccm-site` (not `ccmnetwork`).
 
+> ⚠ **Snapshot of 2026-05-09 state.** Several sections below predate
+> later restructures and no longer match the live site. Notable drift:
+>
+> - **§1 Top navigation** — the 5-item nav (CCMine · Tokenomics ·
+>   Roadmap · DeFi · Whitepaper) was consolidated and AnchorNav
+>   removed (commit `bf40f4b`). The `Markets.tsx`, `Tokenomics.tsx`,
+>   `Roadmap.tsx`, `Ccmine.tsx` page files were deleted; legacy
+>   routes redirect to home anchors. Today the home page (`Earth`) is
+>   a single long-scroll spec; the dedicated routes are `/whitepaper`,
+>   `/defi`, `/terms`, `/privacy`, `/disclaimer`.
+> - **§5 Footer**, **§6 Mobile responsive fixes**, **§7 GitHub
+>   removal** — directionally accurate but components have evolved.
+>
+> Treat sections §2 (Whitepaper rebuild), §3 (DeFi rebuild), and §4
+> (Home section changes) as historical context for those rebuilds —
+> they describe the work that landed but not necessarily the current
+> state. Use the actual source under `frontend/src/` for ground
+> truth.
+
 This document records what was changed, why, and what remains as
 placeholder pending the official ccmnetwork email / GitHub setup.
 

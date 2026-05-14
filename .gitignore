@@ -28,3 +28,8 @@ onchain/scripts/_carbon-*.ts
 # DEX seeding throwaway scripts (Sepolia Uniswap V3 setup)
 onchain/scripts/_dex-*.ts
 .dex-rehearsal-state.json
+
+# Monthly audit log CSV exports — contain wallet addresses and operator
+# notes that may include investor PII (wire references, KRW amounts).
+# Operator manually pushes these to R2 / cold storage off-tree.
+audit-log/

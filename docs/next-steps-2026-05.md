@@ -132,6 +132,39 @@ boundary.
 
 ## 4. Operations
 
+### 4.0 Testnet keeper Worker — STABLE (hardening landed 2026-05-14)
+
+`portal-api`'s `*/30 * * * *` cron drives the live testnet experience:
+- `runOracleUpdate` — pushes a fresh CCM/USD price from each of the 4
+  MockPriceOracles (drives `testnet.ccmnetwork.net` Oracle Price
+  History viz + the staking yield-decay calc on Sepolia).
+- `runSandboxMint` — mints one keeper-owned carbon-credit NFT per tick
+  so the mining timeline keeps producing records.
+- `fetchAndStore` → `pushPriceOnChain` — DefiLlama BCT price logged to
+  D1 (`carbon_price_log`) + pushed on-chain to `CarbonPriceOracle`.
+
+All three share the single Sepolia keeper wallet, so two reliability
+fixes landed back-to-back:
+
+- **`604e846`** — serialize the three keeper modules in
+  `scheduled()`. Pre-fix `Promise.all` ran them in parallel and each
+  module's writeContract independently grabbed
+  `eth_getTransactionCount('pending')`, racing → "replacement
+  transaction underpriced" on the loser. Non-keeper tasks
+  (`runScheduled`, `syncFromChain`) still run in parallel.
+- **`c507069`** — attach viem's default `nonceManager` singleton to
+  the keeper account in all three modules. Even after serialization,
+  per-tick logs showed intermittent oracle misses (A or D
+  occasionally dropped) — the public RPC's pending-pool indexing lags
+  enough that two sequential `getTransactionCount` calls return the
+  same number. `nonceManager` increments locally instead, with a
+  self-healing RPC refetch on nonce-mismatch errors.
+
+**Acceptance check**: every 30-min tick should produce 6 successful
+txs (1 carbonPrice push + 4 oracles + 1 mint when off cooldown). Run
+`onchain/scripts/_e2e-cron-test-*` or scan `PriceUpdated` /
+`Minted` events on Sepolia for the latest 1999-block window.
+
 ### 4.1 Email notifications — READY
 
 `portal-api/types.ts` already declares `NotificationKind = "cliff_7d" | "cliff_1d" | "claim_ready"`. Implementation pending:
@@ -146,16 +179,26 @@ boundary.
 single notification. Idempotent (no duplicate notifications across
 cron runs).
 
-### 4.2 Audit log retention & export — READY (small)
+### 4.2 Audit log retention & export — PARTIAL (script landed 2026-05-14)
 
-`admin_audit_log` is unbounded. Add:
-- Monthly CSV export script (`onchain/scripts/_export-audit.ts` →
-  `audit-log/YYYY-MM.csv`).
+`admin_audit_log` is unbounded. Plan was:
+- ~~Monthly CSV export script (`onchain/scripts/_export-audit.ts` →
+  `audit-log/YYYY-MM.csv`)~~ — **done**, commit `8905b9b`.
+  Idempotent (deterministic CSV escaping, rows sorted by id), supports
+  `--month=YYYY-MM`, `--db=`, `--local` flags. Verified against the
+  2026-05 dataset (17 rows, multi-line notes escaped correctly).
 - Retention policy: keep all rows in D1 for 7 years (matches Privacy
-  policy retention), CSV-archive older to R2.
+  policy retention), CSV-archive older to R2 — **operator workflow
+  pending**. The script writes to `audit-log/` (gitignored — PII in
+  notes). Operator manually pushes each quarter's exports to R2 cold
+  storage.
 
-**Acceptance**: a Cron job runs the export quarterly; the script is
-idempotent and supports point-in-time queries for compliance asks.
+**Still TODO**:
+- Stand up the R2 bucket + IAM (operator decision: dedicated R2
+  bucket vs reuse `ccm-public-assets`).
+- Optionally wire the script into a quarterly Cron Worker or GitHub
+  Action so operators don't forget. Manual invocation is fine until
+  the team grows past a single operator.
 
 ### 4.3 Multi-operator onboarding — READY
 

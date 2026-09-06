@@ -4,12 +4,10 @@ import TestnetBanner from "./TestnetBanner";
 
 export default function TestnetLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    <div className="min-h-screen flex flex-col bg-paper text-ink">
       <Nav />
       <TestnetBanner />
-      <div className="r-content">
-        {children}
-      </div>
+      <main className="flex-1">{children}</main>
       <Footer />
     </div>
   );

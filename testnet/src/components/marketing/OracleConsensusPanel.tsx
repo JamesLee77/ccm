@@ -40,7 +40,7 @@ export default function OracleConsensusPanel() {
             <div style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--ink-soft)" }}>
               {t("oracle.source")} {label}
             </div>
-            <div style={{ fontSize: 24, fontFamily: "JetBrains Mono, ui-monospace, monospace", letterSpacing: "-0.01em", marginTop: 6 }}>
+            <div style={{ fontSize: 24, fontFamily: "Space Grotesk, system-ui, sans-serif", fontWeight: 500, letterSpacing: "-0.01em", marginTop: 6 }}>
               {fmtUsd(prices[i] as bigint | undefined)}
             </div>
           </div>
@@ -49,7 +49,7 @@ export default function OracleConsensusPanel() {
           <div style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--moss)" }}>
             {t("oracle.median")}
           </div>
-          <div style={{ fontSize: 32, fontFamily: "JetBrains Mono, ui-monospace, monospace", letterSpacing: "-0.01em", color: "var(--moss)", marginTop: 6 }}>
+          <div style={{ fontSize: 32, fontFamily: "Space Grotesk, system-ui, sans-serif", fontWeight: 500, letterSpacing: "-0.01em", color: "var(--moss)", marginTop: 6 }}>
             {fmtUsd(median as bigint | undefined)}
           </div>
         </div>

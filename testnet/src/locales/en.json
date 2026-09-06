@@ -1,6 +1,9 @@
 {
   "translation": {
-    "nav": { "title": "CCM testnet" },
+    "nav": {
+      "title": "CCM testnet",
+      "site": "ccmnetwork.net ↗"
+    },
     "anchorNav": {
       "network": "Network",
       "oracle": "Oracle",
@@ -19,7 +22,9 @@
       "retired": "CCM staked",
       "liveReadout": "Sandbox · live readout",
       "rate": "Current yield rate",
-      "ratePerMonth": "/mo"
+      "ratePerMonth": "/mo",
+      "ctaPlay": "Try the playground ↓",
+      "ctaProtocol": "Read the protocol ↗"
     },
     "needs": {
       "title": "What you'll need",
@@ -37,7 +42,11 @@
     "step1": {
       "title": "Mine a Carbon Credit",
       "subtitle": "Mint an ERC-1155 NFT that represents a tonne of CO₂ offset. Pick the grade (A is highest quality), vintage year, and tonnage. The mint contract limits you to one NFT per address every 5 minutes to keep things fair.",
-      "labels": { "grade": "Grade", "vintage": "Vintage", "tonnage": "Tonnage (t)" },
+      "labels": {
+        "grade": "Grade",
+        "vintage": "Vintage",
+        "tonnage": "Tonnage (t)"
+      },
       "mine": "Mine",
       "cooldown": "Mine again in {{time}}",
       "inventory": "Your NFTs",
@@ -180,6 +189,41 @@
       "txReverted": "Transaction reverted",
       "txPending": "Transaction pending…",
       "txMined": "Transaction confirmed"
+    },
+    "chapters": {
+      "vision": {
+        "label": "testnet"
+      },
+      "network": {
+        "label": "network",
+        "pre": "Nodes mint,",
+        "em": "the chain records.",
+        "lead": "Registered CCMine nodes mint carbon-credit batches into the sandbox NFT contract. Every counter here is read from Base Sepolia, not simulated."
+      },
+      "oracle": {
+        "label": "oracle",
+        "pre": "Four oracles,",
+        "em": "one median.",
+        "lead": "Independent price feeds publish CCM/USD every 30 minutes. A read-only aggregator takes the median, and that consensus drives the staking yield below."
+      },
+      "yield": {
+        "label": "yield",
+        "pre": "Yield that decays",
+        "em": "as the pool drains.",
+        "lead": "The reward rate starts at 10% a month with a fresh pool at $0.20 and falls with pool usage and price. The curve is computed live from the staking contract."
+      },
+      "activity": {
+        "label": "activity",
+        "pre": "Every event,",
+        "em": "as it lands.",
+        "lead": "Mints, wraps, stakes, claims and node registrations from the last scan window. Register a node of your own and it shows up here."
+      },
+      "playground": {
+        "label": "playground",
+        "pre": "Try it yourself.",
+        "em": "Five steps, one wallet.",
+        "lead": "Mine a credit, wrap it into $CCM, stake it, claim yield and swap on a real Uniswap V3 pool — all on Base Sepolia with free test tokens."
+      }
     }
   }
 }

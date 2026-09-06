@@ -7,6 +7,9 @@
 @import "@fontsource/jetbrains-mono/400.css";
 @import "@fontsource/jetbrains-mono/500.css";
 @import "@fontsource/jetbrains-mono/600.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
 
 /*
  * CCM Portal — design system inherited verbatim from ccmnetwork.net.
@@ -55,7 +58,7 @@
   --color-rule: var(--rule);
 
   --font-display: "Space Grotesk", system-ui, sans-serif;
-  --font-body: "JetBrains Mono", ui-monospace, monospace;
+  --font-body: "Inter", system-ui, sans-serif;
   --font-ui: "Space Grotesk", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
@@ -85,6 +88,12 @@ body {
   background: var(--paper);
   color: var(--ink);
   text-wrap: pretty;
+  /* Body copy is Inter (matches ccmnetwork.net); display + labels keep their faces. */
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+h1, h2, h3, .font-display {
+  font-family: "Space Grotesk", system-ui, sans-serif;
 }
 
 h1, h2, h3 {

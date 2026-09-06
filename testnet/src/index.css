@@ -7,6 +7,9 @@
 @import "@fontsource/jetbrains-mono/400.css";
 @import "@fontsource/jetbrains-mono/500.css";
 @import "@fontsource/jetbrains-mono/600.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
 
 /*
  * CCM Testnet — visual identity unified with ccmnetwork.net (paper + moss).
@@ -29,6 +32,7 @@
   --rule: #c9c5b8;
   --warn: #c8602e;
   --nav-bg: rgba(245, 243, 236, 0.92);
+  --band-deep: #ebe8de;
 
   /* Legacy testnet aliases — point old --tn-* names at the new palette so
      the existing §7.x cards inherit the unified visual without edits. */
@@ -57,6 +61,7 @@
   --rule: #1a221e;
   --warn: #e88a4e;
   --nav-bg: rgba(10, 14, 12, 0.92);
+  --band-deep: #10160f;
 
   --tn-bg: var(--paper);
   --tn-surface: var(--paper-deep);
@@ -83,7 +88,7 @@
   --color-warn: var(--warn);
 
   --font-display: "Space Grotesk", system-ui, sans-serif;
-  --font-body: "JetBrains Mono", ui-monospace, monospace;
+  --font-body: "Inter", system-ui, sans-serif;
   --font-ui: "Space Grotesk", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
@@ -110,6 +115,12 @@ body {
   background: var(--paper);
   color: var(--ink);
   text-wrap: pretty;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* Headings and big readouts stay on the display face. */
+h1, h2, h3, .font-display {
+  font-family: "Space Grotesk", system-ui, sans-serif;
 }
 
 h1, h2, h3 { text-wrap: balance; }
@@ -123,6 +134,45 @@ em.italic-moss, .italic-moss {
 button, input, select, textarea { border-radius: 0; }
 
 ::selection { background: var(--moss); color: var(--paper); }
+
+/* ─── Site chrome shared with ccmnetwork.net ─── */
+@media (min-width: 1280px) {
+  main > section,
+  footer {
+    padding-left: 104px !important;
+    padding-right: 104px !important;
+  }
+  header > div[class*="px-14"] {
+    padding-left: 104px !important;
+    padding-right: 104px !important;
+  }
+  .chapter-rail-label {
+    writing-mode: vertical-rl;
+    transform: translateY(-50%) rotate(180deg);
+    margin-left: 6px;
+    line-height: 1;
+  }
+}
+/* The testnet headline is four words; cap it below the site h1 so it stays on two lines. */
+.hero-chapter h1 {
+  font-size: clamp(56px, 7.2vw, 104px) !important;
+}
+
+@media (min-width: 1025px) {
+  .hero-chapter {
+    min-height: calc(100svh - 65px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+@media (max-width: 1024px) {
+  main > section[id] { padding: 80px 32px !important; }
+}
+@media (max-width: 640px) {
+  main > section[id] { padding: 56px 18px !important; }
+  footer { padding: 48px 18px 32px !important; }
+}
 
 /* RainbowKit ConnectButton — sharpen edges. */
 [data-rk] button { border-radius: 0 !important; }

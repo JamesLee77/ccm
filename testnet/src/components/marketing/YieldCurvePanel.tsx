@@ -55,7 +55,7 @@ export default function YieldCurvePanel() {
           <div style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--moss)" }}>
             {t("yieldCurve.current")}
           </div>
-          <div style={{ fontSize: 48, fontFamily: "JetBrains Mono, ui-monospace, monospace", letterSpacing: "-0.02em", color: "var(--moss)", marginTop: 8, lineHeight: 1 }}>
+          <div style={{ fontSize: 48, fontFamily: "Space Grotesk, system-ui, sans-serif", fontWeight: 500, letterSpacing: "-0.02em", color: "var(--moss)", marginTop: 8, lineHeight: 1 }}>
             {rateDisplay}
           </div>
           <div style={{ fontSize: 11, color: "var(--ink-soft)", marginTop: 4 }}>{t("yieldCurve.perMonth")}</div>

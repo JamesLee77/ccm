@@ -1,5 +1,9 @@
 import { useTranslation } from "react-i18next";
 import TestnetLayout from "../components/site/TestnetLayout";
+import Section, { type SectionTone } from "../components/site/Section";
+import SectionLabel from "../components/site/SectionLabel";
+import Heading from "../components/site/Heading";
+import ChapterRail from "../components/site/ChapterRail";
 import WalletStatusBar from "../components/wallet/WalletStatusBar";
 import StepCard from "../components/playground/StepCard";
 import MintForm from "../components/playground/MintForm";
@@ -19,49 +23,94 @@ import OraclePriceHistory from "../components/marketing/OraclePriceHistory";
 import YieldCurvePanel from "../components/marketing/YieldCurvePanel";
 import ActivityFeed from "../components/marketing/ActivityFeed";
 
-export default function Playground() {
+type ChapterId = "network" | "oracle" | "yield" | "activity" | "playground";
+
+const CHAPTERS: { id: ChapterId; index: string; tone: SectionTone }[] = [
+  { id: "network", index: "02", tone: "deep" },
+  { id: "oracle", index: "03", tone: "paper" },
+  { id: "yield", index: "04", tone: "deep" },
+  { id: "activity", index: "05", tone: "paper" },
+  { id: "playground", index: "06", tone: "deep" },
+];
+
+function Chapter({
+  id,
+  index,
+  tone,
+  children,
+}: {
+  id: ChapterId;
+  index: string;
+  tone: SectionTone;
+  children: React.ReactNode;
+}) {
   const { t } = useTranslation();
   return (
+    <Section id={id} tone={tone}>
+      <SectionLabel index={`§ ${index}`}>{t(`chapters.${id}.label`)}</SectionLabel>
+      <Heading pre={t(`chapters.${id}.pre`)} em={t(`chapters.${id}.em`)} maxWidth={900} className="mt-8 mb-8" />
+      <p className="font-body text-ink-soft mb-12" style={{ fontSize: 20, lineHeight: 1.5, maxWidth: 720 }}>
+        {t(`chapters.${id}.lead`)}
+      </p>
+      {children}
+    </Section>
+  );
+}
+
+export default function Playground() {
+  const { t } = useTranslation();
+  const rail = [
+    { id: "vision", label: t("chapters.vision.label") },
+    ...CHAPTERS.map((c) => ({ id: c.id, label: t(`chapters.${c.id}.label`) })),
+  ];
+  const [network, oracle, yield_, activity, playground] = CHAPTERS as [
+    (typeof CHAPTERS)[number],
+    (typeof CHAPTERS)[number],
+    (typeof CHAPTERS)[number],
+    (typeof CHAPTERS)[number],
+    (typeof CHAPTERS)[number],
+  ];
+
+  return (
     <TestnetLayout>
+      <ChapterRail items={rail} />
       <HeroBanner />
-      <div id="network" style={{ scrollMarginTop: 80 }}>
+
+      <Chapter {...network}>
         <LiveNetworkState />
         <MiningNetworkViz />
         <MiningTimeline />
-      </div>
-      <div id="oracle" style={{ scrollMarginTop: 80 }}>
+      </Chapter>
+
+      <Chapter {...oracle}>
         <OracleConsensusPanel />
         <OraclePriceHistory />
-      </div>
-      <div id="yield" style={{ scrollMarginTop: 80 }}>
+      </Chapter>
+
+      <Chapter {...yield_}>
         <YieldCurvePanel />
-      </div>
-      <div id="activity" style={{ scrollMarginTop: 80 }}>
+      </Chapter>
+
+      <Chapter {...activity}>
         <ActivityFeed />
         <NodeRegistrationCallout />
-      </div>
+      </Chapter>
 
-      <div id="playground" style={{ scrollMarginTop: 80 }}>
+      <Chapter {...playground}>
         <WalletStatusBar />
-        <section style={{
-          border: "1px solid var(--rule)",
-          background: "var(--paper-deep)",
-          padding: 20,
-          marginBottom: 32,
-          marginTop: 32,
-        }}>
-          <div style={{
-            fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase",
-            color: "var(--ink-soft)", marginBottom: 12,
-          }}>
+        <section
+          className="border border-rule"
+          style={{ background: "var(--panel, var(--paper-deep))", padding: 24, margin: "32px 0" }}
+        >
+          <div className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss mb-3">
             {t("needs.title")}
           </div>
-          <ul style={{ listStyle: "none", padding: 0, margin: 0, fontSize: 14, lineHeight: 1.7, color: "var(--ink)" }}>
+          <ul className="font-body" style={{ listStyle: "none", padding: 0, margin: 0, fontSize: 15, lineHeight: 1.7, color: "var(--ink)" }}>
             <li>· {t("needs.wallet")}</li>
             <li>· {t("needs.network")}</li>
             <li>
               · {t("needs.gas")}{" "}
-              <a href="https://portal.cdp.coinbase.com/products/faucet" target="_blank" rel="noreferrer" style={{ color: "var(--moss)" }}>
+              <a href="https://portal.cdp.coinbase.com/products/faucet" target="_blank" rel="noreferrer" className="text-moss hover:underline">
                 {t("needs.faucet")}
               </a>
               .
@@ -71,23 +120,23 @@ export default function Playground() {
         </section>
 
         <StepCard step={1} title={t("step1.title")} subtitle={t("step1.subtitle")}>
-        <MintForm />
-        <NFTInventory />
-      </StepCard>
-      <StepCard step={2} title={t("step2.title")} subtitle={t("step2.subtitle")}>
-        <WrapForm />
-      </StepCard>
-      <StepCard step={3} title={t("step3.title")} subtitle={t("step3.subtitle")}>
-        <StakeForm />
-      </StepCard>
-      <StepCard step={4} title={t("step4.title")} subtitle={t("step4.subtitle")}>
-        <RewardPanel />
-      </StepCard>
+          <MintForm />
+          <NFTInventory />
+        </StepCard>
+        <StepCard step={2} title={t("step2.title")} subtitle={t("step2.subtitle")}>
+          <WrapForm />
+        </StepCard>
+        <StepCard step={3} title={t("step3.title")} subtitle={t("step3.subtitle")}>
+          <StakeForm />
+        </StepCard>
+        <StepCard step={4} title={t("step4.title")} subtitle={t("step4.subtitle")}>
+          <RewardPanel />
+        </StepCard>
         <StepCard step={5} title={t("step5.title")} subtitle={t("step5.subtitle")}>
           <SwapForm />
         </StepCard>
         <TryMoreGrid />
-      </div>
+      </Chapter>
     </TestnetLayout>
   );
 }

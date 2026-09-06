@@ -55,7 +55,7 @@ export default function LiveNetworkState() {
       <div className="r-live5">
         {cells.map((c) => (
           <div key={c.id} style={{ background: "var(--paper-deep)", padding: "20px 24px" }}>
-            <div style={{ fontSize: 28, fontFamily: "JetBrains Mono, ui-monospace, monospace", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
+            <div style={{ fontSize: 28, fontFamily: "Space Grotesk, system-ui, sans-serif", fontWeight: 500, letterSpacing: "-0.02em", lineHeight: 1.1 }}>
               {c.value}
             </div>
             <div style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--ink-soft)", marginTop: 6 }}>

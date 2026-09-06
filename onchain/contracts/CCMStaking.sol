@@ -104,9 +104,26 @@ contract CCMStaking is AccessControl, ReentrancyGuard {
      * @notice Current monthly yield rate, in basis points.
      * @return rateBps  yield rate in basis points (1000 = 10%)
      */
+    /// @dev Oracle price, or 0 when the oracle reverts. A dead oracle must
+    ///      degrade to a 0% rate, never lock principal (review R-02).
+    function _oraclePrice() internal view returns (uint256) {
+        try priceOracle.getPrice() returns (uint256 p) {
+            return p;
+        } catch {
+            return 0;
+        }
+    }
+
+    /// @notice CCM held by this contract beyond stakers' principal — the only
+    ///         tokens rewards may ever be paid from (review R-01).
+    function availableRewards() public view returns (uint256) {
+        uint256 bal = ccm.balanceOf(address(this));
+        return bal > totalStaked ? bal - totalStaked : 0;
+    }
+
     function currentYieldRateBps() public view returns (uint256 rateBps) {
         if (poolRemaining == 0) return 0;
-        uint256 currentPrice = priceOracle.getPrice();
+        uint256 currentPrice = _oraclePrice();
         if (currentPrice == 0) return 0;
 
         // priceFactor = P0_TGE / P_current   (1e18 fixed point)
@@ -132,6 +149,9 @@ contract CCMStaking is AccessControl, ReentrancyGuard {
         // reward = staked × rateBps × elapsed / (BPS × seconds_per_month)
         uint256 reward = (u.staked * rateBps * elapsed) / (BPS * SECONDS_PER_MONTH);
         if (reward > poolRemaining) reward = poolRemaining;
+        // Never pay out of other stakers' principal: cap to funded surplus.
+        uint256 avail = availableRewards();
+        if (reward > avail) reward = avail;
         return reward;
     }
 
@@ -200,6 +220,8 @@ contract CCMStaking is AccessControl, ReentrancyGuard {
     function recoverPoolRemainder() external onlyRole(ADMIN_ROLE) nonReentrant {
         require(totalStaked == 0, "Staking: users still staked");
         uint256 amt = poolRemaining;
+        uint256 avail = availableRewards();
+        if (amt > avail) amt = avail; // bookkeeping may exceed what was actually funded
         poolRemaining = 0;
         ccm.safeTransfer(msg.sender, amt);
     }

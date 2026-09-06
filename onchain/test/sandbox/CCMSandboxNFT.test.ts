@@ -4,7 +4,7 @@ import { time } from "@nomicfoundation/hardhat-network-helpers";
 import type { CCMSandboxNFT } from "../../typechain-types";
 
 const Grade = { A: 0, B: 1, C: 2, D: 3 } as const;
-const COOLDOWN = 60 * 60; // 1h
+const COOLDOWN = 5 * 60; // 5 min — mirrors CCMSandboxNFT.MINT_COOLDOWN (changed from 1h in 5fc7344; the test was not updated)
 const PROJECT = ethers.id("project:demo:GS-2026-001");
 
 describe("CCMSandboxNFT", () => {

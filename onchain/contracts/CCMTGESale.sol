@@ -62,6 +62,7 @@ contract CCMTGESale is AccessControl, ReentrancyGuard {
     event Purchased(uint256 indexed roundId, address indexed buyer, uint256 ccmAmt, uint256 usdcPaid);
     event Claimed(uint256 indexed roundId, address indexed user, uint256 amount);
     event RoundClosed(uint256 indexed roundId);
+    event UnsoldWithdrawn(uint256 indexed roundId, address indexed to, uint256 amount);
 
     constructor(address ccm_, address usdc_, address admin) {
         require(ccm_ != address(0) && usdc_ != address(0) && admin != address(0), "TGE: zero");
@@ -198,6 +199,23 @@ contract CCMTGESale is AccessControl, ReentrancyGuard {
     function withdrawUSDC(address to, uint256 amount) external onlyRole(ADMIN_ROLE) nonReentrant {
         require(to != address(0), "TGE: to zero");
         usdc.safeTransfer(to, amount);
+    }
+
+    /**
+     * @notice Return the unsold CCM of a finished round to `to` (review R-04).
+     * @dev Only once the round is closed or past `endTime`. Shrinks the round's
+     *      hard cap to what was actually sold, so the remainder cannot be
+     *      withdrawn twice and buyers' vesting allocations are untouched.
+     */
+    function withdrawUnsoldCCM(uint256 roundId, address to) external onlyRole(ADMIN_ROLE) nonReentrant {
+        require(to != address(0), "TGE: to zero");
+        Round storage r = rounds[roundId];
+        require(!r.active || block.timestamp > r.endTime, "TGE: round open");
+        uint256 unsold = r.hardCapTokens - r.soldTokens;
+        require(unsold > 0, "TGE: nothing unsold");
+        r.hardCapTokens = r.soldTokens;
+        ccm.safeTransfer(to, unsold);
+        emit UnsoldWithdrawn(roundId, to, unsold);
     }
 
     // ============================================================

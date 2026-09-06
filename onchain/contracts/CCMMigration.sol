@@ -115,9 +115,13 @@ contract CCMMigration is AccessControl, ReentrancyGuard {
         uint256 permitDeadline,
         uint8 v, bytes32 r, bytes32 s
     ) external nonReentrant {
-        IERC20Permit(address(v1Token)).permit(
+        // Tolerate a permit that was already submitted by someone else with
+        // this same signature (mempool front-run griefing, review R-03): the
+        // allowance is what matters, and burnFrom below enforces it.
+        try IERC20Permit(address(v1Token)).permit(
             msg.sender, address(this), permitValue, permitDeadline, v, r, s
-        );
+        ) {} catch {}
+        require(v1Token.allowance(msg.sender, address(this)) >= amount, "Migration: insufficient allowance");
         _doMigrate(msg.sender, amount);
     }
 

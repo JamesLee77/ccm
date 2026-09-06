@@ -78,9 +78,24 @@ contract CCMSandboxStaking is AccessControl, ReentrancyGuard {
 
     // --- yield rate -------------------------------------------------
 
+    /// @dev Oracle price, or 0 when the oracle reverts (review R-02).
+    function _oraclePrice() internal view returns (uint256) {
+        try priceOracle.getPrice() returns (uint256 p) {
+            return p;
+        } catch {
+            return 0;
+        }
+    }
+
+    /// @notice Balance beyond stakers' principal — the only source of rewards (review R-01).
+    function availableRewards() public view returns (uint256) {
+        uint256 bal = ccm.balanceOf(address(this));
+        return bal > totalStaked ? bal - totalStaked : 0;
+    }
+
     function currentYieldRateBps() public view returns (uint256 rateBps) {
         if (poolRemaining == 0) return 0;
-        uint256 currentPrice = priceOracle.getPrice();
+        uint256 currentPrice = _oraclePrice();
         if (currentPrice == 0) return 0;
         // R0 × (P_TGE / P) × (poolLeft / poolInit)
         uint256 priceFactor = (P0_TGE * 1e18) / currentPrice;
@@ -96,6 +111,8 @@ contract CCMSandboxStaking is AccessControl, ReentrancyGuard {
         uint256 r = currentYieldRateBps();
         uint256 owed = (u.staked * r * dt) / (BPS * SECONDS_PER_MONTH);
         if (owed > poolRemaining) owed = poolRemaining;
+        uint256 avail = availableRewards();
+        if (owed > avail) owed = avail;
         return owed;
     }
 

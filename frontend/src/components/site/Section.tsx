@@ -1,9 +1,15 @@
 import type { ReactNode, CSSProperties } from "react";
 
+export type SectionTone = "paper" | "deep" | "inverted";
+
 type Props = {
   id?: string;
-  /** Inverted dark section (e.g. Problem). */
-  inverted?: boolean;
+  /**
+   * Background band. `paper` is the page ground, `deep` is the recessed
+   * paper-deep band, `inverted` flips to ink-on-paper. Panels inside read
+   * `var(--panel)` so they keep contrast against whichever band they sit on.
+   */
+  tone?: SectionTone;
   /** Removes the top hairline. Used on the first section. */
   noBorder?: boolean;
   className?: string;
@@ -11,13 +17,24 @@ type Props = {
   children: ReactNode;
 };
 
+const TONE_STYLE: Record<SectionTone, CSSProperties> = {
+  paper: { "--panel": "var(--paper-deep)" } as CSSProperties,
+  deep: {
+    background: "var(--band-deep)",
+    "--panel": "var(--paper)",
+  } as CSSProperties,
+  // Colours for the inverted band are swapped in index.css so Tailwind
+  // utilities (text-ink, bg-paper, border-rule) invert with it.
+  inverted: { "--panel": "var(--paper-deep)" } as CSSProperties,
+};
+
 /**
- * Standard page section — 120px vertical / 56px horizontal padding,
- * top hairline. Matches sharedStylesFor.section from the design ref.
+ * Standard page section — 96px vertical / 56px horizontal padding on
+ * desktop (mobile overrides live in index.css), top hairline, tone band.
  */
 export default function Section({
   id,
-  inverted,
+  tone = "paper",
   noBorder,
   className,
   style,
@@ -26,12 +43,11 @@ export default function Section({
   return (
     <section
       id={id}
+      data-tone={tone}
       className={`${noBorder ? "" : "border-t border-rule"} ${className ?? ""}`}
       style={{
-        padding: "120px 56px",
-        ...(inverted
-          ? { background: "var(--ink)", color: "var(--paper)" }
-          : null),
+        padding: "96px 56px",
+        ...TONE_STYLE[tone],
         ...style,
       }}
     >

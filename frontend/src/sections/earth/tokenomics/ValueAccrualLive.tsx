@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { useReducedMotion } from "../../../hooks/useReducedMotion";
 
 type BurnSource = {
   id: string;
@@ -16,36 +14,10 @@ const BURN_SOURCES: BurnSource[] = [
   { id: "vault", label: "Vault liquidation", start: 49100, step: [0, 5] },
 ];
 
-function tickInterval(): number {
-  return 4500 + Math.random() * 3500;
-}
 
 export default function ValueAccrualLive() {
-  const reduced = useReducedMotion();
-  const [values, setValues] = useState(BURN_SOURCES.map((s) => s.start));
+  const values = BURN_SOURCES.map((s) => s.start);
 
-  useEffect(() => {
-    if (reduced) return;
-    const timeouts: number[] = [];
-    const schedule = () => {
-      timeouts.push(
-        window.setTimeout(() => {
-          setValues((prev) =>
-            prev.map((v, i) => {
-              const s = BURN_SOURCES[i]!;
-              const [min, max] = s.step;
-              return v + Math.floor(min + Math.random() * (max - min + 1));
-            }),
-          );
-          schedule();
-        }, tickInterval()),
-      );
-    };
-    schedule();
-    return () => {
-      for (const t of timeouts) window.clearTimeout(t);
-    };
-  }, [reduced]);
 
   const totalBurned = values.reduce((a, b) => a + b, 0);
 
@@ -180,18 +152,8 @@ export default function ValueAccrualLive() {
         style={{ background: "var(--paper-deep)", padding: "32px 32px" }}
       >
         <div className="flex items-center gap-2 mb-5">
-          <span
-            aria-hidden
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: "50%",
-              background: "var(--moss)",
-            }}
-            className="va-pulse"
-          />
           <span className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss">
-            live · burn ledger
+            model · illustrative · burn ledger
           </span>
         </div>
 

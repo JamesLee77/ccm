@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import SiteNav from "./SiteNav";
 import SiteFooter from "./SiteFooter";
+import { scrollToId } from "../../lib/scroll";
 
 /**
  * Scrolls to the element matching `location.hash` after route renders.
@@ -17,13 +18,7 @@ function useScrollToHash() {
     const id = decodeURIComponent(hash.slice(1));
     let attempts = 0;
     const tryScroll = () => {
-      const el = document.getElementById(id);
-      if (el) {
-        const headerH = document.querySelector("header")?.getBoundingClientRect().height ?? 0;
-        const top = el.getBoundingClientRect().top + window.scrollY - headerH - 8;
-        window.scrollTo({ top, behavior: "smooth" });
-        return;
-      }
+      if (scrollToId(id, "smooth")) return;
       if (attempts++ < 20) setTimeout(tryScroll, 50);
     };
     tryScroll();

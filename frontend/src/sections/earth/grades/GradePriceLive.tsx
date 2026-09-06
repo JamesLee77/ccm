@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { useReducedMotion } from "../../../hooks/useReducedMotion";
 
 type Grade = {
   id: string;
@@ -16,40 +14,10 @@ const GRADES: Grade[] = [
   { id: "d", letter: "CCM-D", baseline: 9, step: [-1, 1], color: "var(--clay)" },
 ];
 
-function tickInterval(): number {
-  return 4500 + Math.random() * 4500;
-}
 
 export default function GradePriceLive() {
-  const reduced = useReducedMotion();
-  const [prices, setPrices] = useState(() => GRADES.map((g) => g.baseline));
+  const prices = GRADES.map((g) => g.baseline);
 
-  useEffect(() => {
-    if (reduced) return;
-    const ts: number[] = [];
-    const sched = () => {
-      ts.push(
-        window.setTimeout(() => {
-          setPrices((prev) =>
-            prev.map((p, i) => {
-              const g = GRADES[i]!;
-              const [min, max] = g.step;
-              const next = p + Math.floor(min + Math.random() * (max - min + 1));
-              // Keep within ±15% of baseline so the spread stays believable.
-              const lower = g.baseline * 0.85;
-              const upper = g.baseline * 1.15;
-              return Math.max(lower, Math.min(upper, next));
-            }),
-          );
-          sched();
-        }, tickInterval()),
-      );
-    };
-    sched();
-    return () => {
-      for (const t of ts) window.clearTimeout(t);
-    };
-  }, [reduced]);
 
   const aPrice = prices[0] ?? 0;
   const dPrice = prices[3] ?? 1;
@@ -61,13 +29,8 @@ export default function GradePriceLive() {
       style={{ background: "var(--paper-deep)", padding: "32px 40px" }}
     >
       <div className="flex items-center gap-2 mb-6">
-        <span
-          aria-hidden
-          className="gp-pulse"
-          style={{ width: 8, height: 8, background: "var(--moss)", borderRadius: "50%", display: "inline-block" }}
-        />
         <span className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss">
-          live · grade price ratio
+          model · illustrative · grade price ratio
         </span>
         <span className="font-mono text-[10px] tracking-[0.14em] uppercase text-ink-soft ml-auto">
           $/tonne · 7-day rolling

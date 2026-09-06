@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { useReducedMotion } from "../../../hooks/useReducedMotion";
 
 type ReadOut = {
   id: string;
@@ -27,39 +25,9 @@ const READOUTS: ReadOut[] = [
   },
 ];
 
-function tickInterval(): number {
-  return 5500 + Math.random() * 4500;
-}
 
 export default function AdoptionLive() {
-  const reduced = useReducedMotion();
-  const [values, setValues] = useState(() =>
-    READOUTS.map((r) => (typeof r.value === "number" ? r.value : 0)),
-  );
-  useEffect(() => {
-    if (reduced) return;
-    const ts: number[] = [];
-    const sched = () => {
-      ts.push(
-        window.setTimeout(() => {
-          setValues((prev) =>
-            prev.map((v, i) => {
-              const r = READOUTS[i]!;
-              if (typeof r.value !== "number" || !r.step) return v;
-              const [min, max] = r.step;
-              if (max === 0) return v;
-              return v + Math.floor(min + Math.random() * (max - min + 1));
-            }),
-          );
-          sched();
-        }, tickInterval()),
-      );
-    };
-    sched();
-    return () => {
-      for (const t of ts) window.clearTimeout(t);
-    };
-  }, [reduced]);
+  const values = READOUTS.map((r) => (typeof r.value === "number" ? r.value : 0));
 
   return (
     <div
@@ -67,13 +35,8 @@ export default function AdoptionLive() {
       style={{ background: "var(--paper-deep)", padding: "32px 40px" }}
     >
       <div className="flex items-center gap-2 mb-6">
-        <span
-          aria-hidden
-          className="al-pulse"
-          style={{ width: 8, height: 8, background: "var(--moss)", borderRadius: "50%", display: "inline-block" }}
-        />
         <span className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss">
-          live · adoption ledger
+          model · illustrative · adoption ledger
         </span>
         <span className="font-mono text-[10px] tracking-[0.14em] uppercase text-ink-soft ml-auto">
           forecast at phase 1 mainnet

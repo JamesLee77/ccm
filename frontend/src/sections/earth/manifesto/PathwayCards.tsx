@@ -37,7 +37,7 @@ const PATHWAYS: Pathway[] = [
     audience: "Node operators",
     body: "Run a physical, verification, or storage node. Stake $CCM, earn per verified tonne reduced.",
     links: [
-      { label: "CCMine onboarding", href: "#mining" },
+      { label: "CCMine onboarding", href: "/protocol#mining" },
       { label: "Apply to operate →", href: "mailto:foundation@ccmnetwork.net?subject=Node%20operator" },
     ],
     icon: (
@@ -64,7 +64,7 @@ const PATHWAYS: Pathway[] = [
     body: "Acquire CCM-A or higher for net-zero reporting. Onchain retire produces an immutable audit certificate.",
     links: [
       { label: "Grading system", href: "#grades" },
-      { label: "Retire-to-earn", href: "#defi" },
+      { label: "Retire-to-earn", href: "/defi" },
       { label: "Buy-and-retire desk →", href: "mailto:foundation@ccmnetwork.net?subject=ESG%20buyer" },
     ],
     icon: (
@@ -86,7 +86,7 @@ const PATHWAYS: Pathway[] = [
     audience: "Researchers",
     body: "Standard published CC BY 4.0. Contribute to MRV methodology, oracle integrations, and dispute case law.",
     links: [
-      { label: "Architecture deep-dive", href: "#arch" },
+      { label: "Architecture deep-dive", href: "/protocol#arch" },
       { label: "Standard (CC BY 4.0) →", href: "mailto:foundation@ccmnetwork.net?subject=Standard%20repository" },
       { label: "Foundation contact →", href: "mailto:foundation@ccmnetwork.net?subject=Research" },
     ],

@@ -994,7 +994,7 @@ const SECTIONS: Section[] = [
         </FigureFrame>
         <p>
           The full milestone ledger and gantt are visible on the
-          home page (<a href="/#roadmap" className="text-moss hover:underline">
+          home page (<a href="/roadmap" className="text-moss hover:underline">
           §11 Roadmap</a>); this section keeps the document-level summary
           intentionally short.
         </p>

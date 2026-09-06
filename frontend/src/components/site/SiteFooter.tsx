@@ -11,8 +11,9 @@ const COLS: FooterCol[] = [
     heading: "network",
     links: [
       { label: "Overview", to: "/" },
-      { label: "CCMine", to: "/ccmine" },
-      { label: "Tokenomics", to: "/tokenomics" },
+      { label: "Market", to: "/market" },
+      { label: "Protocol", to: "/protocol" },
+      { label: "Token", to: "/token" },
       { label: "DeFi", to: "/defi" },
       { label: "Roadmap", to: "/roadmap" },
     ],

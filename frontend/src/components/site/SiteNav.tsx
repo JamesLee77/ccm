@@ -8,14 +8,12 @@ import CarbonPriceBadge from "../marketing/CarbonPriceBadge";
 type NavItem = {
   id: string;
   to: string;
-  /** True when this entry is an in-page anchor (e.g. /#mining), not a real route. */
-  anchor?: boolean;
 };
 
 const NAV_ITEMS: NavItem[] = [
-  { id: "ccmine", to: "/#mining", anchor: true },
-  { id: "tokenomics", to: "/#tokenomics", anchor: true },
-  { id: "roadmap", to: "/#roadmap", anchor: true },
+  { id: "market", to: "/market" },
+  { id: "protocol", to: "/protocol" },
+  { id: "token", to: "/token" },
   { id: "defi", to: "/defi" },
   { id: "whitepaper", to: "/whitepaper" },
 ];
@@ -76,31 +74,21 @@ export default function SiteNav() {
 
         {/* Desktop nav (≥ md) */}
         <nav className="hidden md:flex gap-7">
-          {NAV_ITEMS.map((item) =>
-            item.anchor ? (
-              <Link
-                key={item.id}
-                to={item.to}
-                className={`${linkBase} text-ink-soft border-transparent hover:text-ink`}
-              >
-                {t(item.id)}
-              </Link>
-            ) : (
-              <NavLink
-                key={item.id}
-                to={item.to}
-                className={({ isActive }) =>
-                  `${linkBase} ${
-                    isActive
-                      ? "text-moss border-moss"
-                      : "text-ink-soft border-transparent hover:text-ink"
-                  }`
-                }
-              >
-                {t(item.id)}
-              </NavLink>
-            ),
-          )}
+          {NAV_ITEMS.map((item) => (
+            <NavLink
+              key={item.id}
+              to={item.to}
+              className={({ isActive }) =>
+                `${linkBase} ${
+                  isActive
+                    ? "text-moss border-moss"
+                    : "text-ink-soft border-transparent hover:text-ink"
+                }`
+              }
+            >
+              {t(item.id)}
+            </NavLink>
+          ))}
         </nav>
 
         <div className="flex items-center gap-3">
@@ -164,33 +152,22 @@ export default function SiteNav() {
           style={{ background: "var(--paper)" }}
         >
           <nav className="flex flex-col py-4">
-            {NAV_ITEMS.map((item) =>
-              item.anchor ? (
-                <Link
-                  key={item.id}
-                  to={item.to}
-                  onClick={() => setOpen(false)}
-                  className="font-mono text-[13px] tracking-[0.14em] uppercase px-5 py-3 border-l-2 text-ink-soft border-transparent hover:text-ink"
-                >
-                  {t(item.id)}
-                </Link>
-              ) : (
-                <NavLink
-                  key={item.id}
-                  to={item.to}
-                  onClick={() => setOpen(false)}
-                  className={({ isActive }) =>
-                    `font-mono text-[13px] tracking-[0.14em] uppercase px-5 py-3 border-l-2 ${
-                      isActive
-                        ? "text-moss border-moss"
-                        : "text-ink-soft border-transparent hover:text-ink"
-                    }`
-                  }
-                >
-                  {t(item.id)}
-                </NavLink>
-              ),
-            )}
+            {NAV_ITEMS.map((item) => (
+              <NavLink
+                key={item.id}
+                to={item.to}
+                onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  `font-mono text-[13px] tracking-[0.14em] uppercase px-5 py-3 border-l-2 ${
+                    isActive
+                      ? "text-moss border-moss"
+                      : "text-ink-soft border-transparent hover:text-ink"
+                  }`
+                }
+              >
+                {t(item.id)}
+              </NavLink>
+            ))}
             <div className="px-5 pt-4">
               <a
                 href={APP_ITEM.to}

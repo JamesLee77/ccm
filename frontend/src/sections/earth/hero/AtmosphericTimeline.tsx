@@ -1,6 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "../../../hooks/useReducedMotion";
 
+/** True below 640px. The SVG scales with its viewBox, so tick labels are
+ *  thinned and enlarged there to stay legible. */
+function useCompact(): boolean {
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    const apply = () => setCompact(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+  return compact;
+}
+
 // Annual mean atmospheric CO₂ in ppm. Pre-1958 from ice cores; 1958+ from
 // Mauna Loa (NOAA). Sampled to keep the path readable.
 const PPM_DATA: [number, number][] = [
@@ -46,6 +60,10 @@ const linePath = points
 
 export default function AtmosphericTimeline() {
   const reduced = useReducedMotion();
+  const compact = useCompact();
+  const tickFont = compact ? 22 : 10;
+  const yTicks = compact ? [280, 400] : [280, 320, 360, 400];
+  const xTicks = compact ? [1750, 2026] : [1750, 1900, 1950, 2000, 2026];
   const ref = useRef<SVGSVGElement>(null);
   const [drawn, setDrawn] = useState(reduced);
 
@@ -99,7 +117,7 @@ export default function AtmosphericTimeline() {
         aria-label="Atmospheric CO2 trajectory 1750 to 2026"
       >
         {/* y-axis ticks */}
-        {[280, 320, 360, 400].map((p) => (
+        {yTicks.map((p) => (
           <g key={p}>
             <line
               x1={PAD_L}
@@ -115,7 +133,7 @@ export default function AtmosphericTimeline() {
               y={yFor(p) + 4}
               textAnchor="end"
               fontFamily="JetBrains Mono, ui-monospace, monospace"
-              fontSize={10}
+              fontSize={tickFont}
               fill="var(--ink-soft)"
             >
               {p}
@@ -123,14 +141,14 @@ export default function AtmosphericTimeline() {
           </g>
         ))}
         {/* x-axis labels */}
-        {[1750, 1900, 1950, 2000, 2026].map((yr) => (
+        {xTicks.map((yr) => (
           <text
             key={yr}
             x={xFor(yr)}
             y={H - PAD_B + 18}
             textAnchor="middle"
             fontFamily="JetBrains Mono, ui-monospace, monospace"
-            fontSize={10}
+            fontSize={tickFont}
             fill="var(--ink-soft)"
           >
             {yr}
@@ -168,7 +186,7 @@ export default function AtmosphericTimeline() {
           y={yFor(423) - 12}
           textAnchor="end"
           fontFamily="JetBrains Mono, ui-monospace, monospace"
-          fontSize={10}
+          fontSize={tickFont}
           letterSpacing={1.4}
           fill="var(--moss)"
           style={{ opacity: drawn ? 1 : 0, transition: "opacity 280ms ease-out 1500ms" }}

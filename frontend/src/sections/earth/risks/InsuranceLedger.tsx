@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { useReducedMotion } from "../../../hooks/useReducedMotion";
 
 type ReadOut = {
   id: string;
@@ -39,40 +37,10 @@ const READOUTS: ReadOut[] = [
   },
 ];
 
-function tickInterval(): number {
-  return 5500 + Math.random() * 4500;
-}
 
 export default function InsuranceLedger() {
-  const reduced = useReducedMotion();
-  const [values, setValues] = useState(() =>
-    READOUTS.map((r) => (typeof r.value === "number" ? r.value : 0)),
-  );
+  const values = READOUTS.map((r) => (typeof r.value === "number" ? r.value : 0));
 
-  useEffect(() => {
-    if (reduced) return;
-    const timeouts: number[] = [];
-    const schedule = () => {
-      timeouts.push(
-        window.setTimeout(() => {
-          setValues((prev) =>
-            prev.map((v, i) => {
-              const r = READOUTS[i]!;
-              if (typeof r.value !== "number" || !r.step) return v;
-              const [min, max] = r.step;
-              if (max === 0) return v;
-              return v + Math.floor(min + Math.random() * (max - min + 1));
-            }),
-          );
-          schedule();
-        }, tickInterval()),
-      );
-    };
-    schedule();
-    return () => {
-      for (const t of timeouts) window.clearTimeout(t);
-    };
-  }, [reduced]);
 
   return (
     <div
@@ -80,19 +48,8 @@ export default function InsuranceLedger() {
       style={{ background: "var(--paper-deep)", padding: "32px 40px" }}
     >
       <div className="flex items-center gap-2 mb-6">
-        <span
-          aria-hidden
-          className="il-pulse"
-          style={{
-            width: 8,
-            height: 8,
-            background: "var(--moss)",
-            borderRadius: "50%",
-            display: "inline-block",
-          }}
-        />
         <span className="font-mono text-[11px] tracking-[0.16em] uppercase text-moss">
-          live · insurance vault
+          model · illustrative · insurance vault
         </span>
         <span className="font-mono text-[10px] tracking-[0.14em] uppercase text-ink-soft ml-auto">
           paper-deep collateral · USDC

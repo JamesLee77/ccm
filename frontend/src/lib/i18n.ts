@@ -8,6 +8,7 @@ const NAMESPACES = [
   "nav",
   "footer",
   "earth",
+  "home",
   "ccmine",
   "tokenomics",
   "roadmap",

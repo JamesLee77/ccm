@@ -7,6 +7,9 @@
 @import "@fontsource/jetbrains-mono/400.css";
 @import "@fontsource/jetbrains-mono/500.css";
 @import "@fontsource/jetbrains-mono/600.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
 
 /* Design tokens — exposed as CSS variables, switched via [data-theme]. */
 :root,
@@ -22,6 +25,8 @@
   --sky: #4a7d8c;
   --rule: #c9c5b8;
   --nav-bg: rgba(245, 243, 236, 0.92);
+  /* Recessed band behind `tone="deep"` sections — must read against --paper. */
+  --band-deep: #ebe8de;
 }
 
 [data-theme="dark"] {
@@ -36,6 +41,7 @@
   --sky: #7ba9c4;
   --rule: #1a221e;
   --nav-bg: rgba(10, 14, 12, 0.92);
+  --band-deep: #10160f;
 }
 
 @theme {
@@ -49,9 +55,9 @@
   --color-sky: var(--sky);
   --color-rule: var(--rule);
 
-  /* grotesk-mono pairing — display + ui = Space Grotesk; body + mono = JetBrains Mono. */
+  /* display + ui = Space Grotesk; body = Inter; labels/numbers/code = JetBrains Mono. */
   --font-display: "Space Grotesk", system-ui, sans-serif;
-  --font-body: "JetBrains Mono", ui-monospace, monospace;
+  --font-body: "Inter", system-ui, sans-serif;
   --font-ui: "Space Grotesk", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
@@ -114,6 +120,78 @@ textarea {
 ::selection {
   background: var(--moss);
   color: var(--paper);
+}
+
+/* Inverted band: swap the ink/paper axis inside the section so every
+   token-based utility (text-ink, bg-paper, border-rule, var(--ink) …)
+   inverts with it. The *-inv values are the theme's own palette flipped. */
+:root,
+[data-theme="light"] {
+  --ink-inv: #f5f3ec;
+  --paper-inv: #0c0f10;
+  --paper-deep-inv: #151a17;
+  --ink-soft-inv: #9aa39c;
+  --rule-inv: #2a332e;
+}
+[data-theme="dark"] {
+  --ink-inv: #0a0e0c;
+  --paper-inv: #eef1ea;
+  --paper-deep-inv: #e3e7de;
+  --ink-soft-inv: #5a635d;
+  --rule-inv: #c9c5b8;
+}
+section[data-tone="inverted"] {
+  --ink: var(--ink-inv);
+  --paper: var(--paper-inv);
+  --paper-deep: var(--paper-deep-inv);
+  --ink-soft: var(--ink-soft-inv);
+  --rule: var(--rule-inv);
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-ink-soft: var(--ink-soft);
+  --color-rule: var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* ≥1280px: widen the page gutter so the fixed chapter rail has its own
+   column. Header and footer follow so left edges stay aligned. */
+@media (min-width: 1280px) {
+  main section,
+  footer {
+    padding-left: 104px !important;
+    padding-right: 104px !important;
+  }
+  header > div[class*="px-14"] {
+    padding-left: 104px !important;
+    padding-right: 104px !important;
+  }
+  .chapter-rail-label {
+    writing-mode: vertical-rl;
+    transform: translateY(-50%) rotate(180deg);
+    margin-left: 6px;
+    line-height: 1;
+  }
+}
+
+/* Hero fills the first screen on desktop only. */
+@media (min-width: 1025px) {
+  .hero-chapter {
+    min-height: calc(100svh - 65px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+/* Chapter "Go deeper" link becomes a full-width button on phones. */
+@media (max-width: 640px) {
+  .chapter-deeper {
+    display: flex !important;
+    justify-content: space-between;
+    width: 100%;
+  }
 }
 
 /* ─────────────── Mobile responsive overrides ───────────────
